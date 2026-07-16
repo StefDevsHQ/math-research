@@ -1,0 +1,50 @@
+name: Result review
+description: Review a proposed proof, disproof, computation, or claim-status change.
+title: "review: "
+body:
+  - type: input
+    id: claim
+    attributes:
+      label: Claim identifier
+      placeholder: SS-001
+    validations:
+      required: true
+  - type: dropdown
+    id: result_type
+    attributes:
+      label: Result type
+      options:
+        - Proof
+        - Disproof or counterexample
+        - Computational result
+        - External result or citation
+        - Claim-status correction
+    validations:
+      required: true
+  - type: textarea
+    id: statement
+    attributes:
+      label: Exact statement under review
+    validations:
+      required: true
+  - type: textarea
+    id: location
+    attributes:
+      label: Evidence or argument location
+      description: Link the note, commit, pull request, experiment, or primary source.
+    validations:
+      required: true
+  - type: textarea
+    id: checks
+    attributes:
+      label: Required checks
+      description: List assumptions, dependencies, edge cases, computations, or citations that must be verified.
+    validations:
+      required: true
+  - type: textarea
+    id: proposed_status
+    attributes:
+      label: Proposed ledger change
+      placeholder: CONJECTURE / DRAFT -> PROVED / CHECKED
+    validations:
+      required: false
