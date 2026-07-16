@@ -1,25 +1,25 @@
 # Status — P versus NP
 
-**Phase:** First route consolidated; adversarial audit pending  
+**Phase:** First route closed; obstruction program next  
 **Updated:** 2026-07-16
 
 ## Current position
 
-The repository foundation is complete and the first Subset Sum route has been decomposed into atomic records.
+The repository foundation is complete and the first Subset Sum route has been fully audited and closed.
 
-The structural-compression route no longer supports its original universal bundle claim. It retains one proved local lemma and a refined framework that must be tested against SAT-derived instances.
+The structural-compression route did not produce a universal polynomial-time algorithm. Its SAT-derived hard family preserves the original logical assignment and clause-compatibility structure under the proposed modular decomposition.
 
-## Active work
+The route retains one local coverage lemma and one restricted-class theorem.
 
-1. Open the SAT-to-Subset-Sum audit as the first research issue.
-2. Execute the audit and update the route claims.
-3. Decide whether the route survives in restricted form only.
-4. If it fails as a universal strategy, begin the exact-state compression barrier program.
+## Completed
 
-## Current blocker
+1. Established the repository research standards and atomic record structure.
+2. Normalized the no-carry 3-SAT-to-Subset-Sum reduction.
+3. Consolidated and audited the structural-compression route.
+4. Recorded its final claim states and reopening conditions.
 
-The refined framework has no proved strictly decreasing polynomially bounded complexity measure on hard reduction families.
+## Next program
 
-## Next action
+Study exact-state compression barriers: identify lower-bound models and distinguishability measures for the information an exact Subset Sum representation must preserve.
 
-Run the audit defined at `investigations/subset-sum/routes/structural-compression/audits/sat-to-subset-sum.md`.
+Candidate starting models are target equivalence and cross-component compatibility matrices.
