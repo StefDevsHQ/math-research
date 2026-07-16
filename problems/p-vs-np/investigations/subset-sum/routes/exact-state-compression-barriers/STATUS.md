@@ -25,6 +25,7 @@ Second, an explicit deterministic bottom-up tree-state model has been defined an
 - Ordered assignment-target query graphs transfer to ordered binary decision diagrams.
 - Square-grid families force superpolynomial complete state graphs in that ordered model.
 - Explicit deterministic tree-state systems with fully counted transition tables are polynomially equivalent to deterministic Tree Decision Diagrams.
+- The assignment-target family is polynomially representable in every model containing general polynomial-size Boolean circuits with access to the decoded assignment bits.
 
 ## Adversarial verdict
 
@@ -34,21 +35,23 @@ It does not lower-bound arbitrary Subset Sum algorithms, fixed-target decision p
 
 The tree-state model is broader, but it still does not automatically contain succinct arithmetic summaries. A modulus \(q\) may be encoded in \(O(\log q)\) bits while an explicit residue transition table has \(q\) states or entries.
 
+The opposite extreme also fails: a transition language containing arbitrary polynomial-size Boolean circuits can retain the original CNF and evaluate it directly. Therefore the desired model must be strictly weaker than general circuits.
+
 ## Smallest remaining gap
 
 The route now needs a restricted **succinct transition language** between two extremes:
 
 1. explicit tables, which admit knowledge-compilation lower bounds but may not express large binary-encoded arithmetic compactly;
-2. unrestricted polynomial-time programs, which are too powerful because they can evaluate the whole source formula or run any available decision procedure.
+2. general circuits or unrestricted polynomial-time programs, which are too powerful because they can evaluate the whole source formula or run any available decision procedure.
 
 The required language must contain the interval, progression, residue, exception, and recursive summaries from structural compression and still support an unconditional superpolynomial lower bound.
 
 ## Next actions
 
 1. Classify each retained structural-summary atom by the Boolean query representation it induces over target bits.
-2. Test bounded-read branching programs and structured decision decomposable negation normal form as intermediate languages.
-3. Search for explicit Tree Decision Diagram lower bounds or derive one through subfunction counts for a family not neutralized by tree decomposition.
-4. Separate final-representation size from bottom-up compilation cost; a small final diagram may still require large intermediate apply states.
+2. Test bounded-read branching programs and restricted arithmetic circuits as intermediate languages.
+3. Separate final-representation size from bottom-up compilation cost; existing knowledge-compilation work shows that small final representations can coexist with exponentially large intermediate apply results.
+4. Search for Tree Decision Diagram lower bounds on families not neutralized by balanced tree decomposition.
 5. Audit target-specific pruning independently.
 
 ## Stop condition
