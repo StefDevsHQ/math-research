@@ -6,10 +6,12 @@ These records describe the broader P-versus-NP research landscape. They do not c
 
 ## Landscapes
 
-- [Research-programme landscape](research-programme-landscape.md) — major positive, negative, conditional, proof-complexity, pseudorandomness, and magnification programmes.
-- [Problem-testbed landscape](problem-testbed-landscape.md) — representative NP-complete problems and strategic control problems organized by the obstruction they expose.
+- [Research-programme landscape](research-programme-landscape.md) — positive, structural, circuit, proof, meta-complexity, conditional, and barrier programmes with explicit consequence mapping.
+- [Problem-testbed landscape](problem-testbed-landscape.md) — NP-complete testbeds, tractable controls, promise problems, total-search classes, and strategic non-NP-complete objects organized by obstruction.
 - [Primary-source map](top-level-landscape-sources.md) — representative sources supporting both landscapes.
-- [Specialist source supplement](top-level-landscape-specialist-sources.md) — dedicated references for integer programming, semidefinite optimisation, algebraic complexity, descriptive complexity, and branching programmes.
+- [Specialist source supplement](top-level-landscape-specialist-sources.md) — integer programming, semidefinite optimisation, arithmetic circuits, and descriptive complexity.
+- [Second-pass source supplement](top-level-landscape-second-pass-sources.md) — hierarchy, sparse-set, nonuniformity, compression, total-search, proof-system, learning, and polyhedral sources.
+- [Second-pass audit](top-level-landscape-second-pass-audit.md) — corrections, additions, scope decisions, and remaining limitations.
 
 ## Relationship to investigations
 
