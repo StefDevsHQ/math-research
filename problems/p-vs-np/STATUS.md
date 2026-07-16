@@ -1,21 +1,23 @@
 # Status — P versus NP
 
-**Phase:** Route selection after two Subset Sum route closeouts and landscape audit  
+**Phase:** Top-level route selection after Subset Sum closeout and landscape audits  
 **Updated:** 2026-07-16
 
 ## Current position
 
-The repository foundation is complete and the first Subset Sum investigation has closed two universal strategies.
+The repository foundation is complete. The first concrete investigation, Subset Sum, closed two universal strategies:
 
 1. **Structural compression** did not produce a universal polynomial-time algorithm. Canonical no-carry SAT-to-Subset-Sum instances preserve assignment and clause compatibility under the proposed modular decomposition.
 2. **Exact-state compression barriers** produced correct model-specific lower bounds and representation boundaries, but no model simultaneously contained all retained structural mechanisms, excluded polynomial Boolean simulation, and admitted a superpolynomial hard-family lower bound.
 
-A paradigm-level audit of currently known Subset Sum directions is complete:
+The project has completed:
 
-- [Algorithmic landscape](investigations/subset-sum/references/algorithmic-landscape.md)
-- [Primary-source map](investigations/subset-sum/references/algorithmic-landscape-sources.md)
+- a paradigm-level [Subset Sum algorithmic landscape](investigations/subset-sum/references/algorithmic-landscape.md);
+- a cross-investigation [research-programme landscape](references/research-programme-landscape.md);
+- a cross-investigation [problem-testbed landscape](references/problem-testbed-landscape.md);
+- a supporting [top-level source map](references/top-level-landscape-sources.md).
 
-No active Subset Sum route is selected.
+No investigation or route is active.
 
 ## Accepted retained results
 
@@ -26,7 +28,7 @@ No active Subset Sum route is selected.
 - exact item-block Minkowski composition identities;
 - model-boundary theorems separating small syntax, expensive normalization, and excessive Boolean expressiveness.
 
-These results do not prove `P=NP`, `P!=NP`, a fixed-target Subset Sum lower bound, or a lower bound for arbitrary Subset Sum algorithms.
+These results do not prove `P=NP`, `P!=NP`, a fixed-target Subset Sum lower bound, a general Boolean circuit lower bound, or a lower bound for arbitrary Subset Sum algorithms.
 
 ## Completed
 
@@ -35,31 +37,40 @@ These results do not prove `P=NP`, `P!=NP`, a fixed-target Subset Sum lower boun
 3. Audited and closed the structural-compression route.
 4. Opened, attacked, audited, and closed the exact-state compression-barrier route.
 5. Recorded final claim states, limitations, and reopening conditions for both routes.
-6. Completed and sourced a route-selection landscape covering general exact algorithms, pseudopolynomial algorithms, structured subclasses, compression mechanisms, lower-bound programmes, approximation, heuristics, and quantum methods.
+6. Completed a sourced Subset Sum algorithmic landscape.
+7. Completed a sourced top-level landscape of P-versus-NP research programmes, proof barriers, and candidate testbeds.
 
-## Current obstruction
+## Current methodological determination
 
-Natural exact-state languages fall into three regimes:
+The repository should distinguish two top-level tracks.
 
-1. unevaluated additive syntax is universally small but leaves membership unresolved;
-2. normalized arithmetic representations can be exponentially large even on easy instances;
-3. compact bounded residue-range tests plus unrestricted branching or intersection recover polynomial Boolean computation.
+### Positive track
 
-No broad natural model was found between these regimes that also subsumes every retained structural operation.
+Choose a concrete NP-complete problem and a proposed universal polynomial-time mechanism. The current leading candidate is the **exact-incidence constraint cluster**:
+
+- Positive 1-in-3 SAT as the primary row-sparse exact-one system;
+- X3C as the column-sparse dual control;
+- 3-Dimensional Matching as the tripartite exact-cover control;
+- XOR-SAT, perfect matching, and bounded-width CSPs as tractable neighbours.
+
+The first route must specify a mechanism before the investigation is opened. Candidate mechanisms include exact propagation closure, an incidence-width parameter, or a composition theorem that works across all three incidence orientations.
+
+### Lower-bound track
+
+The leading sibling candidate is **Circuit-SAT and restricted-circuit satisfiability**. A valid route must state:
+
+- the exact circuit or proof model;
+- the nontrivial algorithm or lower bound sought;
+- the known transfer theorem to the claimed class separation;
+- the relativization, natural-proof, algebrization, or model-transfer barrier that must be avoided.
 
 ## Next decision
 
-Select one new route before further mathematical work.
+Select one of the following before further route work:
 
-The strongest positive Subset Sum candidates identified by the landscape are:
+1. open an exact-incidence investigation centred on Positive 1-in-3 SAT;
+2. open a Circuit-SAT or restricted-circuit algorithms-to-lower-bounds investigation;
+3. choose another testbed or programme from the top-level landscapes with an explicit reason it is superior;
+4. remain within Subset Sum only by selecting a restricted positive subclass from its algorithmic landscape.
 
-1. bounded doubling or another constructive additive-structure subclass;
-2. a dense additive-combinatorial regime with a genuinely uncovered parameter range;
-3. a small-item or succinct-multiplicity subclass with a structural parameter not reducible to bounded magnitude;
-4. a new decomposition-width parameter with complete global-state accounting.
-
-The main barrier alternative is communication or interface complexity, but it should not be opened without first proving that the model naturally contains the retained arithmetic operations with polynomial overhead.
-
-Otherwise, move to a different P-versus-NP investigation not centered on universal exact-state compression.
-
-Do not reopen either closed route without satisfying its recorded reopening conditions.
+Do not reopen either closed Subset Sum route without satisfying its recorded reopening conditions.
