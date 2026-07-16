@@ -9,12 +9,12 @@ The route did not produce a polynomial-time exact algorithm for general Subset S
 
 The original dense-or-separated bundle composition claim was withdrawn because local density or separation does not preserve enough global exact information. The refined forced/progression/lattice framework was then tested against the canonical no-carry 3-SAT-to-Subset-Sum reduction.
 
-That audit failed the route's pass condition. The variable columns preserve one exact binary choice per variable, and the clause columns preserve assignment-to-clause compatibility. The modular structure exposes the encoded satisfiability instance but does not compress its unresolved logical choices or provide a strictly decreasing polynomially bounded measure.
+That audit failed the route's pass condition. The variable columns preserve one exact binary choice per variable, and the clause columns preserve assignment-to-clause compatibility. The modular structure exposes the encoded satisfiability instance but does not compress its unresolved logical choices or produce a globally polynomial-size exact computation graph.
 
 ## Retained results
 
 1. The residue-completion lemma is an exact local coverage result.
-2. The route gives a polynomial-time method on classes where the decomposition, branching, moduli, residue states, intermediate descriptions, and recursion depth are all polynomially bounded in the binary input length.
+2. Subset Sum is polynomial-time decidable on classes where an efficiently constructible exact decomposition has a globally polynomial-size computation graph and polynomial total encoded state.
 3. The audit isolates the main obstruction: additive structure may coexist with uncompressed logical compatibility.
 
 ## Final claim state
@@ -35,7 +35,7 @@ No further work on universal dense/separated/progression/lattice decomposition i
 
 - preserves cross-component compatibility exactly;
 - is efficiently constructible;
-- bounds all moduli and state descriptions polynomially in binary input length; and
-- proves a strict polynomially bounded progress measure on reduction-generated hard instances.
+- bounds the complete computation graph and all state descriptions polynomially in binary input length; and
+- survives reduction-generated hard instances without merely reproducing their logical choices.
 
 The next research program is exact-state compression barriers: identify what information prevents exact dynamic-programming states from being merged.
