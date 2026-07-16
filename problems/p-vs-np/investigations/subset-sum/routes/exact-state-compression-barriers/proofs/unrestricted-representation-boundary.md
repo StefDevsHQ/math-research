@@ -45,7 +45,7 @@ The following are equivalent:
 
 1. There exist algorithms `Compile` and `Query` and a polynomial \(p\) such that, for every item list \(A\):
    - `Compile(A)` runs in time polynomial in \(|A|\) and produces a string \(R(A)\) of length at most \(p(|A|)\);
-   - `Query(R(A),t)` runs in time polynomial in \(|A|+|t|\);
+   - `Query(R(A),t)` runs in time polynomial in \(|R(A)|+|t|\);
    - `Query(R(A),t)` accepts if and only if \(t\in\Sigma(A)\), for every target \(t\).
 2. Subset Sum is decidable in polynomial time.
 3. \(P=NP\).
@@ -54,11 +54,11 @@ The following are equivalent:
 
 #### `1 implies 2`
 
-Given a standard Subset Sum instance \((A,t)\), compute \(R(A)=\texttt{Compile}(A)\), then run \(\texttt{Query}(R(A),t)\). Both stages run in polynomial time and the answer is exact.
+Given a standard Subset Sum instance \((A,t)\), compute \(R(A)=\texttt{Compile}(A)\), then run \(\texttt{Query}(R(A),t)\). The representation length is polynomial in \(|A|\), so both stages and their composition run in time polynomial in \(|A|+|t|\). The answer is exact.
 
 #### `2 implies 1`
 
-Let `Compile(A)` return the original encoding of \(A\). Let `Query` run the assumed polynomial-time Subset Sum algorithm on \((A,t)\). The representation has linear size and both procedures are polynomial-time.
+Let `Compile(A)` return the original encoding of \(A\). Let `Query` run the assumed polynomial-time Subset Sum algorithm on \((A,t)\). The representation has linear size and both procedures run in time polynomial in their input lengths.
 
 #### `2 equivalent to 3`
 
