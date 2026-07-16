@@ -12,7 +12,7 @@ When the forced/progression/lattice framework is applied to the canonical no-car
 
 The shared construction is recorded at:
 
-[`problems/p-vs-np/reductions/sat-to-subset-sum/README.md`](../../../../../../reductions/sat-to-subset-sum/README.md)
+[`problems/p-vs-np/reductions/sat-to-subset-sum/README.md`](../../../../../reductions/sat-to-subset-sum/README.md)
 
 It uses one digit column per variable and clause. The target forces exactly one of \(T_i,F_i\) for each variable. Clause columns and slack values accept exactly the assignments satisfying every clause. No carries occur.
 
@@ -62,22 +62,23 @@ The modular state is therefore a restatement of the original truth assignment an
 
 ## Complexity measure
 
-The audit tested the proposed measures:
+The audit tested:
 
 - unresolved variables;
 - unresolved clauses;
 - necessary compatibility states;
 - binary description length;
 - modulus or coordinate width;
-- recursive branching.
+- recursive branching;
+- total computation-graph size.
 
-No route rule was established that decreases these measures independently of choosing truth values. Forced analysis exposes \(n\) binary choices. Clause progression completion applies only after those choices determine the clause contributions. Lattice analysis preserves the same compatibility information.
+No route rule was established that decreases these measures independently of choosing truth values. Forced analysis exposes \(n\) binary choices. Clause progression completion applies only after those choices determine the clause contributions. Lattice analysis preserves the same compatibility information. No globally polynomial-size exact computation graph was obtained.
 
 ## Determination
 
 **Fails.**
 
-The route does not meet its pass condition on the canonical reduction family. It reveals the logical encoding but supplies no exact polynomial-size merge of the unresolved assignment states and no strictly decreasing polynomially bounded measure.
+The route does not meet its pass condition on the canonical reduction family. It reveals the logical encoding but supplies no exact polynomial-size merge of the unresolved assignment states and no globally polynomial-size exact computation graph.
 
 This is not a proof that every possible structural-compression algorithm fails, nor a lower bound for Subset Sum. It closes this specific forced/progression/lattice framework as a universal polynomial-time strategy.
 
