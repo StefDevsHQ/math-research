@@ -2,9 +2,18 @@
 
 This route studies whether the exact reachable-sum state of Subset Sum can be represented and updated in size polynomial in the binary input length.
 
-Its first formulation used a dense-or-separated decomposition and a bundle lemma. That formulation was disproved. A residue-completion lemma and a refined forced/progression/lattice framework survive, subject to a final audit against a canonical SAT-to-Subset-Sum construction.
+## Current conclusion
 
-## Navigation
+The original dense-or-separated bundle composition claim is retracted. A residue-completion lemma survives as an exact local result. The refined forced/progression/lattice framework has not been shown to yield a universal polynomial-time algorithm.
+
+## Core records
+
+- [Route record](notes/route-record.md)
+- [Residue-completion lemma](proofs/residue-completion-lemma.md)
+- [Bundle lemma retraction](counterexamples/bundle-lemma.md)
+- [SAT-to-Subset-Sum audit](audits/sat-to-subset-sum.md)
+
+## Administration
 
 - [Route status](STATUS.md)
 - [Route claim ledger](CLAIMS.md)
@@ -14,5 +23,3 @@ Its first formulation used a dense-or-separated decomposition and a bundle lemma
 - [Experiments](experiments/README.md)
 - [Working notes](notes/README.md)
 - [Archive](archive/README.md)
-
-The canonical finalized record has not yet been imported.
