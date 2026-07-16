@@ -2,12 +2,12 @@
 
 This is the authoritative investigation-level ledger for Subset Sum claims.
 
-The finalized structural-compression record has not yet been imported. Claims from that work will be registered during the import so that their statements, dependencies, and historical status remain aligned with the canonical record.
-
 ## Claims
 
 | ID | Statement | Status | Review | Evidence | Updated |
 |---|---|---|---|---|---|
+| `SS-001` | The original dense-or-separated bundle route yields a universal polynomial-time exact algorithm for Subset Sum. | `RETRACTED` | `CHECKED` | [Route retraction record](routes/structural-compression/counterexamples/bundle-lemma.md) | 2026-07-16 |
+| `SS-002` | The residue-completion lemma gives an exact sufficient condition for a reachable arithmetic progression to expand into a complete central interval. | `PROVED` | `CHECKED` | [Proof](routes/structural-compression/proofs/residue-completion-lemma.md) | 2026-07-16 |
 
 ## Identifier policy
 
