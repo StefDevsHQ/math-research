@@ -5,7 +5,7 @@
 
 ## Current position
 
-Two universal routes are now closed:
+Two universal routes are closed:
 
 1. **Structural compression:** local residue completion and the polynomially bounded exact-decomposition theorem survive, but the universal framework preserved SAT compatibility.
 2. **Exact-state compression barriers:** correct model-specific boundaries were established, but no broad arithmetic model both subsumed the retained structural mechanisms and excluded polynomial Boolean simulation.
@@ -27,9 +27,9 @@ The attempted arithmetic proof-graph bridge failed:
 
 - unevaluated additive syntax is universally small but leaves membership unresolved;
 - normalized progression unions can be exponentially large on easy instances;
-- compact residue tests plus repeated branching recover polynomial CNF evaluation.
+- compact bounded residue-range tests plus unrestricted repeated branching recover polynomial width-three CNF evaluation.
 
-The candidate therefore crossed its circuit-simulation stop condition.
+The candidate therefore crossed its circuit-simulation stop condition. Pure residue-equality branching alone is not classified.
 
 ## Next decision
 
