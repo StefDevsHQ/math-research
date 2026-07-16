@@ -38,11 +38,14 @@ LICENSES.md               License map
 CITATION.cff              Repository citation metadata
 ```
 
-## Active research
+## Current research state
 
 - [P versus NP](problems/p-vs-np/README.md)
-  - [Subset Sum investigation](problems/p-vs-np/investigations/subset-sum/README.md)
-    - [Structural compression route](problems/p-vs-np/investigations/subset-sum/routes/structural-compression/README.md)
+  - [Subset Sum investigation](problems/p-vs-np/investigations/subset-sum/README.md) — route selection; no active route
+    - [Structural compression](problems/p-vs-np/investigations/subset-sum/routes/structural-compression/README.md) — closed as a universal algorithmic route; restricted results retained
+    - [Exact-state compression barriers](problems/p-vs-np/investigations/subset-sum/routes/exact-state-compression-barriers/README.md) — closed as a broad model-barrier route; model-specific results retained
+
+No repository result currently resolves `P=NP`, `P!=NP`, or gives a lower bound for arbitrary Subset Sum algorithms.
 
 ## Working principles
 
