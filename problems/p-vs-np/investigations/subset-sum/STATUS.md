@@ -1,28 +1,41 @@
 # Status — Subset Sum Investigation
 
-**Phase:** Structural-compression route closed; next program pending  
+**Phase:** Exact-state compression barriers active  
 **Updated:** 2026-07-16
 
 ## Current position
 
-The structural-compression route is closed as a universal polynomial-time strategy.
+The structural-compression route is closed as a universal polynomial-time strategy. Its residue-completion lemma and polynomially bounded exact-decomposition theorem remain accepted.
 
-The original bundle claim and the refined forced/progression/lattice universal claim are retracted. The SAT-to-Subset-Sum audit showed that the route's modular states preserve the original assignment and clause-compatibility choices rather than compressing them.
+The sibling [exact-state compression barriers](routes/exact-state-compression-barriers/README.md) route is now active.
 
-Two results remain accepted:
+## New established boundary
 
-- the residue-completion lemma;
-- polynomial-time solvability for classes with an efficiently constructible exact decomposition whose full state complexity is polynomially bounded in the binary input length.
+The first formal model is an ordered assignment-target query-state graph. A fixed-item, variable-target no-carry embedding transfers these state graphs exactly to ordered binary decision diagrams.
 
-## Completed
+For query families induced by square-grid monotone two-CNF formulas, every such ordered state graph has size
 
-1. Normalized the canonical no-carry 3-SAT-to-Subset-Sum reduction.
-2. Completed the adversarial audit.
-3. Finalized route and investigation claim ledgers.
-4. Closed the route with explicit reopening conditions.
+\[
+2^{\Omega(L^{1/4})},
+\]
 
-## Next direction
+where \(L\) is the binary length of the item multiset and target.
 
-Develop an exact-state compression barrier program: formalize the compatibility information that prevents exact dynamic-programming states from being merged.
+This is a genuine model-specific compression barrier. It does not imply a lower bound for arbitrary Subset Sum algorithms or for one fixed target: the structured target exposes an assignment that can be decoded and checked directly in polynomial time.
 
-No further universal structural-compression work should resume without a new exact composition theorem and a strict polynomially bounded progress measure.
+## Accepted results
+
+1. Residue-completion lemma.
+2. Polynomial-time solvability for classes with an efficiently constructible exact decomposition whose complete computation graph and total encoded state are polynomially bounded in binary input length.
+3. Unrestricted representation size alone cannot yield a barrier, because the original instance is already a linear-size exact representation.
+4. Ordered context-independent assignment-target states require a superpolynomial complete graph on the square-grid family.
+
+## Current blocker
+
+The ordered model does not formally contain the interval, progression, residue, exception, and recursive summaries from the closed route. A broader tree-structured model is required before a lower bound can constrain that framework.
+
+## Next action
+
+Formalize a tree-compositional exact-state model and test transfer to Tree Decision Diagrams, structured decision decomposable negation normal form, or bounded-read branching programs. The decisive condition is a proved polynomial-overhead inclusion of the previous structural summaries.
+
+Do not infer a general decision lower bound from a compilation or representation lower bound.
