@@ -1,0 +1,21 @@
+Creative Commons Attribution 4.0 International (CC BY 4.0)
+
+Copyright (c) 2026 StefDevsHQ
+
+Except where otherwise noted, original research prose, proofs, mathematical exposition, diagrams, documentation, and templates in this repository are licensed under the Creative Commons Attribution 4.0 International Public License.
+
+You may share and adapt this material for any purpose, including commercially, provided that you give appropriate credit, provide a link to the license, and indicate whether changes were made. You may not apply legal terms or technological measures that restrict others from exercising the rights granted by the license.
+
+The full legal terms govern:
+https://creativecommons.org/licenses/by/4.0/legalcode
+
+Human-readable summary:
+https://creativecommons.org/licenses/by/4.0/
+
+This license does not apply to:
+
+- software and executable code under `tools/`, which are licensed under the MIT License;
+- third-party material, which remains under its original terms;
+- facts, mathematical ideas, definitions, and theorems to the extent they are not protected by copyright.
+
+See `LICENSES.md` for the repository license map.
