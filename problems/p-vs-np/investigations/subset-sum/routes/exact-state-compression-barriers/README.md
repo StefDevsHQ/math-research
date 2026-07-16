@@ -59,6 +59,7 @@ Reopen only with a materially new mechanism providing all of:
 
 - [Closeout](CLOSEOUT.md)
 - [Final audit](audits/2026-07-16-final-audit.md)
+- [Post-closeout repair audit](audits/2026-07-16-post-closeout-repair.md)
 - [Final status](STATUS.md)
 - [Claim ledger](CLAIMS.md)
 - [Item-block semantics](notes/item-block-semantics.md)

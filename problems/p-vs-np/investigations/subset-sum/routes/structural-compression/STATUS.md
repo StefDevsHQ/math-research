@@ -24,6 +24,8 @@
 
 Reopen this route only if a new exact composition theorem preserves cross-component compatibility, is efficiently constructible, bounds all intermediate states polynomially in binary input length, and supplies a strict progress measure on reduction-generated hard instances.
 
-## Next program
+## Subsequent program
 
-Develop exact-state compression barriers: identify and formalize the information that prevents exact dynamic-programming states from being merged.
+The exact-state compression-barrier route was subsequently opened, completed, and closed. Its model-specific lower bounds and boundary theorems did not provide a general lower bound for Subset Sum.
+
+No active Subset Sum route is currently selected. See the [investigation status](../../STATUS.md) and [research routes](../README.md).
