@@ -9,6 +9,7 @@ These records describe the broader P-versus-NP research landscape. They do not c
 - [Research-programme landscape](research-programme-landscape.md) — major positive, negative, conditional, proof-complexity, pseudorandomness, and magnification programmes.
 - [Problem-testbed landscape](problem-testbed-landscape.md) — representative NP-complete problems and strategic control problems organized by the obstruction they expose.
 - [Primary-source map](top-level-landscape-sources.md) — representative sources supporting both landscapes.
+- [Specialist source supplement](top-level-landscape-specialist-sources.md) — dedicated references for integer programming, semidefinite optimisation, algebraic complexity, descriptive complexity, and branching programmes.
 
 ## Relationship to investigations
 
