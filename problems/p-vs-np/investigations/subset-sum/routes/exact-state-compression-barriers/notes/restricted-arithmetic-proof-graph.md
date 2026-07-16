@@ -1,63 +1,61 @@
-# Restricted Arithmetic Proof Graph — Candidate Model
+# Restricted Arithmetic Proof Graph — Retracted Candidate
 
 **Claim:** `SS-ECB-016`  
-**Classification:** Definition and open model candidate  
-**Status:** `OPEN / DRAFT`  
+**Classification:** Definition and failed model candidate  
+**Status:** `RETRACTED / CHECKED`  
 **Updated:** 2026-07-16
 
-## 1. Purpose
+## Purpose
 
-The preceding boundaries rule out three naive model choices:
+This candidate attempted to contain the retained structural-compression mechanisms without treating arbitrary Boolean conjunction or arbitrary programs as free.
 
-1. unevaluated Minkowski-expression DAGs are linearly small for every instance;
-2. normalized unions of arithmetic progressions are exponentially large even on easy superincreasing instances;
-3. unrestricted intersection of compact arithmetic target sets can encode arbitrary CNF conjunctions on the assignment-target slice.
+It separated:
 
-The candidate below is designed to contain the retained structural-compression mechanisms without treating arbitrary Boolean conjunction or arbitrary programs as free.
+- exact reachable-set summaries;
+- one-sided coverage certificates;
+- target-relative residual transformations;
+- counted exact item-block merges;
+- locally specified branch rules.
 
-No lower bound is claimed yet.
+No lower bound was established for the candidate.
 
-## 2. Objects
+## Candidate syntax
 
-A **restricted arithmetic proof graph** for a Subset Sum instance \((A,t)\) is a finite directed acyclic graph. Each node is one of the following.
+A proof graph for a Subset Sum instance \((A,t)\) was a finite directed acyclic graph with the following node types.
 
-### 2.1 Exact-summary node
+### Exact-summary node
 
-An exact-summary node is attached to an item block \(B\subseteq A\) and denotes exactly \(\Sigma_t(B)\). Its syntax is a finite union of atoms of the form
-
-\[
-\{x\in\mathbb Z: \ell\le x\le u,\ x\equiv r\pmod q\},
-\]
-
-plus an explicit finite exception set. All integers are encoded in binary.
-
-The union is extensional: its atoms must denote the exact truncated reachable set, not merely a subset or superset.
-
-### 2.2 Coverage-certificate node
-
-A coverage node attached to \(B\) certifies
+An exact-summary node attached to an item block \(B\subseteq A\) denoted exactly \(\Sigma_t(B)\) as a finite union of atoms
 
 \[
-K\subseteq\Sigma_t(B),
+\{x\in\mathbb Z:\ell\le x\le u,\ x\equiv r\pmod q\}
 \]
 
-where \(K\) is represented by the same atom syntax. It must include polynomial-time-verifiable witness data for the claimed rule. The residue-completion lemma is an admissible certificate schema.
+plus an explicit finite exception set. All integers were binary encoded.
 
-Coverage nodes cannot be used as exact child summaries unless all omitted reachable sums are represented separately.
+### Coverage-certificate node
 
-### 2.3 Residual-transformation node
+A coverage node certified
 
-A residual node records an exact equivalence
+\[
+K\subseteq\Sigma_t(B)
+\]
+
+using polynomial-time-verifiable witness data. The residue-completion lemma was an intended certificate schema. A coverage node could not be substituted for an exact summary unless omitted reachable sums were separately retained.
+
+### Residual-transformation node
+
+A residual node recorded an exact target-relative equivalence
 
 \[
 (B,t)\equiv(B',t')
 \]
 
-for the decision question, together with a polynomial-time-verifiable local rule. Forced inclusion, forced exclusion, and immediate rejection are admissible schemas.
+under a polynomial-time-verifiable rule such as forced inclusion, forced exclusion, or immediate rejection.
 
-### 2.4 Exact-merge node
+### Exact-merge node
 
-For disjoint child blocks \(B_0,B_1\), an exact-merge node may derive an exact summary for \(B_0\uplus B_1\) only by a counted normalization procedure implementing
+For disjoint blocks \(B_0,B_1\), an exact merge had to implement and fully count normalization of
 
 \[
 \Sigma_t(B_0\uplus B_1)
@@ -65,95 +63,42 @@ For disjoint child blocks \(B_0,B_1\), an exact-merge node may derive an exact s
 (\Sigma_t(B_0)+\Sigma_t(B_1))\cap[0,t].
 \]
 
-The node must explicitly record the generated output atoms and all intermediate atoms or compatibility states created by normalization.
+All output atoms, discarded intermediate atoms, and compatibility states were counted.
 
-### 2.5 Branch node
+### Branch node
 
-A branch node may split into finitely many exact residual subinstances only when the branches are jointly exhaustive and sound. The branch condition must be one of a fixed list of local arithmetic predicates, not an arbitrary Boolean circuit over the target bits.
+A branch node could split into finitely many sound and exhaustive residual subinstances using a declared local arithmetic predicate.
 
-## 3. Forbidden free operations
+## Intended exclusions
 
-The model does not permit the following as unit-cost syntax:
+The candidate did not allow as free unit-cost operations:
 
-- arbitrary unevaluated Minkowski-sum nodes;
-- arbitrary intersection of two summary expressions;
+- unevaluated Minkowski-sum syntax;
+- unrestricted set intersection;
 - arbitrary complement;
 - arbitrary Boolean circuits or general programs stored at nodes;
-- oracle transitions whose internal computation is not counted;
-- target-bit tests unrelated to a declared local arithmetic rule.
+- uncounted transition oracles.
 
-Clipping by the global interval \([0,t]\) is permitted because it is part of the exact truncated composition identity. This is not unrestricted intersection.
+## Retraction reason
 
-## 4. Cost measure
+The branch grammar was not specified tightly enough to establish non-universality.
 
-The complete cost is the sum of:
+The natural completion needed to express compact binary-modulus target tests permits bounded residue-range predicates such as
 
-1. binary encoding length of every node and constant;
-2. all exact-summary and coverage atoms, including discarded intermediate atoms;
-3. every branch and residual edge;
-4. all merge-normalization work and compatibility states;
-5. certificate generation and verification time;
-6. terminal query time.
+\[
+2^i\le t\bmod 2^{i+1}<2^{i+1}.
+\]
 
-Shared nodes are counted once, but constructing a shared node is not free.
+With unrestricted repeated branching and directed-acyclic control flow, these predicates recover binary payload bits and evaluate a width-three CNF clause by clause using a polynomial-size graph. This is proved in `SS-ECB-017`.
 
-A family is polynomially represented only if the complete graph, total encoded intermediate state, construction time, and query time are polynomial in the original binary input length.
+Accordingly:
 
-## 5. Containment audit
+- the candidate did not satisfy its non-universality requirement;
+- it met its explicit stop condition;
+- it is retracted rather than retained as an open model.
 
-### Contained
+Pure residue-equality tests alone were not proved sufficient for the same simulation; that narrower variant was never formalized as a complete model and is not an active route.
 
-- forced inclusion and exclusion;
-- immediate target-range rejection;
-- exact intervals and bounded progressions;
-- binary-encoded congruence atoms;
-- explicit finite exceptions;
-- residue-completion coverage certificates;
-- exact recursively generated subinstances;
-- exact item-block composition when normalization is fully counted.
+## Retained value
 
-### Not automatically contained
-
-- arbitrary persistent-lattice analysis described only informally;
-- arbitrary symbolic formulas over target bits;
-- a compact recursive rule whose complete generated graph is exponential;
-- any operation whose exactness or verification cost is not specified.
-
-## 6. Immediate attacks
-
-### Attack A — input retention
-
-The model cannot call an unevaluated Minkowski tree a completed summary. Every exact merge must normalize or otherwise produce a query-decidable counted state.
-
-### Attack B — progression normalization
-
-`SS-ECB-015` shows that exact progression-union summaries alone can require exponentially many atoms on ternary superincreasing instances. Such instances must therefore be handled by residual nodes, not by full-set normalization.
-
-### Attack C — Boolean conjunction escape
-
-`SS-ECB-014` shows that unrestricted intersection of compact arithmetic target sets represents arbitrary width-three CNF assignment slices in polynomial size. The model permits only target clipping and fixed local certificate predicates, not general expression intersection.
-
-### Attack D — hidden circuit simulation
-
-The remaining unresolved question is whether repeated local branching, residue tests, and shared residual nodes can collectively simulate polynomial-size Boolean circuits. This must be attacked before any lower-bound theorem is attempted.
-
-## 7. Precise open requirements
-
-The candidate survives only if all of the following are proved:
-
-1. **well-definedness:** every permitted rule has explicit syntax and exact semantics;
-2. **structural subsumption:** every retained operation from the closed route compiles with polynomial local overhead;
-3. **non-universality:** the graph language cannot encode arbitrary polynomial-size Boolean circuits with polynomial complete cost;
-4. **hard family:** an explicit Subset Sum family requires superpolynomial complete cost in this model;
-5. **robustness:** the lower bound holds despite target-relative residual rules and sharing.
-
-At present only the semantic framework and the three boundary attacks are established. Requirements 2–5 remain open.
-
-## 8. Stop condition
-
-Reject this candidate immediately if either:
-
-- a polynomial-size simulation of arbitrary Boolean circuits is found; or
-- one of the retained structural operations requires an uncounted oracle or cannot be expressed under the fixed local schemas.
-
-Do not seek a lower bound until the hidden-circuit-simulation audit is complete.
+The record remains useful as an inventory of the semantic layers and cost terms any future model must specify. Reopening requires a materially new restriction that both subsumes the retained structural mechanisms and provably prevents polynomial Boolean simulation.
