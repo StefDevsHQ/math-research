@@ -1,103 +1,49 @@
 # Status — Exact-State Compression Barriers
 
-**State:** Active; arithmetic model bracket established, candidate proof graph open  
+**State:** Closed as a broad structural-compression barrier route  
 **Updated:** 2026-07-16
 
-## Current position
+## Final position
 
-The route now has two groups of results.
+The route produced correct model-specific results but did not find a formal model satisfying all required properties.
 
-First, the earlier Boolean representation work remains valid but model-specific:
+Retained results include:
 
-- assignment-target query graphs are ordered binary decision diagrams by definition and semantics;
-- square-grid monotone two-CNF families require ordered graphs of size \(2^{\Omega(L^{1/4})}\);
-- explicit Boolean tree-state systems are polynomially equivalent to deterministic Tree Decision Diagrams.
+- the assignment-target embedding and ordered-binary-decision-diagram lower bound;
+- the explicit tree-state and Tree Decision Diagram equivalence;
+- exact item-block Minkowski semantics;
+- the proof that the retained framework needs separate exact-summary, coverage-certificate, and target-relative residual layers;
+- the unevaluated Minkowski-DAG boundary;
+- the unrestricted-intersection escape;
+- the exponential progression-union lower bound on easy ternary superincreasing instances;
+- the residue-branching circuit escape.
 
-These results do not subsume the former structural-compression framework.
+## Decisive obstruction
 
-Second, the item-block semantics and arithmetic-language boundary have now been formalized.
+Candidate models fall into three regimes:
 
-## New arithmetic model bracket
+1. **Too syntactic:** unevaluated additive DAGs are linearly small for every instance but leave membership unresolved.
+2. **Too extensional:** normalized progression unions can be exponentially large even on instances solved efficiently by forced residual reductions.
+3. **Too expressive:** compact congruence access combined with unrestricted repeated branching or intersection evaluates arbitrary CNF assignment slices in polynomial size.
 
-### Exact composition
+The restricted arithmetic proof-graph candidate crossed the third boundary. Repeated local residue tests can recover payload bits and evaluate one clause after another. `SS-ECB-016` is therefore retracted and `SS-ECB-017` records the escape theorem.
 
-For disjoint nonnegative item blocks,
+## Scope
 
-\[
-\Sigma_t(B_0igma_t(B_0\uplus B_1)
-=
-(\Sigma_t(B_0)+\Sigma_t(B_1))\cap[0,t].
-\]
+The retained lower bounds are representation-model results. They do not imply a lower bound for arbitrary Subset Sum algorithms, a hard fixed-target family, or `P != NP`.
 
-Any exact item-block model must respect this identity.
+## Reopening condition
 
-### Heterogeneous semantics
+Reopen only with a materially new mechanism that provides:
 
-The retained structural framework used three distinct mechanisms:
+1. exact item-block and target-relative semantics;
+2. polynomial-overhead inclusion of every retained structural operation;
+3. a proved restriction preventing polynomial Boolean simulation;
+4. a superpolynomial lower bound for the same model;
+5. complete intermediate construction and query accounting.
 
-1. exact reachable-set summaries;
-2. one-sided coverage certificates;
-3. target-relative residual transformations.
+## Recommendation
 
-A final exact-set language alone does not subsume all three.
+Do not continue interpolating between explicit tables and general circuits. Select either a separately justified tractable Subset Sum subclass or another P-versus-NP investigation.
 
-### Lower and upper escape boundaries
-
-- **Unevaluated Minkowski DAGs are too weak as a cost model:** every instance has a linear-size exact expression obtained by retaining the original item choices.
-- **Normalized progression unions are too rigid:** for \(A_n=\{1,3,\ldots,3^{n-1}\}\), every exact progression-union representation needs at least \(2^{n-1}=2^{\Omega(\sqrt{L_n})}\) atoms, although the instances are easy by forced residual reasoning.
-- **Unrestricted intersection is too expressive:** intervals, bounded progressions, union, translation, Minkowski sum, and arbitrary intersection compactly encode every width-three CNF assignment-target slice.
-
-These three results isolate the viable region:
-
-\[
-	ext{more semantic power than normalized progression unions}
-\]
-
-but
-
-\[
-	ext{less unrestricted Boolean combination than intersection/circuits}.
-\]
-
-## Candidate model
-
-A restricted arithmetic proof graph has been defined with separate node types for:
-
-- exact summaries;
-- coverage certificates;
-- residual transformations;
-- counted exact merges;
-- locally restricted branches.
-
-The candidate forbids free unevaluated Minkowski nodes, unrestricted intersection, arbitrary complement, general Boolean circuits, and uncounted transition programs.
-
-This is currently `OPEN / DRAFT`. It is a model proposal, not a barrier theorem.
-
-## Smallest remaining gap
-
-The decisive next question is now sharper:
-
-> Can the permitted local residual, residue, coverage, and sharing operations simulate arbitrary polynomial-size Boolean circuits with polynomial complete graph cost?
-
-If yes, reject the model as too strong.
-
-If no, the next requirement is a complete compilation theorem showing that every retained structural-compression rule fits the fixed local schemas with polynomial overhead.
-
-Only after both tests survive should a hard-family lower bound be attempted.
-
-## Immediate next actions
-
-1. Fix a finite grammar of admissible local branch and certificate rules.
-2. Audit hidden circuit simulation through repeated residue tests, branching, and shared residual nodes.
-3. Prove or refute polynomial-overhead compilation of forced separation and residue completion into the candidate.
-4. Keep exact-merge normalization and every discarded intermediate atom in the cost measure.
-5. Do not search for a general lower bound until the escape audit is complete.
-
-## Stop condition
-
-Close the candidate if it either:
-
-- simulates arbitrary polynomial-size Boolean circuits with polynomial complete cost; or
-- fails to express a retained structural operation without an uncounted oracle.
-
-Do not present the candidate definition, the ordered lower bound, or the progression-union lower bound as a general Subset Sum lower bound.
+See [Closeout](CLOSEOUT.md) and the [claim ledger](CLAIMS.md).
