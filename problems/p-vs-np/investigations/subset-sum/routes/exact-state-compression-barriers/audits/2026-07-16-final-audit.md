@@ -66,4 +66,5 @@ No retained result proves:
 - parent investigation: route selection;
 - active Subset Sum route: none;
 - reopening: only under the conditions in `CLOSEOUT.md`;
-- PR disposition: ready to merge after this audit.
+- pull request: squash-merged as PR #1;
+- route working branch: removed.
