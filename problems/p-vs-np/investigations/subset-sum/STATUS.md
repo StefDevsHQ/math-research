@@ -1,21 +1,28 @@
 # Status — Subset Sum Investigation
 
-**Phase:** Structural-compression route consolidated; adversarial audit pending  
+**Phase:** Structural-compression route closed; next program pending  
 **Updated:** 2026-07-16
 
 ## Current position
 
-The original dense-or-separated bundle route is closed in its original form. The residue-completion lemma is retained as a proved local result. The refined forced/progression/lattice framework remains unproved as a universal algorithm.
+The structural-compression route is closed as a universal polynomial-time strategy.
 
-The route record, proof, retraction record, audit specification, and claim ledgers are now in the repository.
+The original bundle claim and the refined forced/progression/lattice universal claim are retracted. The SAT-to-Subset-Sum audit showed that the route's modular states preserve the original assignment and clause-compatibility choices rather than compressing them.
 
-## Next sequence
+Two results remain accepted:
 
-1. Open the SAT-to-Subset-Sum audit as the first research issue.
-2. Perform the audit against a canonical reduction.
-3. Determine whether recursive lattice states compress or preserve the original logical choices.
-4. If the audit fails, pivot the main investigation to exact-state compression barriers.
+- the residue-completion lemma;
+- polynomial-time solvability for classes with an efficiently constructible exact decomposition whose full state complexity is polynomially bounded in the binary input length.
 
-## Constraint
+## Completed
 
-Do not resume universal algorithm construction until the audit is complete or the route is explicitly reopened with a new composition theorem and complexity measure.
+1. Normalized the canonical no-carry 3-SAT-to-Subset-Sum reduction.
+2. Completed the adversarial audit.
+3. Finalized route and investigation claim ledgers.
+4. Closed the route with explicit reopening conditions.
+
+## Next direction
+
+Develop an exact-state compression barrier program: formalize the compatibility information that prevents exact dynamic-programming states from being merged.
+
+No further universal structural-compression work should resume without a new exact composition theorem and a strict polynomially bounded progress measure.
