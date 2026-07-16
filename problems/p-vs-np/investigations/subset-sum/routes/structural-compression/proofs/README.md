@@ -1,5 +1,9 @@
 # Proofs
 
-Complete positive arguments for this route live here. Each file must identify the claim ID, assumptions, dependencies, boundary cases, and review maturity.
+Complete positive arguments for this route live here. Each file identifies the claim ID, assumptions, dependencies, boundary cases, and review maturity.
 
-A proof file does not change claim status by itself; update the route ledger in the same change.
+## Records
+
+- [Residue-completion lemma](residue-completion-lemma.md) — `SS-SC-002`, `PROVED / CHECKED`
+
+A proof file does not change claim status by itself; the route ledger must be updated in the same change.
