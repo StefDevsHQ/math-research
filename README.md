@@ -2,35 +2,58 @@
 
 A public, versioned workspace for long-running mathematical investigations.
 
-This repository preserves definitions, proof attempts, counterexamples, computational experiments, failed routes, and current research state. It is designed for traceability rather than performance: claims remain explicitly labelled, corrections remain visible, and unresolved gaps are not presented as results.
+This repository preserves definitions, known results, proof attempts, counterexamples, audits, computational experiments, failed routes, and current research state. It is designed for traceability: claims remain explicitly labelled, corrections remain visible, and unresolved gaps are not presented as results.
 
-> Nothing in this repository should be interpreted as a resolution of an open problem unless a complete argument is explicitly identified, independently checked, and accepted through the relevant mathematical review process.
+> Nothing here should be interpreted as a resolution of an open problem unless a complete argument is explicitly identified, independently checked, and accepted through the relevant mathematical review process.
 
-## Structure
+## Research model
 
 ```text
-problems/                  Problem-specific research
-  <problem>/
-    README.md              Scope and entry point
-    STATUS.md              Current position and next step
-    CLAIMS.md              Authoritative claim ledger
-templates/                 Reusable research-note templates
-.github/                   Contribution and review workflows
-RESEARCH_STANDARDS.md      Repository-wide research rules
-CONTRIBUTING.md            How changes are proposed and reviewed
+problem
+└── investigation
+    └── route
+        ├── proof
+        ├── counterexample
+        ├── audit
+        ├── experiment
+        ├── note
+        └── archive
+```
+
+- **Problems** provide the broad mathematical context.
+- **Investigations** provide concrete test environments.
+- **Routes** isolate distinct proposed mechanisms or obstruction programs.
+- **Atomic records** preserve one proof, counterexample, audit, experiment, or handoff per file.
+
+## Repository structure
+
+```text
+problems/                 Problem programs and investigations
+templates/                Reusable research record templates
+tools/                    Reproducible scripts and notebooks
+.github/                  Issue and pull-request workflows
+RESEARCH_STANDARDS.md     Claim, proof, evidence, and review rules
+CONTRIBUTING.md           Contribution workflow
+LICENSES.md               License map
+CITATION.cff              Repository citation metadata
 ```
 
 ## Active research
 
 - [P versus NP](problems/p-vs-np/README.md)
-  - [Subset Sum](problems/p-vs-np/subset-sum/README.md)
+  - [Subset Sum investigation](problems/p-vs-np/investigations/subset-sum/README.md)
+    - [Structural compression route](problems/p-vs-np/investigations/subset-sum/routes/structural-compression/README.md)
 
 ## Working principles
 
-- Separate known results, new arguments, conjectures, heuristics, and experiments.
+- Separate established results, repository proofs, conjectures, heuristics, and computation.
+- Keep mathematical status separate from review maturity.
 - Record failed approaches and counterexamples; do not rewrite history.
-- State dependencies and unresolved gaps explicitly.
-- Treat computation as evidence, not proof, unless exhaustive verification is itself proved sufficient.
-- Prefer small, reviewable research units over long unstructured transcripts.
+- State dependencies, input encodings, complexity measures, and unresolved gaps explicitly.
+- Prefer small, reviewable research records over long unstructured transcripts.
 
-See [Research Standards](RESEARCH_STANDARDS.md) before adding or promoting a claim.
+Read [Research Standards](RESEARCH_STANDARDS.md) before adding or promoting a claim.
+
+## Licensing
+
+Research content is licensed under [CC BY 4.0](LICENSE). Executable material under `tools/` is licensed under [MIT](tools/LICENSE). See [LICENSES.md](LICENSES.md) for boundaries.
