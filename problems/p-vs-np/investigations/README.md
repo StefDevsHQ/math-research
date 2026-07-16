@@ -2,17 +2,23 @@
 
 Each directory is a concrete research environment used to test a route toward the broader P versus NP problem.
 
+The canonical cross-investigation orientation is maintained separately in:
+
+- [Research-programme landscape](../references/research-programme-landscape.md)
+- [Problem-testbed landscape](../references/problem-testbed-landscape.md)
+- [Canonical source map](../references/top-level-landscape-sources.md)
+
 ## Active
 
 No investigation currently has an active route.
 
 ## Existing
 
-- [Subset Sum](subset-sum/README.md) — two universal routes closed; retained as an arithmetic algorithmic landscape and adversarial reduction target.
+- [Subset Sum](subset-sum/README.md) — two universal routes closed; retained as an arithmetic algorithmic landscape, adversarial reduction target, and source of restricted results.
 
 ## Prospective investigations
 
-The top-level landscapes identify two leading candidates. These directories should be created only after a concrete route mechanism is selected.
+The canonical landscapes identify two leading candidates. A directory should be created only after a concrete route mechanism is selected.
 
 1. **Exact-incidence constraint systems**
    - primary testbed: Positive 1-in-3 SAT;
@@ -23,10 +29,7 @@ The top-level landscapes identify two leading candidates. These directories shou
    - purpose: algorithms-to-lower-bounds or explicit circuit-model lower bounds;
    - required opening artifact: the exact circuit class, desired algorithm or lower bound, transfer theorem, and barrier audit.
 
-See:
-
-- [Research-programme landscape](../references/research-programme-landscape.md)
-- [Problem-testbed landscape](../references/problem-testbed-landscape.md)
+Another investigation may be selected from the canonical landscapes only with an explicit mathematical advantage and stop condition.
 
 ## Investigation requirements
 

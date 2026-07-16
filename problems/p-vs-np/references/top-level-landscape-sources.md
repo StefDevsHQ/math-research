@@ -1,273 +1,247 @@
 # Source Map — P versus NP Top-Level Landscapes
 
-**Classification:** Primary-source and project-record map  
+**Classification:** Canonical primary-source and project-record map  
 **Cutoff:** 2026-07-16  
 **Use:** Supports [research-programme-landscape.md](research-programme-landscape.md) and [problem-testbed-landscape.md](problem-testbed-landscape.md)
 
-## Source policy
+This is the single authoritative source map for the top-level landscapes. Source identifiers are stable within the repository. A source supports only the role stated below. Barrier theorems constrain technique families; they are not evidence that P versus NP is unresolvable.
 
-- Prefer original papers, journal versions, proceedings versions, author preprints, or standard monographs.
-- A source supports only the role stated below.
-- A barrier theorem limits a family of techniques; it is not evidence that P versus NP is unresolvable.
-- Project records are cited separately from external literature.
+## Foundations, NP-completeness, and constraint satisfaction
 
-## Foundations and NP-completeness
+### `[P01]` Cook — satisfiability and verification
+Stephen A. Cook, “The Complexity of Theorem-Proving Procedures,” *STOC*, 1971.  
+Role: Cook–Levin foundation. https://doi.org/10.1145/800157.805047
 
-### `[P01]` Cook — satisfiability and efficient verification
-
-Stephen A. Cook, “The Complexity of Theorem-Proving Procedures,” *Proceedings of STOC*, 1971, pp. 151–158.
-
-- Role: Cook–Levin foundation; Boolean satisfiability captures polynomial-time nondeterministic verification.
-- Stable source: https://doi.org/10.1145/800157.805047
-
-### `[P02]` Karp — natural NP-complete problems and reductions
-
-Richard M. Karp, “Reducibility Among Combinatorial Problems,” in *Complexity of Computer Computations*, 1972, pp. 85–103.
-
-- Role: polynomial reductions among logical, graph, covering, matching, routing, scheduling, and numerical problems.
-- Stable source: https://doi.org/10.1007/978-1-4684-2001-2_9
-
-## Constraint satisfaction and exact local relations
+### `[P02]` Karp — natural NP-complete problems
+Richard M. Karp, “Reducibility Among Combinatorial Problems,” 1972.  
+Role: polynomial reductions among logical, graph, covering, matching, routing, scheduling, and numerical problems. https://doi.org/10.1007/978-1-4684-2001-2_9
 
 ### `[P03]` Schaefer — Boolean CSP dichotomy
-
-Thomas J. Schaefer, “The Complexity of Satisfiability Problems,” *Proceedings of STOC*, 1978, pp. 216–226.
-
-- Role: dichotomy for fixed Boolean constraint languages; includes the NP-completeness of positive 1-in-3 SAT and positive NAE-SAT outside the tractable classes.
-- Stable source: https://doi.org/10.1145/800133.804350
+Thomas J. Schaefer, “The Complexity of Satisfiability Problems,” *STOC*, 1978.  
+Role: Boolean fixed-language dichotomy; Positive 1-in-3 SAT and positive NAE-SAT hardness. https://doi.org/10.1145/800133.804350
 
 ### `[P04]` Bulatov — finite-domain CSP dichotomy
-
-Andrei A. Bulatov, “A Dichotomy Theorem for Nonuniform CSPs,” 2017.
-
-- Role: independent proof of the finite-domain fixed-template CSP dichotomy.
-- Preprint: https://arxiv.org/abs/1703.03021
+Andrei A. Bulatov, “A Dichotomy Theorem for Nonuniform CSPs,” 2017.  
+Role: independent finite-domain fixed-template dichotomy proof. https://arxiv.org/abs/1703.03021
 
 ### `[P05]` Zhuk — finite-domain CSP dichotomy
+Dmitriy Zhuk, “A Proof of the CSP Dichotomy Conjecture,” 2017.  
+Role: independent dichotomy proof and algorithmic classification. https://arxiv.org/abs/1704.01914
 
-Dmitriy Zhuk, “A Proof of the CSP Dichotomy Conjecture,” 2017 / journal version.
-
-- Role: independent proof and polynomial algorithm for finite constraint languages with the required polymorphism structure.
-- Preprint: https://arxiv.org/abs/1704.01914
-
-### `[P06]` Hasan, Mondal, and Rahman — robust positive planar 1-in-3 SAT hardness
-
-Md. Manzurul Hasan, Debajyoti Mondal, and Md. Saidur Rahman, “Positive Planar Satisfiability Problems under 3-Connectivity Constraints,” 2021.
-
-- Role: evidence that Positive 1-in-3 SAT remains NP-complete under strong planarity, connectivity, and occurrence restrictions; also records tractable neighbouring conditions.
-- Preprint: https://arxiv.org/abs/2108.12500
+### `[P06]` Hasan, Mondal, and Rahman — robust Positive 1-in-3 SAT hardness
+“Positive Planar Satisfiability Problems under 3-Connectivity Constraints,” 2021.  
+Role: hardness under strong planarity, connectivity, and occurrence restrictions. https://arxiv.org/abs/2108.12500
 
 ### `[P07]` Bonnet and Paschos — exact 1-in-3 SAT algorithm
+“An Exact Algorithm for 1-in-3 SAT,” 2013.  
+Role: representative exact-exponential algorithm. https://arxiv.org/abs/1307.5776
 
-Édouard Bonnet and Vangelis Th. Paschos, “An Exact Algorithm for 1-in-3 SAT,” 2013.
+### `[P08]` Darmann and Döcker — restricted monotone NAE-3SAT
+“On Simplified NP-Complete Variants of Not-All-Equal 3-SAT and 3-SAT,” 2019.  
+Role: hardness of strongly restricted positive NAE-3SAT variants. https://arxiv.org/abs/1908.04198
 
-- Role: representative exact-exponential algorithm for the selected exact-one relation.
-- Preprint: https://arxiv.org/abs/1307.5776
+### `[P09]` Hell and Nešetřil — graph-homomorphism dichotomy
+“On the Complexity of H-Coloring,” *JCTB* 48(1), 1990.  
+Role: fixed-target undirected homomorphism dichotomy. https://doi.org/10.1016/0095-8956(90)90132-J
 
-### `[P08]` Darmann and Döcker — restricted monotone NAE-3SAT hardness
+## Circuit algorithms, lower bounds, and derandomization
 
-Andreas Darmann and Janosch Döcker, “On Simplified NP-Complete Variants of Not-All-Equal 3-SAT and 3-SAT,” 2019.
+### `[P10]` Williams — SAT algorithms and circuit lower bounds
+“New Algorithms and Lower Bounds for Circuits with Linear Threshold Gates,” 2014.  
+Role: representative algorithms-to-lower-bounds theorem. https://arxiv.org/abs/1401.2444
 
-- Role: NP-completeness of strongly restricted positive NAE-3SAT variants.
-- Preprint: https://arxiv.org/abs/1908.04198
+### `[P11]` Vyas and Williams — expanded algorithms-to-lower-bounds
+“Lower Bounds Against Sparse Symmetric Functions of ACC Circuits,” 2020.  
+Role: faster counting algorithms transferred to restricted-circuit lower bounds. https://arxiv.org/abs/2001.07788
 
-### `[P09]` Hell and Nešetřil — graph homomorphism dichotomy
-
-Pavol Hell and Jaroslav Nešetřil, “On the Complexity of H-Coloring,” *Journal of Combinatorial Theory, Series B* 48(1), 1990, pp. 92–110.
-
-- Role: fixed undirected graph homomorphism is polynomial-time for bipartite targets and NP-complete for non-bipartite targets; 3-Coloring is a clean hard graph-CSP boundary case.
-- Stable source: https://doi.org/10.1016/0095-8956(90)90132-J
-
-## Algorithms to circuit lower bounds
-
-### `[P10]` Williams — SAT algorithms and restricted circuit lower bounds
-
-Ryan Williams, “New Algorithms and Lower Bounds for Circuits with Linear Threshold Gates,” 2014.
-
-- Role: nontrivial satisfiability and evaluation algorithms yielding lower bounds for restricted circuit classes.
-- Preprint: https://arxiv.org/abs/1401.2444
-
-### `[P11]` Vyas and Williams — expanding algorithms-to-lower-bounds
-
-Nikhil Vyas and Ryan Williams, “Lower Bounds Against Sparse Symmetric Functions of ACC Circuits: Expanding the Reach of #SAT Algorithms,” 2020.
-
-- Role: representative modern theorem converting faster counting algorithms into stronger restricted-circuit lower bounds.
-- Preprint: https://arxiv.org/abs/2001.07788
-
-## Hardness versus randomness and meta-complexity
-
-### `[P12]` Impagliazzo — hardness and derandomization survey
-
-Russell Impagliazzo, “Hardness as Randomness: A Survey of Universal Derandomization,” 2003.
-
-- Role: representative account of the hardness-versus-randomness connection and its relation to circuit lower bounds.
-- Preprint: https://arxiv.org/abs/cs/0304040
-
-### `[P22]` Allender et al. — MCSP and related meta-complexity
-
-Eric Allender, Joshua A. Grochow, Dieter van Melkebeek, Cristopher Moore, and Andrew Morgan, “Minimum Circuit Size, Graph Isomorphism, and Related Problems,” 2017.
-
-- Role: MCSP, compression, pseudorandomness, and reductions to meta-complexity problems.
-- Preprint: https://arxiv.org/abs/1710.09806
-
-### `[P23]` Chen et al. — hardness magnification and locality
-
-Lijie Chen, Shuichi Hirahara, Igor C. Oliveira, Jan Pich, Ninad Rajgopal, and Rahul Santhanam, “Beyond Natural Proofs: Hardness Magnification and Locality,” 2019.
-
-- Role: systematic study of hardness magnification, its prospects, and the locality barrier.
-- Preprint: https://arxiv.org/abs/1911.08297
-
-### `[P24]` Atserias and Müller — general magnification
-
-Albert Atserias and Moritz Müller, “Simple General Magnification of Circuit Lower Bounds,” 2025.
-
-- Status: preprint at the cutoff date.
-- Role: modern general magnification theorems, including uniform MCSP-related consequences and thresholds below known lower bounds in selected models.
-- Preprint: https://arxiv.org/abs/2503.24061
-
-## Boolean and arithmetic circuit lower bounds
+### `[P12]` Impagliazzo — hardness versus randomness
+“Hardness as Randomness: A Survey of Universal Derandomization,” 2003.  
+Role: hardness–randomness and derandomization framework. https://arxiv.org/abs/cs/0304040
 
 ### `[P13]` Razborov — monotone circuit lower bounds
-
-Alexander A. Razborov, “Lower Bounds on the Monotone Complexity of Some Boolean Functions,” *Soviet Mathematics Doklady* 31, 1985.
-
-- Role: representative exponential lower bounds in monotone circuit models, including Clique-related functions.
-- Scope: monotone lower bounds do not automatically transfer to circuits with negation.
-
-### `[P16]` Mulmuley and Sohoni — Geometric Complexity Theory
-
-Ketan D. Mulmuley and Milind Sohoni, “Geometric Complexity Theory I: An Approach to the P vs. NP and Related Problems,” *SIAM Journal on Computing* 31(2), 2001, pp. 496–526.
-
-- Role: representation-theoretic and algebraic-geometric programme centred on permanent versus determinant.
-- Stable source: https://doi.org/10.1137/S009753970038715X
-
-## Proof barriers
+“Lower Bounds on the Monotone Complexity of Some Boolean Functions,” 1985.  
+Role: exponential monotone lower bounds; no automatic transfer to circuits with negation.
 
 ### `[P14]` Baker, Gill, and Solovay — relativization
-
-Theodore Baker, John Gill, and Robert Solovay, “Relativizations of the P =? NP Question,” *SIAM Journal on Computing* 4(4), 1975, pp. 431–442.
-
-- Role: oracle worlds with opposite answers to P versus NP; barrier to relativizing proofs.
-- Stable source: https://doi.org/10.1137/0204037
+“Relativizations of the P =? NP Question,” *SICOMP* 4(4), 1975.  
+Role: oracle worlds with opposite P-versus-NP answers. https://doi.org/10.1137/0204037
 
 ### `[P15]` Razborov and Rudich — natural proofs
+“Natural Proofs,” *JCSS* 55(1), 1997.  
+Role: conditional barrier to broad constructive large circuit properties. https://doi.org/10.1006/jcss.1997.1494
 
-Alexander A. Razborov and Steven Rudich, “Natural Proofs,” *Journal of Computer and System Sciences* 55(1), 1997, pp. 24–35.
-
-- Role: conditional barrier to constructive, large combinatorial properties proving strong general circuit lower bounds.
-- Stable source: https://doi.org/10.1006/jcss.1997.1494
+### `[P16]` Mulmuley and Sohoni — Geometric Complexity Theory
+“Geometric Complexity Theory I,” *SICOMP* 31(2), 2001.  
+Role: algebraic-geometric programme centred on permanent versus determinant. https://doi.org/10.1137/S009753970038715X
 
 ### `[P17]` Aaronson and Wigderson — algebrization
+“Algebrization: A New Barrier in Complexity Theory,” 2009.  
+Role: barrier extending relativization to many arithmetizing techniques. https://arxiv.org/abs/0807.0261
 
-Scott Aaronson and Avi Wigderson, “Algebrization: A New Barrier in Complexity Theory,” *ACM Transactions on Computation Theory* 1(1), 2009.
-
-- Role: barrier extending relativization to many arithmetizing techniques.
-- Preprint: https://arxiv.org/abs/0807.0261
-
-## Proof complexity
+## Proof, communication, and representation complexity
 
 ### `[P18]` Cook and Reckhow — propositional proof systems
+“The Relative Efficiency of Propositional Proof Systems,” *JSL* 44(1), 1979.  
+Role: Cook–Reckhow proof systems and polynomial boundedness versus NP=coNP. https://doi.org/10.2307/2273702
 
-Stephen A. Cook and Robert A. Reckhow, “The Relative Efficiency of Propositional Proof Systems,” *Journal of Symbolic Logic* 44(1), 1979, pp. 36–50.
-
-- Role: general proof-system framework and connection between polynomially bounded proof systems and `NP=coNP`.
-- Stable source: https://doi.org/10.2307/2273702
-
-### `[P19]` Krajíček — Cook–Reckhow framework review
-
-Jan Krajíček, “The Cook-Reckhow Definition,” 2019.
-
-- Role: modern explanation of proof systems, p-simulation, and their complexity-theoretic significance.
-- Preprint: https://arxiv.org/abs/1909.03691
-
-## Communication, branching, and representation models
+### `[P19]` Krajíček — proof-system review
+“The Cook-Reckhow Definition,” 2019.  
+Role: modern proof-complexity framework and p-simulation. https://arxiv.org/abs/1909.03691
 
 ### `[P20]` Kushilevitz and Nisan — communication complexity
+*Communication Complexity*, 1997.  
+Role: foundational partition and interface lower-bound framework.
 
-Eyal Kushilevitz and Noam Nisan, *Communication Complexity*, Cambridge University Press, 1997.
+### `[P21]` Razgon — ordered decision diagrams
+“Classification of OBDD Size for Monotone 2-CNFs,” 2021.  
+Role: explicit OBDD lower bounds used by the closed Subset Sum route. https://arxiv.org/abs/2103.09115
 
-- Role: foundational framework for interface and partition lower bounds.
+## Meta-complexity, parameters, reductions, counting, and quantum models
 
-### `[P21]` Razgon — ordered decision-diagram lower bounds
+### `[P22]` Allender et al. — MCSP and meta-complexity
+“Minimum Circuit Size, Graph Isomorphism, and Related Problems,” 2017.  
+Role: MCSP, compression, pseudorandomness, and meta-complexity. https://arxiv.org/abs/1710.09806
 
-Igor Razgon, “Classification of OBDD Size for Monotone 2-CNFs,” 2021.
+### `[P23]` Chen et al. — hardness magnification and locality
+“Beyond Natural Proofs: Hardness Magnification and Locality,” 2019.  
+Role: magnification prospects and locality barriers. https://arxiv.org/abs/1911.08297
 
-- Role: representative explicit lower bounds for ordered Boolean decision diagrams; imported by the closed Subset Sum exact-state route.
-- Preprint: https://arxiv.org/abs/2103.09115
-
-## Parameterized and fine-grained complexity
+### `[P24]` Atserias and Müller — general magnification
+“Simple General Magnification of Circuit Lower Bounds,” 2025 preprint.  
+Role: modern magnification thresholds and consequences. https://arxiv.org/abs/2503.24061
 
 ### `[P25]` Cygan et al. — parameterized algorithms
+*Parameterized Algorithms*, 2015.  
+Role: fixed-parameter tractability, width-based dynamic programming, kernelization, and reductions. https://doi.org/10.1007/978-3-319-21275-3
 
-Marek Cygan, Fedor V. Fomin, Łukasz Kowalik, Daniel Lokshtanov, Dániel Marx, Marcin Pilipczuk, Michał Pilipczuk, and Saket Saurabh, *Parameterized Algorithms*, Springer, 2015.
+### `[P26]` Valiant and Vazirani — unique solutions
+“NP Is as Easy as Detecting Unique Solutions,” *TCS* 47, 1986.  
+Role: randomized isolation reduction to unique satisfiability. https://doi.org/10.1016/0304-3975(86)90135-0
 
-- Role: fixed-parameter tractability, width-based dynamic programming, kernelization, and parameterized reductions.
-- Stable source: https://doi.org/10.1007/978-3-319-21275-3
-
-### `[P27]` Impagliazzo, Paturi, and Zane — exponential-time hypotheses
-
-Russell Impagliazzo, Ramamohan Paturi, and Francis Zane, “Which Problems Have Strongly Exponential Complexity?” *Journal of Computer and System Sciences* 63(4), 2001, pp. 512–530.
-
-- Role: ETH-style quantitative complexity and reductions.
-- Stable source: https://doi.org/10.1006/jcss.2001.1774
-
-## Isolation, approximation, counting, and quantum controls
-
-### `[P26]` Valiant and Vazirani — unique solutions and isolation
-
-Leslie G. Valiant and Vijay V. Vazirani, “NP Is as Easy as Detecting Unique Solutions,” *Theoretical Computer Science* 47, 1986, pp. 85–93.
-
-- Role: randomized reduction from SAT to unique-solution SAT and isolation-based search relations.
-- Stable source: https://doi.org/10.1016/0304-3975(86)90135-0
+### `[P27]` Impagliazzo, Paturi, and Zane — ETH framework
+“Which Problems Have Strongly Exponential Complexity?” *JCSS* 63(4), 2001.  
+Role: exponential-time hypotheses and quantitative reductions. https://doi.org/10.1006/jcss.2001.1774
 
 ### `[P28]` Arora et al. — PCP theorem
-
-Sanjeev Arora, Carsten Lund, Rajeev Motwani, Madhu Sudan, and Mario Szegedy, “Proof Verification and the Hardness of Approximation Problems,” *Journal of the ACM* 45(3), 1998, pp. 501–555.
-
-- Role: PCP theorem and gap reductions underlying hardness of approximation and Label Cover infrastructure.
-- Stable source: https://doi.org/10.1145/278298.278306
+“Proof Verification and the Hardness of Approximation Problems,” *JACM* 45(3), 1998.  
+Role: PCP theorem and gap-reduction infrastructure. https://doi.org/10.1145/278298.278306
 
 ### `[P29]` Valiant — counting complexity
-
-Leslie G. Valiant, “The Complexity of Enumeration and Reliability Problems,” *SIAM Journal on Computing* 8(3), 1979, pp. 410–421.
-
-- Role: `#P` framework and completeness of natural counting problems.
-- Stable source: https://doi.org/10.1137/0208032
+“The Complexity of Enumeration and Reliability Problems,” *SICOMP* 8(3), 1979.  
+Role: #P and natural counting-complete problems. https://doi.org/10.1137/0208032
 
 ### `[P30]` Bernstein and Vazirani — quantum complexity
+“Quantum Complexity Theory,” *SICOMP* 26(5), 1997.  
+Role: foundational quantum complexity and separation from classical claims. https://doi.org/10.1137/S0097539796300921
 
-Ethan Bernstein and Umesh Vazirani, “Quantum Complexity Theory,” *SIAM Journal on Computing* 26(5), 1997, pp. 1411–1473.
+### `[P31]` Subset Sum project records
+Repository records under `../investigations/subset-sum/`.  
+Role: two closed universal routes, retained restricted results, reduction audits, and model-boundary theorems.
 
-- Role: foundational quantum complexity model and separation from classical complexity claims.
-- Stable source: https://doi.org/10.1137/S0097539796300921
+## Optimisation, algebraic circuits, and descriptive complexity
 
-## Project records
+### `[P32]` Lenstra — fixed-dimensional integer programming
+“Integer Programming with a Fixed Number of Variables,” *MOR* 8(4), 1983.  
+Role: polynomial time for fixed dimension. https://doi.org/10.1287/moor.8.4.538
 
-### `[P31]` Subset Sum investigation
+### `[P33]` Goemans and Williamson — semidefinite Max Cut
+“Improved Approximation Algorithms for Maximum Cut and Satisfiability Problems,” *JACM* 42(6), 1995.  
+Role: representative SDP relaxation achievement. https://doi.org/10.1145/227683.227684
 
-Repository records under:
+### `[P35]` Shpilka and Yehudayoff — arithmetic circuits
+“Arithmetic Circuits: A Survey of Recent Results and Open Questions,” 2010.  
+Role: arithmetic circuit models, PIT, and lower-bound techniques. https://doi.org/10.1561/0400000039
 
-- `../investigations/subset-sum/README.md`
-- `../investigations/subset-sum/STATUS.md`
-- `../investigations/subset-sum/references/algorithmic-landscape.md`
-- `../investigations/subset-sum/routes/structural-compression/CLOSEOUT.md`
-- `../investigations/subset-sum/routes/exact-state-compression-barriers/CLOSEOUT.md`
+### `[P36]` Immerman — descriptive complexity
+*Descriptive Complexity*, 1999.  
+Role: logical characterizations and restricted-formalism lower bounds. https://doi.org/10.1007/978-1-4612-0539-5
 
-Role:
+## Hierarchy, nonuniformity, sparsity, and compression
 
-- records two closed universal routes;
-- supplies the reduction-generated compatibility audit;
-- supplies model-specific representation boundaries;
-- retains Subset Sum as an arithmetic adversarial control rather than an active route.
+### `[P37]` Hartmanis and Stearns — hierarchy methods
+“On the Computational Complexity of Algorithms,” 1965.  
+Role: time-complexity classes and diagonalization foundations. https://doi.org/10.2307/1994208
 
-## Literature determination
+### `[P38]` Karp and Lipton — advice and nonuniformity
+“Turing Machines That Take Advice,” 1982.  
+Role: polynomial advice and polynomial-hierarchy collapse consequences.
 
-The literature supports no single universally best NP-complete testbed.
+### `[P39]` Mahaney — sparse NP-hard sets
+“Sparse Complete Sets for NP,” *JCSS* 25(2), 1982.  
+Role: sparse many-one NP-hard sets imply P=NP.
 
-- CSP and homomorphism dichotomies classify fixed local relation languages and identify tractable neighbours.
-- Circuit-SAT is the closest direct object to arbitrary computation and the strongest algorithms-to-lower-bounds testbed.
-- Proof complexity isolates no-instance certification.
-- Meta-complexity and hardness magnification seek major consequences from smaller lower bounds.
-- Exact-incidence systems provide unusually clean positive algorithmic testbeds because the local rule is simple while global compatibility remains NP-complete.
+### `[P40]` Fortnow and Santhanam — instance compression
+“Infeasibility of Instance Compression and Succinct PCPs for NP,” *JCSS* 77(1), 2011.  
+Role: OR-compression barriers under class-collapse assumptions. https://doi.org/10.1016/j.jcss.2010.06.007
+
+### `[P41]` Edmonds — polynomial-time matching
+“Paths, Trees, and Flowers,” *Canadian Journal of Mathematics* 17, 1965.  
+Role: polynomial exact matching; rank-two tractable control. https://doi.org/10.4153/CJM-1965-045-4
+
+### `[P42]` Garey and Johnson — classical catalogue
+*Computers and Intractability*, 1979.  
+Role: standard catalogue for classical graph, scheduling, packing, covering, and numerical problems.
+
+### `[P43]` Babai — Graph Isomorphism
+“Graph Isomorphism in Quasipolynomial Time,” *STOC*, 2016.  
+Role: quasipolynomial upper bound and intermediate-status control. https://doi.org/10.1145/2897518.2897542
+
+### `[P44]` Kabanets and Impagliazzo — PIT derandomization
+“Derandomizing Polynomial Identity Tests Means Proving Circuit Lower Bounds,” 2004.  
+Role: PIT derandomization yields a Boolean-or-arithmetic lower-bound disjunction. https://doi.org/10.1007/s00037-004-0182-6
+
+### `[P45]` Shor — quantum factoring
+“Polynomial-Time Algorithms for Prime Factorization and Discrete Logarithms on a Quantum Computer,” 1997.  
+Role: polynomial quantum algorithms for factoring and discrete logarithms. https://arxiv.org/abs/quant-ph/9508027
+
+### `[P46]` Chen, Deng, and Teng — PPAD-complete equilibrium
+“Settling the Complexity of Computing Two-Player Nash Equilibria,” *JACM* 56(3), 2009.  
+Role: representative PPAD-complete total-search problem. https://arxiv.org/abs/0704.1678
+
+### `[P47]` Chandra, Kozen, and Stockmeyer — alternation and QBF
+“Alternation,” *JACM* 28(1), 1981.  
+Role: alternating computation and PSPACE characterization; QBF boundary infrastructure. https://doi.org/10.1145/322234.322243
+
+### `[P48]` Ladner — Circuit Value is P-complete
+“The Circuit Value Problem Is Log Space Complete for P,” 1975.  
+Role: P-complete control separating circuit evaluation from Circuit-SAT.
+
+### `[P49]` Kreuzer and Nipkow — verified lattice reductions
+“Verification of NP-Hardness Reduction Functions for Exact Lattice Problems,” 2023.  
+Role: formally verified exact lattice hardness reductions. https://arxiv.org/abs/2306.08375
+
+## Polyhedral, proof-hierarchy, learning, and intermediate controls
+
+### `[P50]` Fiorini et al. — extension complexity
+“Exponential Lower Bounds for Polytopes in Combinatorial Optimization,” *JACM* 62(2), 2015.  
+Role: exponential LP extension-complexity lower bounds for TSP, cut, and stable-set polytopes. https://arxiv.org/abs/1111.0837
+
+### `[P51]` Potechin — Sum-of-Squares lower bounds
+“Sum of Squares Lower Bounds from Symmetry and a Good Story,” 2017.  
+Role: representative SoS proof/relaxation lower-bound methodology. https://arxiv.org/abs/1711.11469
+
+### `[P52]` Carmosino et al. — learning from natural properties
+“Learning Algorithms from Natural Proofs,” CCC 2016.  
+Role: circuit-class-specific connections between natural properties and learning algorithms.
+
+### `[P53]` Ladner — intermediate NP languages
+“On the Structure of Polynomial Time Reducibility,” *JACM* 22(1), 1975.  
+Role: conditional existence of NP-intermediate languages. https://doi.org/10.1145/321864.321877
+
+### `[P54]` Toda — counting and the polynomial hierarchy
+“PP Is as Hard as the Polynomial-Time Hierarchy,” *SICOMP* 20(5), 1991.  
+Role: polynomial hierarchy contained in polynomial time with counting access. https://doi.org/10.1137/0220053
+
+### `[P56]` Fagin — descriptive characterization of NP
+“Generalized First-Order Spectra and Polynomial-Time Recognizable Sets,” 1974.  
+Role: existential second-order logic characterizes NP on finite structures.
+
+### `[P58]` Papadimitriou — TFNP and PPAD
+“On the Complexity of the Parity Argument and Other Inefficient Proofs of Existence,” *JCSS* 48(3), 1994.  
+Role: total-search and PPAD foundations. https://doi.org/10.1016/S0022-0000(05)80063-7
+
+## Scope determination
+
+The literature supports no single universally best NP-complete testbed. CSP dichotomies classify fixed relation languages; Circuit-SAT is closest to arbitrary computation; proof complexity isolates no-instance certification; meta-complexity and magnification target indirect separations; and exact-incidence systems provide unusually clean positive testbeds.
 
 No source in this map resolves P versus NP or licenses promotion of a model-specific lower bound to an unrestricted class separation.
