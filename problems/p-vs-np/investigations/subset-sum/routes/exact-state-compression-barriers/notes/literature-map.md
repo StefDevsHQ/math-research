@@ -1,103 +1,69 @@
 # Literature Map — Exact-State Compression Barriers
 
-**Status:** Research note  
+**Status:** Archived route research note  
 **Updated:** 2026-07-16
 
-This note records primary sources relevant to exact-state representation lower bounds. External results are not promoted beyond their stated models.
+This note records primary literature considered during the closed `SS-ECB` route. External results are retained only within their stated representation models.
 
-## 1. Ordered binary decision diagrams
+## Ordered binary decision diagrams
 
 ### Igor Razgon, 2021
 
 “Classification of OBDD size for monotone 2-CNFs,” arXiv:2103.09115v2.
 
-Primary result used by this route:
+Theorem 2 gives, for the monotone two-CNF induced by a graph `G`,
 
-- Theorem 2 proves
+\[
+2^{lu(G)}\le \operatorname{obdd}(\varphi(G))\le n^{O(lu(G))}.
+\]
 
-  \[
-  2^{lu(G)}\le \operatorname{obdd}(\varphi(G))\le n^{O(lu(G))}
-  \]
+Route use:
 
-  for the monotone two-CNF induced by a graph \(G\).
-
-Use here:
-
-- supplies the imported lower bound in `SS-ECB-005`;
-- combines with the project grid-width proof and the assignment-target embedding.
+- imported lower bound in `SS-ECB-005`;
+- combined with the project grid-width proof and assignment-target embedding.
 
 Limitation:
 
-- applies to ordered binary decision diagrams;
-- does not cover free ordering, arithmetic programs, or general exact query algorithms.
+- applies to OBDDs;
+- does not cover arithmetic programs, free access order, or general exact query algorithms.
 
 Source: https://arxiv.org/abs/2103.09115
 
-## 2. Non-deterministic read-once branching programs
+## Read-once and bounded-read branching programs
 
 ### Igor Razgon, 2015
 
 “On the read-once property of branching programs and CNFs of bounded treewidth,” arXiv:1411.0264v3.
 
-Reported result:
+Relevant result:
 
-- non-deterministic syntactic read-once branching programs require size \(n^{\Omega(k)}\) on certain CNFs of primal treewidth at most \(k\);
-- the paper derives a separation involving free binary decision diagrams and decision decomposable negation normal form.
-
-Potential route use:
-
-- a broader residual-state model may naturally induce a non-deterministic read-once branching program rather than an ordered one;
-- monotone two-CNF instances remain compatible with no-carry embeddings.
-
-Unresolved work:
-
-- define the exact Subset Sum state model;
-- prove a transfer preserving read-once syntax, graph size, and binary encoding;
-- verify a hard family with the required parameter growth.
+- non-deterministic syntactic read-once branching programs require large size on certain bounded-treewidth CNFs.
 
 Source: https://arxiv.org/abs/1411.0264
-
-## 3. Bounded-read non-deterministic branching programs
 
 ### Oded Lachish and Igor Razgon, 2016
 
 “Non-deterministic branching programs with logarithmic repetition cannot efficiently compute small monotone CNFs,” arXiv:1604.01560.
 
-Reported result:
+Relevant result:
 
-- exponential lower bounds for syntactic non-deterministic read-\(d\) branching programs when \(d\le \log n/10^5\), on constructible monotone CNFs with a linear number of clauses.
-
-Potential route use:
-
-- permits bounded repeated access rather than a strict read-once order;
-- may capture recursive state refinement more naturally than OBDD.
-
-Obstruction:
-
-- the hard formulas are not immediately the normalized width-three family used by the existing reduction;
-- clause-width conversion must preserve the branching-program lower bound or a generalized no-carry target embedding must be proved.
+- exponential lower bounds for certain bounded-read non-deterministic branching programs.
 
 Source: https://arxiv.org/abs/1604.01560
 
-## 4. Decomposable negation normal form
+Route limitation:
+
+No transfer was proved from the retained structural-compression operations to these branching-program models.
+
+## Decomposable negation normal form
 
 ### Stefan Mengel, 2016
 
 “Parameterized Compilation Lower Bounds for Restricted CNF-formulas,” arXiv:1604.06715.
 
-Reported result:
+Relevant result:
 
-- unconditional parameterized lower bounds for decomposable negation normal form representations of CNFs under structural width restrictions.
-
-Potential route use:
-
-- decomposable conjunction resembles exact composition over disjoint item blocks;
-- a structured variant may be a better target for tree-shaped Subset Sum summaries.
-
-Obstruction:
-
-- unrestricted DNNF may allow operations not present in the previous route;
-- the transfer must preserve determinism, decomposability, target semantics, and total circuit size.
+- parameterized lower bounds for DNNF representations under structural restrictions.
 
 Source: https://arxiv.org/abs/1604.06715
 
@@ -105,67 +71,51 @@ Source: https://arxiv.org/abs/1604.06715
 
 “Non-FPT lower bounds for structural restrictions of decision DNNF,” arXiv:1708.07767.
 
-Reported result:
+Relevant result:
 
-- non-fixed-parameter lower bounds for structured decision DNNF and OBDD with decomposable conjunction nodes on CNFs of bounded incidence treewidth.
-
-Potential route use:
-
-- closer to a compositional state graph with branching and independent subproblems;
-- candidate for a formal tree-structured successor to the ordered model.
+- lower bounds for structured decision DNNF and OBDD variants with decomposable conjunction nodes.
 
 Source: https://arxiv.org/abs/1708.07767
 
-## 5. Tree Decision Diagrams
+Route limitation:
+
+No polynomial-overhead compilation of the retained item-block arithmetic summaries into these models was established.
+
+## Tree Decision Diagrams
 
 ### Florent Capelli, YooJung Choi, Stefan Mengel, Martín Muñoz, and Guy Van den Broeck, 2026
 
 “A canonical generalization of OBDD,” arXiv:2604.05537.
 
-The paper introduces Tree Decision Diagrams:
+Relevant features:
 
-- a tree-structured generalization of OBDD;
-- a restriction of structured deterministic decomposable negation normal form;
-- a model supporting efficient apply, conditioning, minimization, and canonical representations;
-- a model that can compile bounded-treewidth CNFs with fixed-parameter-size representations.
-
-Why this is the leading next candidate:
-
-- the vtree provides an explicit composition tree;
-- node sets at each vtree position behave like context-independent local states;
-- apply and minimization resemble bottom-up exact state construction;
-- the model is broader than ordered linear processing.
-
-Risk:
-
-- the model may be too powerful for the square-grid OBDD family, because it can be exponentially more succinct than OBDD;
-- a new hard family or a new lower-bound theorem may be necessary;
-- no transfer from interval, progression, or residue summaries has been proved.
+- tree-structured generalization of OBDD;
+- restriction of structured deterministic decomposable negation normal form;
+- canonical and algorithmically tractable operations under its model assumptions.
 
 Source: https://arxiv.org/abs/2604.05537
 
-## 6. Route decision from the literature
+Route use:
 
-### Retained
+- supplied the formal target for `SS-ECB-009`, the equivalence with explicit deterministic tree-state systems.
 
-- OBDD gives a complete first barrier and a proof template.
-- Branching-program and knowledge-compilation lower bounds show that broader model-specific barriers are mathematically plausible.
-- Tree Decision Diagrams provide the most natural current formal language for tree-shaped context-independent composition.
+Route limitation:
 
-### Rejected as insufficient
+- the model decomposes Boolean variables;
+- no transfer from binary-encoded interval, progression, residue, exception, or recursive item-block summaries was proved.
 
-- communication complexity alone generally yields a bit lower bound, not automatically a superpolynomial total-state lower bound;
-- counting reachable sums does not imply representation size;
-- OBDD lower bounds alone do not contain binary-encoded modular arithmetic;
-- unrestricted representation lower bounds are impossible because the source instance can be stored directly.
+## Bottom-up compilation
 
-## 7. Next literature task
+Work on large intermediate results in bottom-up knowledge compilation was considered relevant because a compact final representation need not imply a polynomial construction graph.
 
-Determine whether one of the following is already known:
+The route retained this distinction in its cost accounting but did not derive a Subset Sum lower bound from it.
 
-1. a superpolynomial lower bound for Tree Decision Diagrams on an explicit polynomial-size CNF family;
-2. a lower bound for structured deterministic decomposable negation normal form that survives the assignment-target embedding;
-3. a characterization of interval, congruence, or semilinear membership programs inside a knowledge-compilation class;
-4. a lower bound for bottom-up apply-based compilation that counts all intermediate representations even when the final representation is small.
+## Final literature determination
 
-No novelty claim is made for the project transfer framework until these connections are searched more thoroughly.
+The literature supports strong lower bounds for several restricted Boolean representation models. It did not supply the missing bridge required by this route:
+
+1. formal polynomial-overhead inclusion of all retained structural-compression operations;
+2. exclusion of polynomial Boolean simulation;
+3. a superpolynomial lower bound for the same resulting model.
+
+Further literature work is inactive unless the route is reopened under `CLOSEOUT.md`. No novelty claim is made for the project constructions or model boundaries.
