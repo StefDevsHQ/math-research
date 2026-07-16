@@ -38,6 +38,10 @@ Thus the Subset Sum instance reaches its target if and only if \(\varphi\) is sa
 
 The construction produces \(2n+2m\) numbers, each with \(n+m\) decimal digits. Its binary description length and construction time are polynomial in the formula size.
 
+## Related exact-query variant
+
+The [assignment-target query embedding](assignment-target-query.md) fixes the item multiset and encodes a complete Boolean assignment in the target. It is used for exact-state and knowledge-compilation audits, not as a fixed-target NP-hardness reduction.
+
 ## Historical note
 
 Subset Sum, under the closely related name Knapsack, is among Karp's original NP-complete problems. The digit-column construction above is recorded here with a complete proof so route audits do not depend on an informal reduction summary.

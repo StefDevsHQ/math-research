@@ -1,28 +1,43 @@
 # Status — Subset Sum Investigation
 
-**Phase:** Structural-compression route closed; next program pending  
+**Phase:** Route selection after exact-state compression closeout  
 **Updated:** 2026-07-16
 
 ## Current position
 
-The structural-compression route is closed as a universal polynomial-time strategy.
+Two universal routes are now closed:
 
-The original bundle claim and the refined forced/progression/lattice universal claim are retracted. The SAT-to-Subset-Sum audit showed that the route's modular states preserve the original assignment and clause-compatibility choices rather than compressing them.
+1. **Structural compression:** local residue completion and the polynomially bounded exact-decomposition theorem survive, but the universal framework preserved SAT compatibility.
+2. **Exact-state compression barriers:** correct model-specific boundaries were established, but no broad arithmetic model both subsumed the retained structural mechanisms and excluded polynomial Boolean simulation.
 
-Two results remain accepted:
+## Accepted results
 
-- the residue-completion lemma;
-- polynomial-time solvability for classes with an efficiently constructible exact decomposition whose full state complexity is polynomially bounded in the binary input length.
+- residue-completion lemma;
+- polynomial-time solvability on classes with an efficiently constructible exact decomposition whose complete computation graph and total encoded state are polynomially bounded in binary input length;
+- exact assignment-target embeddings of CNF evaluation into fixed-item Subset Sum query families;
+- a superpolynomial ordered-binary-decision-diagram lower bound for the square-grid assignment-query family;
+- exact item-block Minkowski composition identities;
+- multiple representation-model boundary theorems recorded in the closed exact-state route.
 
-## Completed
+These do not imply a lower bound for arbitrary Subset Sum algorithms or `P != NP`.
 
-1. Normalized the canonical no-carry 3-SAT-to-Subset-Sum reduction.
-2. Completed the adversarial audit.
-3. Finalized route and investigation claim ledgers.
-4. Closed the route with explicit reopening conditions.
+## Final exact-state obstruction
 
-## Next direction
+The attempted arithmetic proof-graph bridge failed:
 
-Develop an exact-state compression barrier program: formalize the compatibility information that prevents exact dynamic-programming states from being merged.
+- unevaluated additive syntax is universally small but leaves membership unresolved;
+- normalized progression unions can be exponentially large on easy instances;
+- compact residue tests plus repeated branching recover polynomial CNF evaluation.
 
-No further universal structural-compression work should resume without a new exact composition theorem and a strict polynomially bounded progress measure.
+The candidate therefore crossed its circuit-simulation stop condition.
+
+## Next decision
+
+No active route is selected.
+
+Recommended choices:
+
+1. open a positive tractable-subclass route with a concrete structural parameter and a globally polynomial algorithm target; or
+2. move to a different P-versus-NP investigation rather than continuing universal exact-state compression.
+
+Do not reopen either closed route without satisfying its recorded reopening conditions.
