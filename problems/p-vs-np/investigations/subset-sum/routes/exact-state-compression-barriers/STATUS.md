@@ -1,60 +1,103 @@
 # Status — Exact-State Compression Barriers
 
-**State:** Active; model-specific Boolean barriers established, structural-summary transfer absent  
+**State:** Active; arithmetic model bracket established, candidate proof graph open  
 **Updated:** 2026-07-16
 
 ## Current position
 
-The route has established two precise Boolean representation results.
+The route now has two groups of results.
 
-First, the assignment-target construction converts formula evaluation into membership queries for a fixed Subset Sum item multiset. Under the route's ordered query-graph definition, the resulting representation is exactly an ordered binary decision diagram. On square-grid monotone two-CNF formulas, every such graph has size
+First, the earlier Boolean representation work remains valid but model-specific:
+
+- assignment-target query graphs are ordered binary decision diagrams by definition and semantics;
+- square-grid monotone two-CNF families require ordered graphs of size \(2^{\Omega(L^{1/4})}\);
+- explicit Boolean tree-state systems are polynomially equivalent to deterministic Tree Decision Diagrams.
+
+These results do not subsume the former structural-compression framework.
+
+Second, the item-block semantics and arithmetic-language boundary have now been formalized.
+
+## New arithmetic model bracket
+
+### Exact composition
+
+For disjoint nonnegative item blocks,
 
 \[
-2^{\Omega(L^{1/4})},
+\Sigma_t(B_0igma_t(B_0\uplus B_1)
+=
+(\Sigma_t(B_0)+\Sigma_t(B_1))\cap[0,t].
 \]
 
-where \(L\) is the binary length of the encoded item multiset and target.
+Any exact item-block model must respect this identity.
 
-Second, an explicit deterministic bottom-up tree-state model over assignment-variable blocks has been defined and proved polynomially equivalent to deterministic Tree Decision Diagrams respecting the same variable tree.
+### Heterogeneous semantics
 
-Neither result currently compiles or lower-bounds the interval, progression, residue, exception, or recursive item-block summaries from the closed structural-compression route.
+The retained structural framework used three distinct mechanisms:
 
-## Accepted route results
+1. exact reachable-set summaries;
+2. one-sided coverage certificates;
+3. target-relative residual transformations.
 
-- Unrestricted representation-size lower bounds are impossible: the original instance is already a linear-size exact representation when query computation is unrestricted.
-- Universal polynomial-time preprocessing and polynomial-time exact target queries exist if and only if Subset Sum is in polynomial time, equivalently if and only if \(P=NP\).
-- The assignment-target no-carry embedding is exact and polynomially bounded.
-- Ordered assignment-target query graphs are, by definition and semantics, ordered binary decision diagrams for the source formula.
-- Square-grid families force superpolynomial complete graph size in that ordered Boolean model.
-- Explicit deterministic tree-state systems with fully counted transition tables are polynomially equivalent to deterministic Tree Decision Diagrams for Boolean query functions.
-- The assignment-target family is polynomially representable in every model containing general polynomial-size Boolean circuits with unrestricted access to the decoded assignment bits.
+A final exact-set language alone does not subsume all three.
 
-## Adversarial verdict
+### Lower and upper escape boundaries
 
-The ordered lower bound is genuine but narrow.
+- **Unevaluated Minkowski DAGs are too weak as a cost model:** every instance has a linear-size exact expression obtained by retaining the original item choices.
+- **Normalized progression unions are too rigid:** for \(A_n=\{1,3,\ldots,3^{n-1}\}\), every exact progression-union representation needs at least \(2^{n-1}=2^{\Omega(\sqrt{L_n})}\) atoms, although the instances are easy by forced residual reasoning.
+- **Unrestricted intersection is too expressive:** intervals, bounded progressions, union, translation, Minkowski sum, and arbitrary intersection compactly encode every width-three CNF assignment-target slice.
 
-It does not lower-bound arbitrary Subset Sum algorithms, fixed-target decision procedures, compact arithmetic programs, or representations with unrestricted polynomial-time query logic. The structured targets expose an assignment that can be decoded and checked against the formula directly.
+These three results isolate the viable region:
 
-The tree-state equivalence is also correct, but its tree decomposes assignment variables rather than Subset Sum item blocks or reachable-sum structure. Calling it a successor to structural compression requires a further subsumption theorem that has not been proved.
+\[
+	ext{more semantic power than normalized progression unions}
+\]
 
-Explicit tables are too weak to represent a binary-encoded modulus \(q\) without potentially expanding to \(q\) states or entries. At the opposite extreme, unrestricted circuits or programs can retain the original CNF and evaluate it directly. A viable intermediate model may use circuit-like local operations only if access, locality, composition, and complete construction cost are restricted enough to block this escape.
+but
+
+\[
+	ext{less unrestricted Boolean combination than intersection/circuits}.
+\]
+
+## Candidate model
+
+A restricted arithmetic proof graph has been defined with separate node types for:
+
+- exact summaries;
+- coverage certificates;
+- residual transformations;
+- counted exact merges;
+- locally restricted branches.
+
+The candidate forbids free unevaluated Minkowski nodes, unrestricted intersection, arbitrary complement, general Boolean circuits, and uncounted transition programs.
+
+This is currently `OPEN / DRAFT`. It is a model proposal, not a barrier theorem.
 
 ## Smallest remaining gap
 
-No current theorem establishes both:
+The decisive next question is now sharper:
 
-1. polynomial-overhead expression of the retained structural-summary operations;
-2. a superpolynomial lower bound on the resulting complete representation or construction graph.
+> Can the permitted local residual, residue, coverage, and sharing operations simulate arbitrary polynomial-size Boolean circuits with polynomial complete graph cost?
 
-The route should not claim a barrier against structural compression until both parts are proved in the same formal model.
+If yes, reject the model as too strong.
 
-## Next actions — not yet started
+If no, the next requirement is a complete compilation theorem showing that every retained structural-compression rule fits the fixed local schemas with polynomial overhead.
 
-1. Define candidate restricted transition languages only after fixing their item-block semantics, target access, locality, sharing, and total construction-cost measure.
-2. Require an explicit compilation theorem for every retained structural-summary atom.
-3. Attack each candidate for circuit simulation before seeking a lower bound.
-4. Separate final-representation size from intermediate bottom-up compilation cost.
+Only after both tests survive should a hard-family lower bound be attempted.
+
+## Immediate next actions
+
+1. Fix a finite grammar of admissible local branch and certificate rules.
+2. Audit hidden circuit simulation through repeated residue tests, branching, and shared residual nodes.
+3. Prove or refute polynomial-overhead compilation of forced separation and residue completion into the candidate.
+4. Keep exact-merge normalization and every discarded intermediate atom in the cost measure.
+5. Do not search for a general lower bound until the escape audit is complete.
 
 ## Stop condition
 
-Close the route as too model-specific unless a model is found that formally subsumes the previous structural summaries and still admits a superpolynomial lower bound. Do not present ordered or explicit-tree Boolean hardness alone as a general Subset Sum obstruction.
+Close the candidate if it either:
+
+- simulates arbitrary polynomial-size Boolean circuits with polynomial complete cost; or
+- fails to express a retained structural operation without an uncounted oracle.
+
+Do not present the candidate definition, the ordered lower bound, or the progression-union lower bound as a general Subset Sum lower bound.
