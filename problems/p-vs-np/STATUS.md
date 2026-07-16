@@ -1,26 +1,25 @@
 # Status — P versus NP
 
-**Phase:** Repository foundation complete; route import pending  
+**Phase:** First route consolidated; adversarial audit pending  
 **Updated:** 2026-07-16
 
 ## Current position
 
-The research program is organized into shared foundations, reusable reductions, concrete investigations, distinct routes, and atomic evidence records.
+The repository foundation is complete and the first Subset Sum route has been decomposed into atomic records.
 
-Subset Sum is the active investigation. Its structural-compression route has been initialized at its final location, but the canonical finalized record has not yet been imported.
+The structural-compression route no longer supports its original universal bundle claim. It retains one proved local lemma and a refined framework that must be tested against SAT-derived instances.
 
 ## Active work
 
-1. Import the finalized structural-compression record.
-2. Register its claims in the route and investigation ledgers.
-3. Open and perform the SAT-to-Subset-Sum adversarial audit.
-4. Decide whether to close the route fully and pivot to exact-state compression barriers.
+1. Open the SAT-to-Subset-Sum audit as the first research issue.
+2. Execute the audit and update the route claims.
+3. Decide whether the route survives in restricted form only.
+4. If it fails as a universal strategy, begin the exact-state compression barrier program.
 
-## Current blockers
+## Current blocker
 
-- The canonical structural-compression record is not yet in the repository.
-- The SAT-to-Subset-Sum audit has not yet been opened or performed.
+The refined framework has no proved strictly decreasing polynomially bounded complexity measure on hard reduction families.
 
 ## Next action
 
-Import the canonical record into `investigations/subset-sum/routes/structural-compression/` without changing its historical claim status.
+Run the audit defined at `investigations/subset-sum/routes/structural-compression/audits/sat-to-subset-sum.md`.
