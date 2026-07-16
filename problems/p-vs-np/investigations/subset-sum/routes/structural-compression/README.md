@@ -11,7 +11,7 @@ The original bundle composition claim was retracted. The refined forced/progress
 Two restricted results remain:
 
 - the residue-completion lemma;
-- polynomial-time solvability for classes with an efficiently constructible decomposition whose branching, moduli, residue states, intermediate descriptions, and depth are polynomially bounded in the binary input length.
+- polynomial-time solvability for classes with an efficiently constructible exact decomposition whose complete computation graph and total encoded state are polynomially bounded in the binary input length.
 
 ## Core records
 
