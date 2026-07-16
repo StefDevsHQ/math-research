@@ -1,0 +1,9 @@
+cff-version: 1.2.0
+message: "Please cite this repository and the specific file or commit used."
+title: "Math Research"
+type: generic
+authors:
+  - name: "StefDevsHQ"
+repository-code: "https://github.com/StefDevsHQ/math-research"
+url: "https://github.com/StefDevsHQ/math-research"
+date-released: 2026-07-16
