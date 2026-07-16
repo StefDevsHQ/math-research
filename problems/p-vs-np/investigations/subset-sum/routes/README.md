@@ -2,6 +2,16 @@
 
 Each route is a distinct proposed mechanism, algorithmic strategy, or obstruction program.
 
+## Active
+
+- [Exact-state compression barriers](exact-state-compression-barriers/README.md) — formalize specified exact-state computation models and prove model-specific limits without inferring general algorithmic lower bounds.
+
+## Closed or restricted
+
+- [Structural compression](structural-compression/README.md) — closed as a universal strategy; residue completion and polynomially bounded exact-decomposition results retained.
+
+## Route requirements
+
 Every active route should contain:
 
 - `README.md` — thesis, scope, and dependencies;
