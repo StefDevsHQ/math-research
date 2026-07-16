@@ -1,27 +1,29 @@
 # Status — Structural Compression
 
-**State:** Closed in original form; local result retained; final audit pending  
+**State:** Closed as a universal strategy; restricted results retained  
 **Updated:** 2026-07-16
 
-## Accepted route state
+## Final disposition
 
 - The universal dense-or-separated bundle composition claim is retracted.
 - The residue-completion lemma is proved and internally checked.
-- The forced/progression/lattice framework remains an unproved analytical framework, not a polynomial-time algorithm.
-- Large moduli, cross-component compatibility, and SAT-encoded logical choices remain the central barriers.
-- No strictly decreasing polynomially bounded measure has been established for recursive lattice reduction.
+- The forced/progression/lattice universal algorithm claim is retracted.
+- The SAT-to-Subset-Sum audit failed the route's pass condition: modular states preserve the original assignment and clause-compatibility choices.
+- A restricted polynomial-time theorem survives when the entire exact decomposition and all associated state bounds are polynomial in the binary input length.
 
-## Completed
+## Retained records
 
-1. Consolidated the route record.
-2. Separated the surviving proof from the withdrawn bundle claim.
-3. Registered route and investigation claims.
-4. Defined the SAT-to-Subset-Sum audit and its pass/failure conditions.
+- [Closeout](CLOSEOUT.md)
+- [Route record](notes/route-record.md)
+- [Residue-completion lemma](proofs/residue-completion-lemma.md)
+- [Polynomially bounded decomposition class](proofs/polynomially-bounded-decomposition-class.md)
+- [Bundle claim retraction](counterexamples/bundle-lemma.md)
+- [Completed SAT-to-Subset-Sum audit](audits/sat-to-subset-sum.md)
 
-## Next action
+## Reopening condition
 
-Perform the [SAT-to-Subset-Sum audit](audits/sat-to-subset-sum.md) before resuming universal algorithm construction.
+Reopen this route only if a new exact composition theorem preserves cross-component compatibility, is efficiently constructible, bounds all intermediate states polynomially in binary input length, and supplies a strict progress measure on reduction-generated hard instances.
 
-## Decision rule
+## Next program
 
-If the audit shows that the modular states preserve the original assignment or clause-compatibility choices, close this route as a universal strategy and pivot to exact-state compression barriers.
+Develop exact-state compression barriers: identify and formalize the information that prevents exact dynamic-programming states from being merged.
