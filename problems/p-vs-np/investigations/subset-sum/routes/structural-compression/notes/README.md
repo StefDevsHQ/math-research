@@ -1,5 +1,9 @@
 # Working Notes
 
-Exploratory arguments, partial derivations, and unresolved ideas live here before they become formal research objects.
+Exploratory arguments, partial derivations, and route-level synthesis live here before promotion into formal research objects.
 
-Notes must state their date and status. They may be incomplete and are not authoritative; promote durable results into proofs, counterexamples, audits, experiments, or claim records.
+## Records
+
+- [Structural-compression route record](route-record.md) — canonical route summary and handoff
+
+Notes are not authoritative by themselves. Durable results must also appear in proofs, counterexamples, audits, experiments, or claim ledgers.
