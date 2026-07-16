@@ -17,12 +17,19 @@ The investigation is in route selection after closing two universal strategies:
 - [Structural compression](routes/structural-compression/README.md) — closed as a universal algorithmic route; local residue completion and the polynomially bounded exact-decomposition theorem remain valid.
 - [Exact-state compression barriers](routes/exact-state-compression-barriers/README.md) — closed as a broad barrier route; ordered Boolean lower bounds and arithmetic model-boundary theorems remain valid.
 
+A paradigm-level literature audit is complete:
+
+- [Algorithmic landscape](references/algorithmic-landscape.md) — organized table of the currently known general algorithms, pseudopolynomial methods, tractable regimes, representation mechanisms, and barrier programmes.
+- [Landscape source map](references/algorithmic-landscape-sources.md) — representative primary sources and project records, current through 2026-07-16.
+
 No active Subset Sum route is currently selected.
 
 ## Navigation
 
 - [Current status](STATUS.md)
 - [Claim ledger](CLAIMS.md)
+- [Algorithmic landscape](references/algorithmic-landscape.md)
+- [Algorithmic landscape sources](references/algorithmic-landscape-sources.md)
 - [Research routes](routes/README.md)
 - [Structural-compression closeout](routes/structural-compression/README.md)
 - [Exact-state barrier closeout](routes/exact-state-compression-barriers/CLOSEOUT.md)
@@ -34,7 +41,9 @@ No active Subset Sum route is currently selected.
 
 ## Scope
 
-The retained results do not prove `P=NP`, `P!=NP`, or a lower bound for arbitrary Subset Sum algorithms. Reopen a closed route only under its recorded reopening conditions.
+The retained results do not prove `P=NP`, `P!=NP`, or a lower bound for arbitrary Subset Sum algorithms. The landscape is a literature and route-selection artifact; it does not promote external results into project proofs or reopen either closed route.
+
+Reopen a closed route only under its recorded reopening conditions.
 
 ## Identifier policy
 
