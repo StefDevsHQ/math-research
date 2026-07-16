@@ -1,96 +1,67 @@
 # Exact-State Compression Barriers
 
 **Route identifier:** `SS-ECB`  
-**State:** Active  
-**Opened:** 2026-07-16
+**State:** Closed as a broad structural-compression barrier route  
+**Opened:** 2026-07-16  
+**Closed:** 2026-07-16
 
 ## Objective
 
-This route asks which exact-state representation models necessarily retain superpolynomially many compatibility states on structured Subset Sum families.
+This route asked whether one could formalize an exact-state model broad enough to contain the retained interval, progression, residue, exception, recursive, and target-relative mechanisms from structural compression while still proving a superpolynomial lower bound on reduction-generated Subset Sum families.
 
-The route is not a direct attempt to prove a lower bound for every Subset Sum algorithm. It fixes a representation or computation model, proves an exact transfer to a known Boolean representation model where possible, and records only model-specific conclusions.
+The route did not achieve that combined objective.
 
-## Boundary established first
+## Retained results
 
-Representation size alone is not a meaningful obstruction. The original binary instance is already a polynomial-size exact representation if unrestricted computation is permitted at query time. A useful barrier must therefore restrict at least one of:
+The route established:
 
-- construction time;
-- query time;
-- merge or composition operations;
-- variable or item access order;
-- decomposition structure;
-- complete computation-graph size.
+- representation size alone is vacuous when query computation is unrestricted;
+- polynomial compilation plus polynomial exact queries is equivalent to `P=NP`;
+- an exact assignment-target Subset Sum embedding for width-three CNF evaluation;
+- an ordered-binary-decision-diagram lower bound of `2^{Omega(L^{1/4})}` on square-grid assignment-query families;
+- polynomial equivalence between explicit Boolean tree-state systems and deterministic Tree Decision Diagrams;
+- exact Minkowski composition for disjoint item blocks;
+- the semantic distinction between exact summaries, coverage certificates, and target-relative residual transformations;
+- the linear-size unevaluated Minkowski-DAG boundary;
+- the unrestricted-intersection escape;
+- an exponential progression-union lower bound on easy ternary superincreasing instances;
+- the residue-branching circuit escape.
 
-See [Unrestricted representation boundary](proofs/unrestricted-representation-boundary.md).
+## Final obstruction
 
-## First formal model
+The model search encountered three incompatible regimes:
 
-The initial model is an **ordered assignment-target query graph**.
+1. unevaluated additive syntax remains small by retaining the original instance;
+2. extensional progression normalization can be exponentially large even when target-relative decision is easy;
+3. compact residue predicates combined with repeated branching or unrestricted intersection recover polynomial Boolean computation.
 
-For a CNF formula \(\varphi\), a fixed Subset Sum item multiset \(A_\varphi\) is constructed together with an injective target map
+The proposed restricted arithmetic proof graph crossed the third boundary. It was therefore retracted.
 
-\[
-\alpha\longmapsto \tau_\varphi(\alpha)
-\]
+## Scope
 
-such that
+The ordered and arithmetic results are representation-model boundaries. They do not establish a lower bound for arbitrary Subset Sum algorithms, a hard fixed-target family, or `P != NP`.
 
-\[
-\tau_\varphi(\alpha)\in\Sigma(A_\varphi)
-\quad\Longleftrightarrow\quad
-\alpha\models\varphi.
-\]
+## Reopening condition
 
-A deterministic graph that reads the bits of \(\alpha\) in a fixed order and answers this membership query is, by the model definition, an ordered binary decision diagram for \(\varphi\). This is an exact Boolean-model equivalence, not yet a compilation theorem from a pre-existing Subset Sum summary language.
+Reopen only with a materially new mechanism that simultaneously provides:
 
-## First barrier
-
-For monotone two-CNF formulas induced by square grids, Razgon's ordered-binary-decision-diagram lower bound together with a project proof that the grid has linear upper induced-matching width gives a complete graph-size lower bound
-
-\[
-2^{\Omega(r)}
-\]
-
-for an \(r\times r\) grid. The corresponding assignment-target query family has binary encoding length \(L=O(r^4)\), so the lower bound is
-
-\[
-2^{\Omega(L^{1/4})}.
-\]
-
-This rules out polynomial-size ordered assignment-target query graphs. It does not yet rule out any representation used by the closed structural-compression route.
-
-## Broader formal model
-
-The second model is an **explicit deterministic tree-state system**. Assignment variables are partitioned by a binary variable tree, local states are computed bottom-up, and every child-state transition is explicitly counted.
-
-This model is polynomially equivalent to deterministic Tree Decision Diagrams respecting the same variable tree. It is a precise tree-structured Boolean query model, but it is not yet a tree decomposition of Subset Sum item blocks or reachable-sum summaries.
-
-The inclusion boundary is therefore:
-
-- explicit transition tables over assignment-variable blocks are covered;
-- arbitrary polynomial-time transition programs are not covered;
-- compact binary-encoded arithmetic atoms are not proved to compile with polynomial overhead;
-- no transfer from the interval, progression, residue, exception, or recursive summaries of the previous route has been proved.
-
-## Scope limitation
-
-The ordered result does **not** imply a lower bound for arbitrary fixed-target Subset Sum algorithms. The target family explicitly encodes assignments, and a general algorithm may decode the assignment and evaluate the CNF directly in polynomial time. The result is therefore a Boolean representation-model barrier, not an algorithmic lower bound and not evidence that \(P\ne NP\).
-
-The decisive remaining task is to identify a restricted succinct transition model that:
-
-1. contains the interval, progression, residue, exception, and recursive summaries used by the closed structural-compression route;
-2. still admits a valid transfer to a representation model with a proven superpolynomial lower bound;
-3. restricts access or composition enough that the original source formula cannot simply be retained as an unrestricted circuit.
+1. exact item-block and target-relative semantics;
+2. polynomial-overhead inclusion of every retained structural operation;
+3. a proved restriction preventing polynomial Boolean simulation;
+4. a superpolynomial lower bound for that same model;
+5. complete intermediate construction and query accounting.
 
 ## Navigation
 
-- [Operational status](STATUS.md)
+- [Closeout](CLOSEOUT.md)
+- [Final status](STATUS.md)
 - [Claim ledger](CLAIMS.md)
-- [Route re-audit](audits/2026-07-16-route-review.md)
-- [Unrestricted representation boundary](proofs/unrestricted-representation-boundary.md)
-- [Assignment-target embedding and OBDD equivalence](proofs/assignment-target-obdd-transfer.md)
+- [Item-block semantics](notes/item-block-semantics.md)
+- [Ordered assignment-target embedding](proofs/assignment-target-obdd-transfer.md)
 - [Grid-family ordered barrier](proofs/grid-family-state-barrier.md)
 - [Tree-state and Tree Decision Diagram equivalence](proofs/tree-state-tdd-equivalence.md)
-- [Ordered-model scope audit](audits/ordered-model-scope.md)
-- [Literature map](notes/literature-map.md)
-- [Opening journal record](journal/2026-07-16-route-opened.md)
+- [Unevaluated Minkowski-DAG boundary](proofs/minkowski-dag-boundary.md)
+- [Intersection escape](proofs/binary-payload-intersection-escape.md)
+- [Progression-union lower bound](proofs/progression-union-lower-bound.md)
+- [Residue-branching escape](counterexamples/residue-branching-circuit-escape.md)
+- [Route review](audits/2026-07-16-route-review.md)
