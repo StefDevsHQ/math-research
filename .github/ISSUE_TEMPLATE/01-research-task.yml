@@ -1,0 +1,38 @@
+name: Research task
+description: Define a focused mathematical question, audit, or investigation.
+title: "research: "
+body:
+  - type: input
+    id: problem
+    attributes:
+      label: Problem area
+      placeholder: problems/p-vs-np/subset-sum
+    validations:
+      required: true
+  - type: textarea
+    id: question
+    attributes:
+      label: Precise question
+      description: State one answerable mathematical or research-administration question.
+    validations:
+      required: true
+  - type: textarea
+    id: context
+    attributes:
+      label: Context and dependencies
+      description: Link relevant definitions, claims, notes, papers, or earlier failures.
+    validations:
+      required: true
+  - type: textarea
+    id: completion
+    attributes:
+      label: Completion condition
+      description: Describe what evidence, proof, counterexample, or record would close this task.
+    validations:
+      required: true
+  - type: textarea
+    id: risks
+    attributes:
+      label: Known risks or likely failure modes
+    validations:
+      required: false
