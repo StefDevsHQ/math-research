@@ -1,0 +1,24 @@
+# Operating system
+.DS_Store
+
+# Local environments and secrets
+.env
+.env.*
+.venv/
+venv/
+
+# Python
+__pycache__/
+*.py[cod]
+.pytest_cache/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Editors
+.vscode/
+.idea/
+
+# Generated local output
+.tmp/
+tmp/
