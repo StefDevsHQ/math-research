@@ -59,13 +59,25 @@ for an \(r\times r\) grid. The corresponding Subset Sum query family has binary 
 
 This rules out polynomial complete state graphs for the ordered query model.
 
+## Broader formal model
+
+The next model is an **explicit deterministic tree-state system**. Assignment variables are partitioned by a binary variable tree, local states are computed bottom-up, and every child-state transition is explicitly counted.
+
+This model is polynomially equivalent to deterministic Tree Decision Diagrams respecting the same variable tree. It therefore gives a precise tree-compositional successor to the ordered model.
+
+The inclusion boundary is now exact:
+
+- explicit context-independent transition tables are covered;
+- arbitrary polynomial-time transition programs are not covered;
+- compact binary-encoded arithmetic atoms are not yet proved to compile with polynomial overhead.
+
 ## Scope limitation
 
-The result does **not** imply a lower bound for arbitrary fixed-target Subset Sum algorithms. The target family explicitly encodes assignments, and a general algorithm may decode the assignment and evaluate the CNF directly in polynomial time. The result is therefore a representation-model barrier, not an algorithmic lower bound and not evidence that \(P\ne NP\).
+The ordered result does **not** imply a lower bound for arbitrary fixed-target Subset Sum algorithms. The target family explicitly encodes assignments, and a general algorithm may decode the assignment and evaluate the CNF directly in polynomial time. The result is therefore a representation-model barrier, not an algorithmic lower bound and not evidence that \(P\ne NP\).
 
-The decisive remaining task is to formalize a broader compositional model that:
+The decisive remaining task is to identify a restricted succinct transition language that:
 
-1. contains the interval, progression, residue, and recursive summaries used by the closed structural-compression route;
+1. contains the interval, progression, residue, exception, and recursive summaries used by the closed structural-compression route;
 2. still admits a valid transfer to a representation model with a proven superpolynomial lower bound.
 
 ## Navigation
@@ -75,6 +87,7 @@ The decisive remaining task is to formalize a broader compositional model that:
 - [Unrestricted representation boundary](proofs/unrestricted-representation-boundary.md)
 - [Assignment-target embedding and OBDD transfer](proofs/assignment-target-obdd-transfer.md)
 - [Grid-family state barrier](proofs/grid-family-state-barrier.md)
+- [Tree-state and Tree Decision Diagram equivalence](proofs/tree-state-tdd-equivalence.md)
 - [Model-scope audit](audits/ordered-model-scope.md)
 - [Literature map](notes/literature-map.md)
 - [Opening journal record](journal/2026-07-16-route-opened.md)
