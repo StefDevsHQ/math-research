@@ -1,8 +1,8 @@
 # Monotone NAE-3SAT Research Tool
 
-Standard-library Python laboratory for canonical labelled 3-uniform hypergraphs, exact finite satisfiability, exact extension profiles, and checked tractability controls.
+Standard-library Python laboratory for canonical labelled 3-uniform hypergraphs, exact finite satisfiability, exact extension profiles, tractable controls, and checked minimal-obstruction records.
 
-## Completed slices
+## Completed phase — VS-01 through VS-05
 
 ### VS-01 — canonical instance model
 
@@ -24,13 +24,18 @@ Exact completion masks, deterministic semantic classes, representative-independe
 - linearity, occurrence, and boundary utilities;
 - deterministic control census and named-control report.
 
-The exact oracle and profile procedures are exponential laboratory tools. The graph, XOR, incidence-forest, bounded-boundary, and component controls are restricted tractable mechanisms, not a universal algorithm.
+### VS-05 — minimal obstruction atlas
+
+Separate edge- and induced-vertex-minimality predicates, complete deletion certificates, exact `K_5^(3)` and Fano controls, the exhaustive labelled `n<=5` obstruction census, and all-ordering profile aggregates.
+
+The exact oracle, profile, census, calibration, and atlas procedures are finite exponential or factorial laboratory tools. The graph, XOR, incidence-forest, bounded-boundary, and component controls are restricted tractable mechanisms, not a universal algorithm.
 
 ## Runtime
 
 - Python 3.11, 3.12, and 3.13;
 - Python standard library only;
-- automated compile, test, CLI, VS-02 corpus, VS-03 corpus, VS-04 calibration, and independent-reference gates.
+- automated compile, test, CLI, record-envelope, byte-reproduction, and independent-reference gates;
+- routine checks are restricted to active research scopes through `.verification/active-paths`.
 
 ## Input format
 
@@ -42,9 +47,16 @@ The vertex set must be exactly `0,...,n-1`. Input edges may be unsorted and repe
 
 Canonical output is deterministic for a fixed vertex labelling, not up to hypergraph isomorphism.
 
-## Commands
+## Verification commands
 
-From this directory:
+From the repository root:
+
+```bash
+sh scripts/check.sh fast
+sh scripts/check.sh full
+```
+
+From this directory, individual reproducibility commands include:
 
 ```bash
 python3 -m unittest discover -s tests -v
@@ -55,12 +67,16 @@ python3 -m nae3sat.cli profile tests/fixtures/single-edge.json --ordering 2,0,1
 python3 -m nae3sat.cli census --max-vertices 5 --output /tmp/vs02-corpus.json
 python3 -m nae3sat.cli profile-census --max-vertices 5 --output /tmp/vs03-corpus.json
 python3 -m nae3sat.cli calibrate --output /tmp/vs04-calibration.json
+python3 -m nae3sat.cli obstruction-atlas --output /tmp/vs05-obstruction-atlas.json
 cmp /tmp/vs02-corpus.json corpus/all-labelled-n-le-5.json
 cmp /tmp/vs03-corpus.json profile-corpus/all-labelled-orderings-n-le-5.json
 cmp /tmp/vs04-calibration.json calibration/vs04-calibration.json
+cmp /tmp/vs05-obstruction-atlas.json obstruction-atlas/vs05-obstruction-atlas.json
 ```
 
-All census and calibration commands write deterministic compact JSON atomically.
+All census, calibration, and atlas commands write deterministic compact JSON atomically.
+
+The public `verify_*_record` functions validate the exact versioned top-level envelope and payload digest. They establish record integrity, not semantic truth. The semantic gate is regeneration plus byte comparison, supplemented by the independent reference tests.
 
 ## Checked finite records
 
@@ -85,22 +101,33 @@ All census and calibration commands write deterministic compact JSON atomically.
 - `36` incidence-forest NAE instances, all constructively colourable;
 - `344` maximum-occurrence-at-most-three NAE instances in the small domain, all satisfiable.
 
-These are finite exhaustive measurements on their declared domains. They do not establish unrestricted asymptotic tractability.
+### VS-05
+
+- the unique unsatisfiable labelled instance through five vertices is `K_5^(3)`;
+- `K_5^(3)` is edge-minimal and induced-vertex-minimal unsatisfiable;
+- complete least-witness deletion certificates are stored for `K_5^(3)` and the Fano plane;
+- all `120` orderings of `K_5^(3)` and `5040` orderings of the Fano plane are aggregated;
+- both unsatisfiable controls have one dead successful-completion class at every level.
+
+These are finite exhaustive measurements on their declared domains or named-instance checks. They do not establish unrestricted asymptotic tractability or a general representation lower bound.
 
 ## Public API
 
-The package exports the canonical model, serialization, exact oracle, profile engine, and corpus APIs together with:
+The package exports the canonical model, serialization, exact oracle, profile engine, corpus APIs, and:
 
 - `Graph2`, `Graph2Result`, `normalize_graph2`, `solve_graph2`, and `labelled_graphs`;
 - `XorSystem`, `XorResult`, `normalize_xor_system`, `solve_xor`, and `labelled_xor_systems`;
 - `is_incidence_forest`, `color_incidence_forest`, `is_linear`, and `vertex_occurrences`;
 - `processed_boundary`, `boundary_width`, and guarded `minimum_boundary_width`;
-- `calibration_payload`, `calibration_record`, `calibration_bytes`, and `verify_calibration_record`.
+- calibration payload, record, byte, and verification APIs;
+- obstruction constructors, deletion operations and certificates, minimality predicates, profile aggregates, and atlas APIs;
+- strict public record-envelope verifiers for VS-02 through VS-05.
 
 ## Complexity
 
 - exact NAE decision/counting: exponential in vertex count;
 - exact profile construction/output: exponential and output-sensitive;
+- all-ordering profile aggregation: factorial in vertex count;
 - graph parity solver: `O(n+m)`;
 - direct XOR elimination: polynomial in rows and variable count;
 - incidence-forest recognition and colouring: linear incidence work;
