@@ -23,7 +23,7 @@ For summaries of a complete hypergraph, the discriminator is exact satisfiabilit
 
 ### Prefix-state target
 
-For a fixed instance, ordering, and prefix assignment, the discriminator is the exact completion mask from `VS-03`.
+For a fixed instance, ordering, processing level, and prefix assignment, the discriminator is the exact completion mask from `VS-03`.
 
 Globally unsatisfiable instances are not compared through successful-completion profiles because `NAE-011` makes all such profiles identically dead.
 
@@ -43,7 +43,7 @@ The executable module `nae3sat/summaries.py` defines:
 10. boundary width and parity of that Hamming weight;
 11. multiset of rooted radius-`r` graph neighbourhoods in a conditioned residual encoding.
 
-The exact boundary assignment together with the processed-consistency flag is retained as the complete control.
+The exact boundary assignment together with the processed-consistency flag is retained as the complete same-level control.
 
 ## Bounded-radius construction
 
@@ -72,10 +72,30 @@ reproduces `tools/monotone-nae-3sat/summary-collisions/vs06-summary-collisions.j
 
 The record contains ten explicit collisions, the bounded-radius family theorem and checked samples for radii one and two, the retained exact-boundary control, limitations, and a strict versioned payload digest.
 
+The initial post-merge record was stale and caused workflow run `29954395327` to fail on all supported runtimes. It was regenerated from the checked implementation. The corrected semantic payload retains digest:
+
+```text
+ee7f47f96beafcda088848d8d29312e66df033376e68ac793f5e398a04aa8df6
+```
+
+## Verification
+
+The executable gate now checks:
+
+- every named summary collision;
+- independent complete assignment enumeration for each whole-instance witness;
+- exact stored solution counts and least witnesses;
+- exact characteristic-polynomial values on known matrices;
+- the anchored inequality reduction in both directions on odd and even controls;
+- exact-boundary completeness through four vertices;
+- bounded-radius samples;
+- strict record-envelope rejection of malformed or re-digested wrong-format records;
+- byte-for-byte record regeneration in the full gate.
+
 ## Complexity
 
 - named whole-instance witnesses contain at most seven vertices;
-- their semantics are verified by exhaustive enumeration of at most `2^7` colourings;
+- their semantics are verified independently by exhaustive enumeration of at most `2^7` colourings;
 - exact prefix masks use the existing exponential `VS-03` oracle;
 - the exact-boundary control is exhaustively checked through four vertices;
 - the generic rooted-radius canonicalizer is factorial in the radius-ball size and is a verification tool, not a proposed algorithm;
@@ -83,4 +103,4 @@ The record contains ten explicit collisions, the bounded-radius family theorem a
 
 ## Exit gate
 
-Satisfied when every listed summary has an explicit collision or a proved retained scope, the record reproduces deterministically, inherited slices remain green, and documentation and claims are synchronized.
+Satisfied when every listed summary has an explicit collision or a proved retained scope, the record reproduces deterministically, inherited slices remain green, independent witness checks pass, and documentation and claims are synchronized.

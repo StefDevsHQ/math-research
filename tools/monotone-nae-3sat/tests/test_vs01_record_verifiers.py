@@ -11,6 +11,7 @@ from nae3sat import (
     verify_corpus_record,
     verify_obstruction_atlas_record,
     verify_profile_corpus_record,
+    verify_summary_collision_record,
 )
 
 ROOT = Path(__file__).parents[1]
@@ -34,6 +35,10 @@ def _cases():
         (
             _load("obstruction-atlas/vs05-obstruction-atlas.json"),
             verify_obstruction_atlas_record,
+        ),
+        (
+            _load("summary-collisions/vs06-summary-collisions.json"),
+            verify_summary_collision_record,
         ),
     )
 
