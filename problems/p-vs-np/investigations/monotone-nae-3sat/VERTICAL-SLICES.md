@@ -15,9 +15,9 @@
 
 | Slice | Name | Status | Current result | Next action |
 |---:|---|---|---|---|
-| `VS-01` | Canonical instance model | `PARTIAL` | Mathematical input model, normalization rules, encoding discipline, component decomposition, and complement symmetry are specified. | Implement and test a canonical parser, normalizer, serializer, and verifier. |
-| `VS-02` | Exact small-instance oracle | `READY` | Exhaustive-colouring decision method is defined conceptually; no executable oracle or exhaustively justified corpus is recorded. | Implement brute-force satisfiability and witness verification, then generate the first complete labelled domain. |
-| `VS-03` | Exact extension-profile engine | `READY` | Exact completion sets, equivalence classes, and well-defined transitions are formalized and proved in `NAE-004`. | Implement quotient construction for a fixed instance and ordering; cross-check against `VS-02`. |
+| `VS-01` | Canonical instance model | `PARTIAL` | Mathematical model and a reviewed implementation specification are complete. The specification fixes explicit labelled encoding, strict versioned JSON, invariants, APIs, fixtures, tests, CLI, complexity obligations, and exit gates. | Implement and test the package described in [VS-01-IMPLEMENTATION.md](VS-01-IMPLEMENTATION.md). |
+| `VS-02` | Exact small-instance oracle | `READY` | Exhaustive-colouring decision method is defined conceptually; no executable oracle or exhaustively justified corpus is recorded. | Implement brute-force satisfiability and witness verification after the VS-01 model exists. |
+| `VS-03` | Exact extension-profile engine | `READY` | Exact completion sets, equivalence classes, and well-defined transitions are formalized and proved in `NAE-004`. | Implement quotient construction after the VS-01 model and cross-check against `VS-02`. |
 | `VS-04` | Control calibration | `BLOCKED` | Required controls are identified; bounded-boundary correctness is proved in `NAE-005`. No shared empirical run exists. | Run the oracle and profile engine on bipartite, XOR, acyclic, bounded-width, and disconnected controls. |
 | `VS-05` | Minimal obstruction atlas | `BLOCKED` | Fano plane and minimally unsatisfiable instances are selected as targets. No exhaustive atlas exists. | Enumerate unsatisfiable instances and verify minimality by edge deletion. |
 | `VS-06` | Destroy naive summaries | `BLOCKED` | Candidate summaries are listed, but no verified same-summary/different-future collision has been recorded. | Search the corpus for collisions in degree, intersection, parity, local-consistency, and bounded-radius summaries. |
@@ -36,18 +36,21 @@
 
 **Work:**
 
-- represent a simple 3-uniform hypergraph on indexed vertices;
+- represent a simple 3-uniform hypergraph on explicitly listed indexed vertices;
 - validate pairwise distinct vertices in every edge;
 - sort and deduplicate edges;
-- remove isolated vertices or preserve them under an explicit convention;
+- preserve isolated vertices in canonical identity and provide a separate active-core operation;
 - split incidence-connected components;
-- provide deterministic canonical serialization;
+- provide deterministic, versioned canonical serialization;
 - verify a proposed two-colouring;
-- record binary encoded length.
+- record canonical encoded length and stable identifiers.
 
-**Exit gate:** Parser, normalizer, serializer, and witness verifier agree on a test suite covering empty instances, isolated vertices, duplicates, malformed edges, disconnected components, satisfiable instances, and unsatisfiable instances.
+**Exit gate:** Parser, normalizer, serializer, relabelling operations, component decomposition, and witness verifier agree on the complete required test suite and reproducible CLI run.
 
-**Evidence already available:** `OBJECT.md`, especially encoding, normalization, symmetry, and component rules.
+**Evidence:**
+
+- mathematical model: `OBJECT.md`;
+- reviewed executable specification: [VS-01-IMPLEMENTATION.md](VS-01-IMPLEMENTATION.md).
 
 ### `VS-02` — Exact small-instance oracle
 
@@ -92,14 +95,7 @@ and quotient prefix assignments by equal completion sets.
 
 **Goal:** Verify that the laboratory explains known easy cases before examining hard instances.
 
-**Controls:**
-
-- graph bipartiteness;
-- acyclic incidence hypergraphs;
-- bounded-boundary instances;
-- XOR-SAT analogues where the comparison is meaningful;
-- disconnected unions;
-- planar and occurrence-at-most-three NAE instances.
+**Controls:** graph bipartiteness, acyclic incidence hypergraphs, bounded-boundary instances, meaningful XOR analogues, disconnected unions, and planar or occurrence-at-most-three NAE instances.
 
 **Exit gate:** A report states why each control is easy, what exact state the engine observes, and whether compactness comes from small interfaces, algebraic closure, decomposition, or component factorization.
 
@@ -107,14 +103,7 @@ and quotient prefix assignments by equal completion sets.
 
 **Goal:** Identify the smallest exact failures of global compatibility.
 
-**Work:**
-
-- enumerate unsatisfiable instances in the declared domain;
-- test edge-minimal unsatisfiability;
-- test vertex-minimality separately if used;
-- include and independently verify the Fano plane;
-- record automorphism, degree, linearity, girth-like incidence data, and extension profiles;
-- separate isolated copies and decomposable obstructions from connected cores.
+**Work:** enumerate unsatisfiable instances in the declared domain; test edge-minimality and separately named vertex-minimality; independently verify the Fano plane; record structural and extension-profile data; separate disconnected copies from connected cores.
 
 **Exit gate:** Every object called minimal has all relevant proper subinstances verified satisfiable, with complete instance data and reproducible verification.
 
@@ -122,33 +111,17 @@ and quotient prefix assignments by equal completion sets.
 
 **Goal:** Eliminate insufficient invariants with complete collisions.
 
-**Summaries to test:**
+**Summaries:** degree sequence, edge-intersection multiset, pair co-occurrence data, parity and affine summaries, local-consistency closure, bounded-radius incidence neighbourhoods, component counts, elementary spectral data, and fixed-order low-moment completion statistics.
 
-- degree sequence;
-- edge-intersection multiset;
-- pair co-occurrence data;
-- parity and affine summaries;
-- local-consistency closure;
-- bounded-radius incidence neighbourhoods;
-- component counts and elementary spectral data;
-- fixed-order low-moment completion statistics.
+**Required disproof:** Two complete instances or partial states with the same proposed summary but different satisfiability or exact completion sets.
 
-**Required disproof format:** Two complete instances or partial states with the same proposed summary but different satisfiability or different exact completion sets.
-
-**Exit gate:** Each rejected summary has a smallest known verified collision and a statement of the remaining scope.
+**Exit gate:** Each rejected summary has a smallest known verified collision and a statement of remaining scope.
 
 ### `VS-07` — Measure genuine semantic merging
 
 **Goal:** Determine what exact compression exists beyond trivial symmetry.
 
-**Work:**
-
-- compare raw prefix assignments with boundary colourings and exact future classes;
-- separate dead-state merging from live-state merging;
-- quotient global complement symmetry explicitly;
-- optimize over small variable orderings;
-- measure maximum and total quotient size;
-- distinguish number of semantic classes from size of a representation for those classes.
+**Work:** compare raw prefix assignments, boundary colourings, and exact future classes; separate dead and live merging; quotient complement symmetry explicitly; optimize over small orderings; measure maximum and total quotient size; distinguish class count from representation size.
 
 **Exit gate:** A reproducible dataset identifies the first nontrivial live semantic merge and the first family showing significant quotient growth.
 
@@ -156,16 +129,7 @@ and quotient prefix assignments by equal completion sets.
 
 **Goal:** Turn empirical failure structure into one precise mathematical mechanism.
 
-**Required artifact:** One conjecture specifying:
-
-- the representation language;
-- its semantics;
-- construction and transition operations;
-- soundness and completeness target;
-- predicted total state bound;
-- mandatory controls;
-- first adversarial family;
-- stop condition.
+**Required artifact:** One conjecture specifying representation language, semantics, construction and transitions, correctness target, predicted total-state bound, controls, first adversarial family, and stop condition.
 
 **Exit gate:** The conjecture is falsifiable and does not hide satisfiability, equivalence, or transition computation inside an undefined operation.
 
@@ -173,23 +137,17 @@ and quotient prefix assignments by equal completion sets.
 
 **Goal:** Establish correctness before claiming universality.
 
-**Work:** Prove the invariant on the largest exact subclass supported by the evidence, with all quantifiers, boundary cases, encoding, runtime, memory, and total-state bounds.
+**Work:** Prove the invariant on the largest exact subclass supported by evidence, including quantifiers, boundaries, encoding, runtime, memory, and total-state bounds.
 
 **Existing baseline:** `NAE-005` proves the ordinary bounded-boundary dynamic programme. It does not validate a future stronger invariant.
 
-**Exit gate:** A complete `PROVED / DRAFT` theorem for the new invariant, followed by an independent attempt to break the proof.
+**Exit gate:** A complete `PROVED / DRAFT` theorem for the new invariant, followed by an independent proof attack.
 
 ### `VS-10` — Attack with hard families
 
-**Goal:** Test whether the candidate survives genuine hardness rather than curated examples.
+**Goal:** Test whether the candidate survives genuine hardness.
 
-**Families:**
-
-- Fano-derived and minimal obstruction families;
-- linear 4-regular Monotone NAE-3SAT;
-- verified NP-hard reduction outputs;
-- high-width instances;
-- Positive 1-in-3 SAT and graph 3-colouring transfers where defined.
+**Families:** Fano-derived and minimal obstructions, linear 4-regular Monotone NAE-3SAT, verified NP-hard reduction outputs, high-width instances, and defined transfers to Positive 1-in-3 SAT or graph 3-colouring.
 
 **Exit gate:** Produce a complete counterexample, a sharply restricted surviving theorem, or a candidate that survives all recorded attacks.
 
@@ -197,18 +155,7 @@ and quotient prefix assignments by equal completion sets.
 
 **Goal:** Prevent local polynomial reasoning from hiding exponential total work.
 
-**Audit:**
-
-- input and intermediate bit lengths;
-- construction cost;
-- equivalence and transition cost;
-- recursion depth and branching;
-- complete generated-state graph;
-- duplicate-state detection cost;
-- memory;
-- representation normalization;
-- witness reconstruction;
-- uniformity and deterministic correctness.
+**Audit:** input and intermediate bit lengths; construction cost; equivalence and transition cost; recursion depth and branching; complete generated-state graph; duplicate-state detection; memory; representation normalization; witness reconstruction; uniformity; deterministic correctness.
 
 **Exit gate:** A complete polynomial bound or an explicit superpolynomial obstruction for the named algorithm and representation.
 
@@ -216,19 +163,13 @@ and quotient prefix assignments by equal completion sets.
 
 **Goal:** Record the exact mathematical outcome.
 
-**Possible decisions:**
-
-- universal algorithm candidate survives — continue verification toward `P=NP`;
-- restricted theorem — retain with exact hypotheses;
-- conjecture disproved — preserve counterexample and close the mechanism;
-- representation-specific barrier — retain without inferring `P!=NP`;
-- no material mechanism — return to route selection.
+**Possible decisions:** universal candidate survives; restricted theorem; conjecture disproved; representation-specific barrier; or no material mechanism.
 
 **Exit gate:** Claim ledger, status, route record, evidence, limitations, and reopening conditions are synchronized.
 
 ## Immediate execution queue
 
-1. Finish `VS-01` by implementing the canonical model and verifier.
+1. Implement and close `VS-01` against [VS-01-IMPLEMENTATION.md](VS-01-IMPLEMENTATION.md).
 2. Execute `VS-02` on the first exhaustively justified domain.
 3. Implement `VS-03` and cross-check it against the oracle.
 4. Run `VS-04` and `VS-05` before designing a new invariant.
@@ -236,4 +177,4 @@ and quotient prefix assignments by equal completion sets.
 
 ## Progress discipline
 
-A slice may advance to `COMPLETE` only when its exit gate and evidence path are both recorded. Computational results remain `COMPUTATIONAL`; they do not promote a universal statement without an exhaustiveness argument or proof.
+A slice advances to `COMPLETE` only when its exit gate and evidence path are recorded. Computational results remain `COMPUTATIONAL`; they do not promote a universal statement without an exhaustiveness argument or proof.
