@@ -12,6 +12,8 @@ from .census import corpus_bytes
 from .errors import NAE3Error, ValidationError
 from .model import incidence_components
 from .oracle import count_satisfying_assignments, solve_exact
+from .profile import build_exact_profile, profile_bytes
+from .profile_census import profile_corpus_bytes
 from .serialization import FORMAT_VERSION, encoded_size_bytes, instance_id, parse_instance_json
 
 
@@ -44,6 +46,17 @@ def _write_atomic(path: Path, data: bytes) -> None:
         raise
 
 
+def _parse_ordering(text: str | None, n: int) -> tuple[int, ...]:
+    if text is None:
+        return tuple(range(n))
+    if text == "" and n == 0:
+        return ()
+    try:
+        return tuple(int(part) for part in text.split(","))
+    except ValueError as exc:
+        raise ValidationError("ordering must be a comma-separated integer permutation") from exc
+
+
 def main(argv: Sequence[str] | None = None) -> int:
     parser = argparse.ArgumentParser(prog="python3 -m nae3sat.cli")
     sub = parser.add_subparsers(dest="command", required=True)
@@ -62,6 +75,15 @@ def main(argv: Sequence[str] | None = None) -> int:
     census.add_argument("--max-vertices", type=int, default=5)
     census.add_argument("--output", type=Path, required=True)
     census.add_argument("--allow-large-domain", action="store_true")
+
+    profile = sub.add_parser("profile")
+    profile.add_argument("path", type=Path)
+    profile.add_argument("--ordering")
+
+    profile_census = sub.add_parser("profile-census")
+    profile_census.add_argument("--max-vertices", type=int, default=5)
+    profile_census.add_argument("--output", type=Path, required=True)
+    profile_census.add_argument("--allow-large-domain", action="store_true")
 
     args = parser.parse_args(argv)
     try:
@@ -86,20 +108,13 @@ def main(argv: Sequence[str] | None = None) -> int:
             )
         elif args.command == "solve":
             instance = _load(args.path)
-            result = solve_exact(
-                instance,
-                use_symmetry=not args.no_symmetry,
-            )
+            result = solve_exact(instance, use_symmetry=not args.no_symmetry)
             _dump(
                 {
                     "format": f"{FORMAT_VERSION}-solve",
                     "id": instance_id(instance),
                     "satisfiable": result.satisfiable,
-                    "witness": (
-                        list(result.witness)
-                        if result.witness is not None
-                        else None
-                    ),
+                    "witness": list(result.witness) if result.witness is not None else None,
                     "assignments_tested": result.assignments_tested,
                     "symmetry_reduction": result.symmetry_reduction,
                 }
@@ -110,19 +125,37 @@ def main(argv: Sequence[str] | None = None) -> int:
                 {
                     "format": f"{FORMAT_VERSION}-count",
                     "id": instance_id(instance),
-                    "satisfying_assignments": count_satisfying_assignments(
-                        instance
-                    ),
+                    "satisfying_assignments": count_satisfying_assignments(instance),
+                }
+            )
+        elif args.command == "census":
+            if args.max_vertices < 0:
+                raise ValidationError("max vertices must be nonnegative")
+            if args.max_vertices > 5 and not args.allow_large_domain:
+                raise ValidationError("max vertices above 5 requires --allow-large-domain")
+            _write_atomic(args.output, corpus_bytes(args.max_vertices))
+        elif args.command == "profile":
+            instance = _load(args.path)
+            ordering = _parse_ordering(args.ordering, instance.n)
+            exact = build_exact_profile(instance, ordering)
+            classes = [level.class_count for level in exact.levels]
+            _dump(
+                {
+                    "format": "nae3-vs03-summary-v1",
+                    "id": instance_id(instance),
+                    "ordering": list(exact.ordering),
+                    "satisfiable": exact.satisfiable,
+                    "max_classes": max(classes),
+                    "total_classes": sum(classes),
+                    "profile_bytes": len(profile_bytes(exact)),
                 }
             )
         else:
             if args.max_vertices < 0:
                 raise ValidationError("max vertices must be nonnegative")
             if args.max_vertices > 5 and not args.allow_large_domain:
-                raise ValidationError(
-                    "max vertices above 5 requires --allow-large-domain"
-                )
-            _write_atomic(args.output, corpus_bytes(args.max_vertices))
+                raise ValidationError("max vertices above 5 requires --allow-large-domain")
+            _write_atomic(args.output, profile_corpus_bytes(args.max_vertices))
         return 0
     except (NAE3Error, OSError) as exc:
         print(f"error: {exc}", file=sys.stderr)
