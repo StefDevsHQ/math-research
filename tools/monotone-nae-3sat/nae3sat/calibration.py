@@ -220,7 +220,7 @@ def calibration_payload() -> dict[str, object]:
         "external_boundaries": {
             "planar_nae3sat": {
                 "status": "ESTABLISHED / CHECKED",
-                "source": "Darmann-Doecker-2019-planar-nae3sat",
+                "source": "Moret-1988-planar-nae3sat",
             },
             "occurrence_at_most_three": {
                 "status": "ESTABLISHED / CHECKED",
