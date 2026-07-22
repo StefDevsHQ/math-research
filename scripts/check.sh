@@ -107,6 +107,7 @@ check_fast() {
   "$PYTHON" -m unittest discover -s tests -p 'test_vs06.py' -v
   "$PYTHON" -m unittest discover -s tests -p 'test_vs07.py' -v
   "$PYTHON" -m unittest discover -s tests -p 'test_vs08.py' -v
+  "$PYTHON" -m unittest discover -s tests -p 'test_nae016_lower_bound.py' -v
   "$PYTHON" -m nae3sat.cli validate tests/fixtures/fano-plane.json >/dev/null
   "$PYTHON" -m nae3sat.cli solve tests/fixtures/single-edge.json >/dev/null
   "$PYTHON" -m nae3sat.cli count tests/fixtures/single-edge.json >/dev/null
