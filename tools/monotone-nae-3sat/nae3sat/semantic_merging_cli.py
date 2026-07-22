@@ -8,7 +8,7 @@ import tempfile
 from pathlib import Path
 from typing import Sequence
 
-from .semantic_merging_atlas import semantic_merging_bytes
+from .semantic_merging_record import semantic_merging_bytes
 
 
 def _write_atomic(path: Path, data: bytes) -> None:
