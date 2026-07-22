@@ -100,21 +100,29 @@ def _fan_samples() -> list[dict[str, object]]:
         if middle.live_boundary_state_count != 1 << (edge_count + 1):
             raise AssertionError("fan boundary-state formula failed")
         if middle.exact_cross_orbit_merge_excess != 0:
-            raise AssertionError("fan exact merging must not cross symmetry orbits")
+            raise AssertionError(
+                "fan exact merging must not cross symmetry orbits"
+            )
         if max(level.boundary_width for level in good.levels) > 2:
             raise AssertionError("interleaved fan ordering exceeded width two")
-        if good.peak_live_semantic_classes > 5:
-            raise AssertionError("interleaved fan ordering exceeded five live classes")
+        if good.peak_live_semantic_classes > 4:
+            raise AssertionError(
+                "interleaved fan ordering exceeded four live classes"
+            )
         samples.append(
             {
                 "edge_count": edge_count,
                 "vertices": instance.n,
                 "bad_middle": _level_record(middle),
-                "bad_peak_live_semantic_classes": bad.peak_live_semantic_classes,
+                "bad_peak_live_semantic_classes": (
+                    bad.peak_live_semantic_classes
+                ),
                 "bad_peak_live_semantic_component_orbits": (
                     bad.peak_live_semantic_component_orbits
                 ),
-                "bad_peak_live_boundary_states": bad.peak_live_boundary_states,
+                "bad_peak_live_boundary_states": (
+                    bad.peak_live_boundary_states
+                ),
                 "bad_profile_json_bytes": bad.exact_profile_json_bytes,
                 "good_max_boundary_width": max(
                     level.boundary_width for level in good.levels
@@ -125,7 +133,9 @@ def _fan_samples() -> list[dict[str, object]]:
                 "good_peak_live_semantic_component_orbits": (
                     good.peak_live_semantic_component_orbits
                 ),
-                "good_peak_live_boundary_states": good.peak_live_boundary_states,
+                "good_peak_live_boundary_states": (
+                    good.peak_live_boundary_states
+                ),
                 "good_profile_json_bytes": good.exact_profile_json_bytes,
             }
         )
@@ -252,6 +262,10 @@ def semantic_merging_payload() -> dict[str, object]:
             "good_ordering": "c,a_1,b_1,...,a_k,b_k",
             "good_ordering_theorem": {
                 "maximum_boundary_width": 2,
+                # The v1 record retains the original conservative live-class
+                # ceiling. The authoritative sharp theorem and executable
+                # assertion are four live classes; five is also a valid but
+                # weaker ceiling and leaves the committed v1 bytes stable.
                 "maximum_live_exact_classes": 5,
             },
             "samples": _fan_samples(),

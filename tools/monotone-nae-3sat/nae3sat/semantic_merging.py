@@ -7,7 +7,7 @@ from dataclasses import dataclass
 from .controls import processed_boundary
 from .errors import ValidationError
 from .model import Hypergraph3, incidence_components, normalize_instance
-from .profile import build_exact_profile, profile_bytes, validate_ordering
+from .profile import ExactProfile, build_exact_profile, profile_bytes, validate_ordering
 
 
 def _require_instance(instance: object) -> Hypergraph3:
@@ -33,21 +33,16 @@ def _project_prefix(
 ) -> int:
     result = 0
     for position in positions:
-        result = (result << 1) | _prefix_bit(
-            prefix_index,
-            level,
-            position,
-        )
+        result = (result << 1) | _prefix_bit(prefix_index, level, position)
     return result
 
 
 def _processed_consistent(
     instance: Hypergraph3,
-    ordering: tuple[int, ...],
+    positions: dict[int, int],
     level: int,
     prefix_index: int,
 ) -> bool:
-    positions = {vertex: index for index, vertex in enumerate(ordering)}
     for edge in instance.edges:
         edge_positions = tuple(positions[vertex] for vertex in edge)
         if max(edge_positions) >= level:
@@ -80,11 +75,15 @@ def _component_flip_group(
         generators.append((prefix_xor, suffix_xor))
 
     group: set[tuple[int, int]] = {(0, 0)}
-    for generator in generators:
-        group |= {
-            (prefix ^ generator[0], suffix ^ generator[1])
-            for prefix, suffix in tuple(group)
+    for prefix_generator, suffix_generator in generators:
+        translated = {
+            (
+                prefix ^ prefix_generator,
+                suffix ^ suffix_generator,
+            )
+            for prefix, suffix in group
         }
+        group |= translated
     return tuple(sorted(group))
 
 
@@ -99,11 +98,13 @@ def _permute_completion_mask(mask: int, suffix_xor: int) -> int:
     return result
 
 
-def _fixed_width_bytes(count: int, bit_width: int) -> int:
+def _fixed_width_payload_bytes(count: int, bit_width: int) -> int:
+    """Raw fixed-width payload bytes, excluding framing and metadata."""
     return count * ((bit_width + 7) // 8)
 
 
-def _packed_identifier_bytes(item_count: int, class_count: int) -> int:
+def _packed_identifier_payload_bytes(item_count: int, class_count: int) -> int:
+    """Raw packed identifier bytes, excluding framing and metadata."""
     bits_per_identifier = (
         0 if class_count <= 1 else (class_count - 1).bit_length()
     )
@@ -140,30 +141,42 @@ class SemanticMergingLevel:
             for field in self.__dataclass_fields__
         )
         if any(type(value) is not int or value < 0 for value in integer_fields):
-            raise ValidationError("semantic-merging metrics must be nonnegative integers")
+            raise ValidationError(
+                "semantic-merging metrics must be nonnegative integers"
+            )
         if self.prefix_count != self.live_prefix_count + self.dead_prefix_count:
             raise ValidationError("live and dead prefixes must partition all prefixes")
         if self.semantic_class_count != (
             self.live_semantic_class_count + self.dead_class_count
         ):
-            raise ValidationError("live and dead classes must partition semantic classes")
+            raise ValidationError(
+                "live and dead classes must partition semantic classes"
+            )
         if self.dead_class_count not in (0, 1):
             raise ValidationError("there is at most one empty completion class")
         if self.live_semantic_class_count > self.live_boundary_state_count:
-            raise ValidationError("exact boundary states must determine live semantics")
+            raise ValidationError(
+                "exact boundary states must determine live semantics"
+            )
         if self.processed_valid_boundary_state_count != (
             self.live_boundary_state_count + self.dead_boundary_state_count
         ):
-            raise ValidationError("live and dead boundary states must partition valid states")
+            raise ValidationError(
+                "live and dead boundary states must partition valid states"
+            )
         if self.live_semantic_component_orbit_count > (
             self.live_prefix_component_orbit_count
         ):
-            raise ValidationError("semantic symmetry quotient cannot exceed prefix orbit count")
+            raise ValidationError(
+                "semantic symmetry quotient cannot exceed prefix orbit count"
+            )
         if self.orbit_normalized_merge_excess != (
             self.live_prefix_component_orbit_count
             - self.live_semantic_component_orbit_count
         ):
-            raise ValidationError("orbit-normalized merge excess is inconsistent")
+            raise ValidationError(
+                "orbit-normalized merge excess is inconsistent"
+            )
 
 
 @dataclass(frozen=True, slots=True)
@@ -176,11 +189,23 @@ class SemanticMergingProfile:
     def __post_init__(self) -> None:
         instance = _require_instance(self.instance)
         ordering = validate_ordering(instance, self.ordering)
+        if type(self.levels) is not tuple:
+            raise ValidationError("levels must be a tuple")
         if len(self.levels) != instance.n + 1:
-            raise ValidationError("one semantic-merging level is required per prefix length")
-        if any(level.level != index for index, level in enumerate(self.levels)):
-            raise ValidationError("semantic-merging levels must be ordered")
-        if type(self.exact_profile_json_bytes) is not int or self.exact_profile_json_bytes < 0:
+            raise ValidationError(
+                "one semantic-merging level is required per prefix length"
+            )
+        for index, level in enumerate(self.levels):
+            if not isinstance(level, SemanticMergingLevel):
+                raise ValidationError(
+                    "every level must be a SemanticMergingLevel"
+                )
+            if level.level != index:
+                raise ValidationError("semantic-merging levels must be ordered")
+        if (
+            type(self.exact_profile_json_bytes) is not int
+            or self.exact_profile_json_bytes < 0
+        ):
             raise ValidationError("profile byte size must be nonnegative")
         if ordering != self.ordering:
             raise ValidationError("ordering is not canonical")
@@ -201,17 +226,13 @@ class SemanticMergingProfile:
         return max(level.live_boundary_state_count for level in self.levels)
 
 
-def measure_semantic_merging_level(
+def _measure_level_from_exact(
     instance: Hypergraph3,
-    ordering: object,
-    level: object,
+    ordering: tuple[int, ...],
+    exact: ExactProfile,
+    level: int,
 ) -> SemanticMergingLevel:
-    instance = _require_instance(instance)
-    ordering = validate_ordering(instance, ordering)
-    level = _strict_level(level, instance.n)
-    exact = build_exact_profile(instance, ordering)
     exact_level = exact.levels[level]
-
     prefix_masks = tuple(
         exact_level.class_masks[class_id]
         for class_id in exact_level.assignment_class_ids
@@ -247,10 +268,10 @@ def measure_semantic_merging_level(
         if len(orbits) > 1
     )
 
-    boundary_vertices = processed_boundary(instance, ordering, level)
     ordering_positions = {
         vertex: position for position, vertex in enumerate(ordering)
     }
+    boundary_vertices = processed_boundary(instance, ordering, level)
     boundary_positions = tuple(
         ordering_positions[vertex] for vertex in boundary_vertices
     )
@@ -261,10 +282,17 @@ def measure_semantic_merging_level(
     valid_boundary_states = {
         _project_prefix(prefix, level, boundary_positions)
         for prefix in range(1 << level)
-        if _processed_consistent(instance, ordering, level, prefix)
+        if _processed_consistent(
+            instance,
+            ordering_positions,
+            level,
+            prefix,
+        )
     }
     if len(valid_boundary_states) != exact_level.processed_valid_boundary_states:
-        raise AssertionError("independent boundary-state count disagrees with VS-03")
+        raise AssertionError(
+            "independent boundary-state count disagrees with VS-03"
+        )
     if not live_boundary_states <= valid_boundary_states:
         raise AssertionError("live boundary state was not processed-valid")
 
@@ -306,23 +334,35 @@ def measure_semantic_merging_level(
             valid_boundary_states - live_boundary_states
         ),
         completion_bits_per_mask=completion_bits,
-        dense_semantic_mask_bytes=_fixed_width_bytes(
+        dense_semantic_mask_bytes=_fixed_width_payload_bytes(
             semantic_class_count,
             completion_bits,
         ),
-        dense_live_semantic_mask_bytes=_fixed_width_bytes(
+        dense_live_semantic_mask_bytes=_fixed_width_payload_bytes(
             live_semantic_class_count,
             completion_bits,
         ),
-        packed_assignment_class_bytes=_packed_identifier_bytes(
+        packed_assignment_class_bytes=_packed_identifier_payload_bytes(
             1 << level,
             semantic_class_count,
         ),
-        explicit_live_boundary_bytes=_fixed_width_bytes(
+        explicit_live_boundary_bytes=_fixed_width_payload_bytes(
             len(live_boundary_states),
             boundary_width,
         ),
     )
+
+
+def measure_semantic_merging_level(
+    instance: Hypergraph3,
+    ordering: object,
+    level: object,
+) -> SemanticMergingLevel:
+    instance = _require_instance(instance)
+    ordering = validate_ordering(instance, ordering)
+    level = _strict_level(level, instance.n)
+    exact = build_exact_profile(instance, ordering)
+    return _measure_level_from_exact(instance, ordering, exact, level)
 
 
 def measure_semantic_merging_profile(
@@ -333,7 +373,7 @@ def measure_semantic_merging_profile(
     ordering = validate_ordering(instance, ordering)
     exact = build_exact_profile(instance, ordering)
     levels = tuple(
-        measure_semantic_merging_level(instance, ordering, level)
+        _measure_level_from_exact(instance, ordering, exact, level)
         for level in range(instance.n + 1)
     )
     return SemanticMergingProfile(
