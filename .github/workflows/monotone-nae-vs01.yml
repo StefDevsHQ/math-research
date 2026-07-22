@@ -36,11 +36,11 @@ jobs:
         run: python -m compileall -q nae3sat tests
       - name: Test
         run: python -m unittest discover -s tests -v
-      - name: Full independent VS-03 reference gate
+      - name: Full independent VS-03 reference gates
         if: matrix.python-version == '3.13'
         env:
           NAE3_FULL_VS03_REFERENCE: "1"
-        run: python -m unittest discover -s tests -p 'test_vs03.py' -v
+        run: python -m unittest discover -s tests -p 'test_vs03*.py' -v
       - name: Validate fixture
         run: python -m nae3sat.cli validate tests/fixtures/fano-plane.json
       - name: Solve and count fixture
