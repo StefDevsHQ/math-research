@@ -19,6 +19,8 @@ This is the authoritative investigation-level ledger for Monotone NAE-3SAT claim
 | `NAE-011` | For every unsatisfiable Monotone NAE-3SAT instance and every variable ordering, every prefix has the empty set of satisfying full completions; consequently the exact successful-completion quotient has exactly one dead equivalence class at every level. | `PROVED` | `CHECKED` | [VS-05 all-ordering profile theorem](VS-05-AUDIT.md#exact-all-ordering-profile-evidence) | 2026-07-22 |
 | `NAE-012` | For every fixed radius `r>=1`, there are two conditioned Monotone NAE-3SAT residuals whose underlying binary inequality graphs have identical multisets of rooted radius-`r` neighbourhoods but whose residual satisfiability differs. | `PROVED` | `CHECKED` | [VS-06 bounded-radius construction](VS-06-AUDIT.md#bounded-radius-theorem--nae-012) | 2026-07-22 |
 | `NAE-013` | The explicit degree, intersection, pair-codegree, parity, second-moment, incidence-Gram-spectrum, root-GAC, proper-induced-satisfiability, boundary-weight, and boundary-parity summaries in VS-06 each admit a checked same-summary/different-semantics collision. | `COMPUTATIONAL` | `CHECKED` | [VS-06 collision atlas](VS-06-AUDIT.md#explicit-collision-audit) | 2026-07-22 |
+| `NAE-014` | For the fan hypergraph `F_k` with edges `{c,a_i,b_i}`, the ordering `c,a_1,...,a_k,b_1,...,b_k` has `2^(k+1)-1` live exact completion classes at level `k+1`, while the interleaved ordering `c,a_1,b_1,...,a_k,b_k` has processed boundary width at most two and therefore at most four live exact classes at every level. | `PROVED` | `CHECKED` | [VS-07 fan ordering-separation theorem](VS-07-AUDIT.md#claim-nae-014--fan-ordering-separation-theorem) | 2026-07-22 |
+| `NAE-015` | In the exhaustive domain of all labelled instances and all orderings through four vertices, genuine all-live exact merging beyond component-complement prefix orbits occurs; the first recorded witness is the two-edge four-vertex instance at ordering `(0,2,3,1)` and level three. | `COMPUTATIONAL` | `CHECKED` | [VS-07 finite genuine-merging evidence](VS-07-AUDIT.md#claim-nae-015--finite-genuine-merging-evidence) | 2026-07-22 |
 
 ## Current accepted state
 
@@ -30,11 +32,14 @@ The investigation has:
 - proved incidence-forest and deletion-monotonicity theorems;
 - checked finite obstruction and summary-collision atlases;
 - a proved dead-quotient limitation for unsatisfiable instances;
-- a proved fixed-radius locality failure family for conditioned binary inequality residuals.
+- a proved fixed-radius locality failure family for conditioned binary inequality residuals;
+- an exact measurement framework separating dead collapse, complement symmetry, live semantic merging, boundary states, encoding size, and ordering effects;
+- a proved family with exponential fixed-order live quotient growth but a constant-width alternative ordering;
+- finite exact evidence that genuine all-live merging exists beyond component-complement prefix identification.
 
-`NAE-006` remains unresolved. VS-06 eliminates only the explicitly defined summaries and every fixed bounded radius in the stated residual graph model. It does not exclude richer symbolic representations, radii growing with input size, or algorithms that combine information not captured by these summaries.
+`NAE-006` remains unresolved. VS-06 eliminates only explicitly defined summaries and bounded locality. VS-07 shows that exact live quotients can be both smaller than raw boundary state and exponentially large under a poor order, but it does not select or lower-bound a general symbolic representation language.
 
-`NAE-013` is finite exact computation over complete explicit witnesses. It is not an asymptotic lower bound.
+`NAE-015` is finite exact computation. It is not an asymptotic lower bound. `NAE-014` is an ordering-separation theorem on an easy family, not an intrinsic hardness result.
 
 ## Claim boundaries
 
@@ -44,7 +49,9 @@ The investigation has:
 - Polynomial recursion depth or local branching does not bound the complete computation graph.
 - A compact syntax is insufficient unless construction, transition, equivalence, acceptance, and total generated representation are polynomially bounded.
 - A lower bound for one representation model is model-specific unless a polynomial-overhead subsumption theorem is proved.
-- Finite exact-profile, control, obstruction, and collision measurements do not imply asymptotic quotient bounds.
+- Finite exact-profile, control, obstruction, collision, and semantic-merging measurements do not imply universal asymptotic quotient bounds.
+- A large quotient under one ordering does not imply every ordering has a large quotient.
+- Exact quotient count does not lower-bound an unspecified symbolic representation.
 - Planarity and occurrence-at-most-three tractability remain imported results, not project-original proofs.
 - Named Fano evidence is not an exhaustive seven-vertex census.
 - Exact boundary-assignment completeness is a fixed-instance, fixed-ordering, fixed-processing-level statement.

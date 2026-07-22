@@ -14,104 +14,97 @@ Every slice is governed by the [building-block quality gate](BUILDING-BLOCK-GATE
 | `VS-03` | Exact extension-profile engine | `COMPLETE / CHECKED` | Exact completion masks, semantic classes, transitions, boundary metrics, and profile census. | Preserve as semantic reference. |
 | `VS-04` | Control calibration | `COMPLETE / CHECKED` | Graph parity, affine XOR, incidence forests, bounded boundaries, and disconnected products. | Use as controls only. |
 | `VS-05` | Minimal obstruction atlas | `COMPLETE / CHECKED` | `K_5^(3)`, Fano certificates, all-ordering profiles, and dead-quotient theorem. | Preserve as obstruction baseline. |
-| `VS-06` | Destroy naive summaries | `COMPLETE / CHECKED` | Ten explicit collisions and a proved fixed-radius locality-failure family; exact boundary assignment retained. | Proceed to VS-07. |
-| `VS-07` | Measure semantic merging | `READY` | Exact profiles and collision controls are available. | Separate live merging, symmetry, dead collapse, width, quotient count, and representation size. |
-| `VS-08` | Extract first atomic invariant | `BLOCKED` | No representation language selected. | Use checked VS-07 evidence. |
+| `VS-06` | Destroy naive summaries | `COMPLETE / CHECKED` | Ten explicit collisions and a proved fixed-radius locality-failure family; exact boundary assignment retained. | Preserve as falsification baseline. |
+| `VS-07` | Measure semantic merging | `COMPLETE / CHECKED` | Genuine all-live merges, exact symmetry separation, exhaustive `n<=4` census, and fan ordering-separation theorem. | Use to define VS-08 representation. |
+| `VS-08` | Extract first atomic invariant | `READY` | Residual exact merging exists, but no representation language is selected. | Specify and attack one exact residual representation. |
 | `VS-09` | Prove restricted theorem | `PARTIAL` | Bounded-boundary and incidence-forest theorems are checked. | Extend only after VS-08. |
 | `VS-10` | Attack with hard families | `BLOCKED` | Hard controls are registered. | Attack a checked VS-08 invariant. |
 | `VS-11` | Global complexity audit | `BLOCKED` | Audit criteria exist. | Count the complete computation graph of a candidate. |
 | `VS-12` | Route decision | `BLOCKED` | Claim discipline is prepared. | Decide after VS-08 through VS-11. |
 
-## Phase I — trusted laboratory (`VS-01` through `VS-05`)
+## Trusted laboratory — VS-01 through VS-07
 
 **Status:** `COMPLETE / CHECKED`.
 
-Exports canonical instances, exact finite solving, exact fixed-order completion semantics, tractable controls, and a minimal-obstruction atlas. It exports no universal polynomial algorithm or general lower bound.
+The laboratory exports canonical instances, exact finite solving, exact fixed-order completion semantics, tractable controls, obstruction and summary-collision atlases, and exact live semantic-merging measurements. It exports no universal polynomial algorithm or general representation lower bound.
 
-Evidence: [phase closeout audit](VS-01-05-PHASE-AUDIT.md).
+## VS-06 retained boundary
 
-## VS-06 — Destroy naive summaries
+The committed collision atlas destroys ten explicit summaries and the fixed-radius theorem destroys every constant locality radius in the stated residual graph model. Exact boundary assignment remains complete but may expose `2^w` states.
 
-**Exit gate:** satisfied.
-
-### Exact semantic targets
-
-- whole-instance summaries are judged by exact satisfiability;
-- prefix summaries are judged by exact completion masks;
-- bounded-radius summaries are judged by conditioned residual satisfiability under an explicit anchored encoding.
-
-### Disproved summaries
-
-The committed atlas gives complete same-summary/different-semantics witnesses for:
-
-1. sorted degree sequence;
-2. hyperedge-intersection multiset;
-3. pair-codegree multiset;
-4. parity data;
-5. second moments;
-6. incidence-Gram characteristic polynomial;
-7. root generalized arc consistency;
-8. satisfiability of every proper induced vertex subinstance;
-9. boundary Hamming weight;
-10. boundary Hamming parity.
-
-These are summary-specific disproofs, not a lower bound against arbitrary representations.
-
-### Fixed-radius theorem
-
-For every `r>=1`, the graph unions
-
-- `C_(2r+3) disjoint-union C_(2r+3)`, and
-- `C_(2r+2) disjoint-union C_(2r+4)`
-
-have identical multisets of rooted radius-`r` neighbourhoods and opposite bipartiteness. The anchored NAE encoding converts this into opposite conditioned residual satisfiability. This is `NAE-012 — PROVED / CHECKED`.
-
-### Retained control
-
-Processed consistency plus the exact processed-boundary assignment determines the remaining completion set. This recovers the known `2^w` boundary dynamic programme and may still be exponential when the boundary is large.
-
-Evidence: [implementation specification](VS-06-IMPLEMENTATION.md), [completion audit](VS-06-AUDIT.md), executable summary module, deterministic collision atlas, and exact tests.
+Evidence: [VS-06 implementation](VS-06-IMPLEMENTATION.md) and [VS-06 audit](VS-06-AUDIT.md).
 
 ## VS-07 — Measure genuine semantic merging
 
-Separate and measure:
+**Exit gate:** satisfied.
 
-- raw prefix assignments;
-- processed-valid assignments;
-- exact boundary assignments;
-- complement-symmetry identifications;
-- dead-state merging;
-- live exact semantic merging;
-- quotient count;
-- representation bytes;
-- ordering dependence.
+### Separated quantities
 
-Exit with reproducible first live merges, first significant growth families, and a precise statement of what is semantic compression versus merely compact syntax.
+The executable measurement distinguishes:
+
+1. raw prefixes;
+2. live and dead prefixes;
+3. exact live and dead classes;
+4. component-complement prefix orbits;
+5. semantic mask orbits under suffix complement;
+6. genuine exact merges across prefix-orbit boundaries;
+7. processed-valid and live boundary states;
+8. reference representation bytes;
+9. ordering dependence.
+
+### First genuine all-live merge
+
+For the instance with edges `{012,013}`, ordering `(0,2,3,1)`, and level three, the eight completion masks are
+
+```text
+2,2,2,3,3,1,1,1.
+```
+
+All prefixes are live. Three exact classes merge four prefix complement orbits into two semantic complement orbits. This is finite checked evidence, not an asymptotic theorem.
+
+### Fan ordering-separation theorem
+
+For `F_k` with edges `{c,a_i,b_i}`:
+
+- order `c,a_1,...,a_k,b_1,...,b_k` has `2^(k+1)-1` live exact classes at level `k+1` and `2^k` symmetry-normalized semantic orbits;
+- no exact class at that level merges distinct prefix complement orbits;
+- the interleaved order `c,a_1,b_1,...,a_k,b_k` has boundary width at most two and at most four live exact classes.
+
+Therefore exponential fixed-order growth can be entirely ordering-induced. This does not lower-bound all orderings or symbolic representations.
+
+### Finite exhaustive census
+
+Every labelled instance and every ordering through four vertices is included. The record contains 384 four-vertex profiles and 96 all-live levels with genuine cross-orbit exact merging.
+
+Evidence: [VS-07 implementation](VS-07-IMPLEMENTATION.md), [VS-07 audit](VS-07-AUDIT.md), deterministic semantic-merging record, and independent exact tests.
 
 ## VS-08 — Extract first atomic invariant
 
-State one falsifiable representation language with exact semantics, construction, transitions, equality, acceptance, encoded size, proposed total-state bound, controls, adversarial family, and stop condition.
+State one falsifiable representation language with:
 
-## VS-09 — Prove a restricted theorem
+- exact semantics;
+- construction and canonical equality;
+- restriction, transition, conjunction, and merge;
+- acceptance;
+- encoded size;
+- proposed total-state bound;
+- tractable controls;
+- adversarial high-width and reduction-generated families;
+- a precise stop condition.
 
-Prove the invariant first on the largest supported exact subclass, including assumptions, boundaries, encoding, runtime, memory, and total generated-state bounds.
+The recommended first target is residual-constraint normalization under component complement, because VS-07 demonstrates genuine future-equivalence merging not explained by direct boundary equality while also showing that complement symmetry alone can be exponentially insufficient.
 
-## VS-10 — Attack with hard families
+## VS-09 through VS-12
 
-Test minimal obstructions, linear 4-regular instances, verified reduction outputs, high-width families, and defined sibling transfers.
-
-## VS-11 — Global complexity audit
-
-Count input and intermediate bit lengths, construction, equality, transitions, branching, complete generated-state graph, duplicate detection, memory, normalization, witness reconstruction, and deterministic correctness.
-
-## VS-12 — Route decision
-
-Record a surviving universal candidate, restricted theorem, complete disproof, representation-specific barrier, or closure. Synchronize claims, evidence, limitations, and reopening conditions.
+- `VS-09`: prove any surviving invariant first on its largest exact restricted class.
+- `VS-10`: attack with Fano, linear 4-regular, high-width, and reduction-generated controls.
+- `VS-11`: audit input length, construction, equality, transitions, branching, complete state graph, and total representation size.
+- `VS-12`: retain a universal candidate, restricted theorem, model-specific barrier, disproof, or closeout.
 
 ## Immediate queue
 
-1. Preserve `VS-01` through `VS-06` without expanding completed-slice scope.
-2. Execute `VS-07` semantic-merging measurements.
-3. Do not activate a representation route before VS-07 identifies an exact mechanism worth formalizing.
+1. Preserve `VS-01` through `VS-07` without expanding completed-slice scope.
+2. Execute `VS-08` only after writing the full atomic representation contract.
+3. Do not infer tractability from semantic merging or hardness from a bad ordering.
 
 Computational results remain `COMPUTATIONAL` unless accompanied by a proof or complete exhaustiveness argument.

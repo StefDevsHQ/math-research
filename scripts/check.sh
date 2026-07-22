@@ -69,6 +69,7 @@ from nae3sat import (
     verify_profile_corpus_record,
     verify_summary_collision_record,
 )
+from nae3sat.semantic_merging_validation import verify_semantic_merging_record
 
 records = (
     (Path("corpus/all-labelled-n-le-5.json"), verify_corpus_record),
@@ -76,6 +77,7 @@ records = (
     (Path("calibration/vs04-calibration.json"), verify_calibration_record),
     (Path("obstruction-atlas/vs05-obstruction-atlas.json"), verify_obstruction_atlas_record),
     (Path("summary-collisions/vs06-summary-collisions.json"), verify_summary_collision_record),
+    (Path("semantic-merging/vs07-semantic-merging.json"), verify_semantic_merging_record),
 )
 for path, verify in records:
     value = json.loads(path.read_text(encoding="utf-8"))
@@ -101,6 +103,7 @@ check_fast() {
     tests.test_vs05.NamedObstructionTests.test_fano_certificates \
     -v
   "$PYTHON" -m unittest discover -s tests -p 'test_vs06.py' -v
+  "$PYTHON" -m unittest discover -s tests -p 'test_vs07.py' -v
   "$PYTHON" -m nae3sat.cli validate tests/fixtures/fano-plane.json >/dev/null
   "$PYTHON" -m nae3sat.cli solve tests/fixtures/single-edge.json >/dev/null
   "$PYTHON" -m nae3sat.cli count tests/fixtures/single-edge.json >/dev/null
@@ -132,6 +135,8 @@ check_full() {
   cmp "$output_dir/vs05.json" obstruction-atlas/vs05-obstruction-atlas.json
   "$PYTHON" -m nae3sat.cli summary-collisions --output "$output_dir/vs06.json"
   cmp "$output_dir/vs06.json" summary-collisions/vs06-summary-collisions.json
+  "$PYTHON" -m nae3sat.semantic_merging_cli --output "$output_dir/vs07.json"
+  cmp "$output_dir/vs07.json" semantic-merging/vs07-semantic-merging.json
   printf '%s\n' "full checks passed"
 }
 
