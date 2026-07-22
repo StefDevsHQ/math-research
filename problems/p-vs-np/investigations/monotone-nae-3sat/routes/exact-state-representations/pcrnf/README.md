@@ -59,9 +59,9 @@ When stronger semantic merging is required, use PCRNF as the exact substrate and
 
 ## Evidence
 
-- [VS-08 preparation](../../../../VS-08-PREPARATION.md)
-- [VS-08 implementation](../../../../VS-08-IMPLEMENTATION.md)
-- [VS-08 completion and status-correction audit](../../../../VS-08-AUDIT.md)
+- [VS-08 preparation](../../../VS-08-PREPARATION.md)
+- [VS-08 implementation](../../../VS-08-IMPLEMENTATION.md)
+- [VS-08 completion and status-correction audit](../../../VS-08-AUDIT.md)
 - executable modules under `tools/monotone-nae-3sat/nae3sat/pcrnf*.py`
 - deterministic record under `tools/monotone-nae-3sat/pcrnf/`
 
