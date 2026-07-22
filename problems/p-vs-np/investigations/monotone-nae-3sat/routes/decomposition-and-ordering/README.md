@@ -12,11 +12,10 @@ This route includes ordinary width only as a baseline. A universal result requir
 
 | ID | Subroute | Status | Result or objective |
 |---|---|---|---|
-| `R2.1` | Boundary-width dynamic programming | `PROVED / RESTRICTED` | `NAE-005`: time and space `2^{O(w)} poly(L)`. |
-| `R2.2` | Incidence-forest decomposition | `PROVED / RESTRICTED` | `NAE-008`: constructive linear-incidence-time colouring. |
-| `R2.3` | PCRNF restricted-state classes | `READY` | Use `NAE-017` to prove polynomial total PCRNF state under explicit structural hypotheses. |
-| `R2.4` | Beyond-width exact decomposition | `CANDIDATE` | Seek interfaces smaller than raw boundary assignment while preserving exact compatibility. |
-| `R2.5` | Ordering algorithms | `CANDIDATE` | Construct orders controlling exact semantic or representation state rather than only boundary size. |
+| `R2.1` | [Boundary-width dynamic programming](boundary-width/README.md) | `PROVED / RESTRICTED` | `NAE-005`: time and space `2^{O(w)} poly(L)`. |
+| `R2.2` | [Incidence-forest decomposition](incidence-forest/README.md) | `PROVED / RESTRICTED` | `NAE-008`: constructive linear-incidence-time colouring. |
+| `R2.3` | [Beyond-width exact decomposition](beyond-width/README.md) | `READY / OPEN` | Prove PCRNF or exact-interface polynomial state under structural hypotheses stronger than the known controls. |
+| `R2.4` | Semantic-state ordering algorithms | `CANDIDATE` | Construct orders controlling exact semantic or representation state rather than only boundary size. |
 
 ## Central obligation
 
