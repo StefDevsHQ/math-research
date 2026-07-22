@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+from collections.abc import Sequence as SequenceABC
 from dataclasses import dataclass
 from typing import Iterable, Sequence, TypeAlias
 
@@ -75,6 +76,12 @@ class RelabeledHypergraph3:
             previous = vertex
 
 
+def _require_instance(instance: object) -> Hypergraph3:
+    if not isinstance(instance, Hypergraph3):
+        raise ValidationError("instance must be a Hypergraph3")
+    return instance
+
+
 def normalize_instance(n: int, edges: Iterable[Sequence[int]]) -> Hypergraph3:
     n = _validate_n(n)
     if isinstance(edges, (str, bytes, bytearray)):
@@ -104,13 +111,14 @@ def normalize_instance(n: int, edges: Iterable[Sequence[int]]) -> Hypergraph3:
 
 
 def incidence_components(instance: Hypergraph3) -> tuple[tuple[int, ...], ...]:
-    if not isinstance(instance, Hypergraph3):
-        raise ValidationError("instance must be a Hypergraph3")
+    instance = _require_instance(instance)
     if instance.n == 0:
         return ()
     adjacency: list[list[int]] = [[] for _ in range(instance.n)]
     for u, v, w in instance.edges:
-        adjacency[u].extend((v, w)); adjacency[v].extend((u, w)); adjacency[w].extend((u, v))
+        adjacency[u].extend((v, w))
+        adjacency[v].extend((u, w))
+        adjacency[w].extend((u, v))
     component_of = [-1] * instance.n
     count = 0
     for start in range(instance.n):
@@ -132,48 +140,75 @@ def incidence_components(instance: Hypergraph3) -> tuple[tuple[int, ...], ...]:
 
 
 def _selected(instance: Hypergraph3, vertices: Iterable[int]) -> tuple[int, ...]:
+    instance = _require_instance(instance)
     if isinstance(vertices, (str, bytes, bytearray)):
         raise ValidationError("vertices must be an iterable of integer labels")
     try:
-        values = tuple(vertices)
+        iterator = iter(vertices)
     except TypeError as exc:
         raise ValidationError("vertices must be iterable") from exc
-    if any(type(v) is not int for v in values):
-        raise ValidationError("selected vertices must be integers, not Booleans")
-    if len(set(values)) != len(values):
-        raise ValidationError("selected vertices must not contain duplicates")
-    if any(v < 0 or v >= instance.n for v in values):
-        raise ValidationError("selected vertex lies outside the instance range")
-    return tuple(sorted(values))
+    chosen = bytearray(instance.n)
+    for vertex in iterator:
+        if not _is_strict_int(vertex):
+            raise ValidationError("selected vertices must be integers, not Booleans")
+        if vertex < 0 or vertex >= instance.n:
+            raise ValidationError("selected vertex lies outside the instance range")
+        if chosen[vertex]:
+            raise ValidationError("selected vertices must not contain duplicates")
+        chosen[vertex] = 1
+    return tuple(vertex for vertex in range(instance.n) if chosen[vertex])
+
+
+def _relabel_selected(instance: Hypergraph3, selected: tuple[int, ...]) -> RelabeledHypergraph3:
+    old_to_new = [-1] * instance.n
+    for new, old in enumerate(selected):
+        old_to_new[old] = new
+    edges: list[Edge] = []
+    for u, v, w in instance.edges:
+        new_u = old_to_new[u]
+        new_v = old_to_new[v]
+        new_w = old_to_new[w]
+        if new_u >= 0 and new_v >= 0 and new_w >= 0:
+            edges.append((new_u, new_v, new_w))
+    # A strictly increasing relabelling preserves the canonical order of the
+    # retained edge subsequence, so no second normalization pass is needed.
+    return RelabeledHypergraph3(Hypergraph3(len(selected), tuple(edges)), selected)
 
 
 def induced_subinstance(instance: Hypergraph3, vertices: Iterable[int]) -> RelabeledHypergraph3:
-    selected = _selected(instance, vertices)
-    old_to_new = {old: new for new, old in enumerate(selected)}
-    chosen = set(selected)
-    edges = [(old_to_new[u], old_to_new[v], old_to_new[w]) for u, v, w in instance.edges if u in chosen and v in chosen and w in chosen]
-    return RelabeledHypergraph3(normalize_instance(len(selected), edges), selected)
+    instance = _require_instance(instance)
+    return _relabel_selected(instance, _selected(instance, vertices))
 
 
 def active_core(instance: Hypergraph3) -> RelabeledHypergraph3:
-    return induced_subinstance(instance, sorted({v for edge in instance.edges for v in edge}))
+    instance = _require_instance(instance)
+    active = bytearray(instance.n)
+    for edge in instance.edges:
+        for vertex in edge:
+            active[vertex] = 1
+    selected = tuple(vertex for vertex in range(instance.n) if active[vertex])
+    return _relabel_selected(instance, selected)
 
 
 def _validate_coloring(instance: Hypergraph3, coloring: Sequence[int]) -> tuple[int, ...]:
-    if isinstance(coloring, (str, bytes, bytearray)):
-        raise ColoringError("colouring must be a non-string sequence")
+    instance = _require_instance(instance)
+    if isinstance(coloring, (str, bytes, bytearray)) or not isinstance(coloring, SequenceABC):
+        raise ColoringError("colouring must be a non-string finite sequence")
     try:
         if len(coloring) != instance.n:
             raise ColoringError("colouring length does not equal instance vertex count")
         values = tuple(coloring)
     except TypeError as exc:
         raise ColoringError("colouring must be a finite sequence") from exc
-    if any(type(v) is not int or v not in (0, 1) for v in values):
+    if len(values) != instance.n:
+        raise ColoringError("colouring length changed during validation")
+    if any(type(value) is not int or value not in (0, 1) for value in values):
         raise ColoringError("colouring entries must be the integers 0 or 1, excluding Booleans")
     return values
 
 
 def first_violated_edge(instance: Hypergraph3, coloring: Sequence[int]) -> Edge | None:
+    instance = _require_instance(instance)
     values = _validate_coloring(instance, coloring)
     for edge in instance.edges:
         u, v, w = edge
