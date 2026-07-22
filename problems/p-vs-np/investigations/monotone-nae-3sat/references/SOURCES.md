@@ -4,7 +4,7 @@
 
 - Thomas J. Schaefer, “The Complexity of Satisfiability Problems,” *STOC*, 1978 — Boolean satisfiability dichotomy; establishes hardness of the NAE relation outside the tractable Schaefer classes. https://doi.org/10.1145/800133.804350
 - Andreas Darmann and Janosch Döcker, “On Simplified NP-Complete Variants of Not-All-Equal 3-SAT and 3-SAT,” 2019 — proves NP-completeness for Monotone NAE-3SAT under strong restrictions, including linear 4-regular instances. https://arxiv.org/abs/1908.04198
-- Andreas Darmann and Janosch Döcker, “Planar NAE3SAT is in P,” 2019 — records the polynomial planar boundary. https://arxiv.org/abs/1904.07825
+- Bernard M. E. Moret, “Planar NAE3SAT is in P,” *ACM SIGACT News* 19(2):51–54, 1988 — establishes the polynomial planar-incidence boundary through a planarity-preserving reduction to planar Simple MaxCut. https://doi.org/10.1145/49097.49099
 - Stefan Porschen, Dieter Randerath, and Ewald Speckenmeyer, “Linear Time Algorithms for Some Not-All-Equal Satisfiability Problems,” *SAT 2003* — includes polynomial algorithms for bounded-occurrence NAE variants and is cited by the restricted-hardness literature for the occurrence-at-most-three boundary. https://doi.org/10.1007/978-3-540-24605-3_18
 
 ## Use restrictions
