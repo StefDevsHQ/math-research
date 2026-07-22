@@ -1,32 +1,32 @@
-# VS-01 Completion Audit — Canonical Instance Model
+# VS-01 Completion and Quality Audit — Canonical Instance Model
 
 **Slice:** `VS-01`  
-**Status:** `COMPLETE`  
+**Status:** `COMPLETE / CHECKED`  
 **Classification:** Implementation and verification audit  
-**Review maturity:** `CHECKED`  
 **Updated:** 2026-07-22
 
 ## Scope
 
-This audit closes only the canonical executable instance-model slice. It does not decide Monotone NAE-3SAT, establish Fano-plane unsatisfiability, create an exhaustive instance corpus, compute extension profiles, or establish a new complexity-class result.
+This audit closes only the canonical executable instance-model slice. It does not decide Monotone NAE-3SAT, establish Fano-plane unsatisfiability, create an exhaustive satisfiability corpus, compute extension profiles, or establish a new complexity-class result.
 
-## Implemented artifacts
+The mandatory promotion policy is [BUILDING-BLOCK-GATE.md](BUILDING-BLOCK-GATE.md). `VS-02` may depend on this slice only while the complete quality gate remains green.
 
-Under `tools/monotone-nae-3sat/`:
+## Exported contract
+
+`VS-01` exports:
 
 - immutable canonical `Hypergraph3` and `RelabeledHypergraph3` values;
-- strict public-constructor invariants;
 - normalization of labelled simple 3-uniform hypergraphs;
-- strict versioned JSON parsing;
+- strict versioned `nae3-v1` parsing;
 - deterministic canonical serialization and SHA-256 identifiers;
 - explicit encoded-byte measurement;
-- incidence-component decomposition including isolated vertices;
+- incidence components including isolated vertices;
 - induced-subinstance and active-core relabelling maps;
 - strict total binary-colouring validation;
-- deterministic first-violated-edge reporting;
-- a validation-only command-line interface;
-- valid and malformed fixtures;
-- standard-library unit, integration, and deterministic reference-cross-check tests.
+- deterministic exact witness checking and first-violated-edge reporting;
+- a validation-only command-line interface.
+
+It exports no satisfiability solver, isomorphism canonicalizer, exhaustive corpus, or extension-profile mechanism.
 
 ## Correctness obligations checked
 
@@ -36,7 +36,7 @@ Direct construction rejects noncanonical edge order, duplicate edges, invalid la
 
 ### Serialization
 
-The accepted format is `nae3-v1`. Parsing rejects unknown or missing fields, duplicate JSON keys, unsupported versions, invalid vertex sets, nonstandard numeric constants, invalid UTF-8, malformed edges, and noninteger labels.
+Parsing rejects unknown or missing fields, duplicate JSON keys, unsupported versions, invalid vertex sets, nonstandard numeric constants, invalid UTF-8, malformed edges, and noninteger labels.
 
 The stable labelled identifier is:
 
@@ -44,44 +44,67 @@ The stable labelled identifier is:
 nae3-v1-sha256-<SHA-256 of canonical bytes>
 ```
 
-It is not canonical up to hypergraph isomorphism.
+It is canonical for a fixed labelling, not up to hypergraph isomorphism.
 
 ### Components and relabelling
 
-Component decomposition includes isolated singleton vertices and emits components in increasing least-vertex order. Induced subinstances and active cores relabel vertices increasingly and return an explicit new-to-old map.
+Component decomposition includes isolated singleton vertices and emits components in increasing least-vertex order. Induced subinstances and active cores relabel increasingly and retain explicit new-to-old maps.
 
-The retained edge subsequence remains canonical under an increasing relabelling. The implementation therefore constructs it directly without a second normalization or sorting pass.
+An increasing relabelling preserves the canonical order of the retained edge subsequence, so the implementation constructs it directly without a second normalization or sorting pass.
 
 ### Witness verification
 
 A colouring is accepted only when it is a non-string finite `Sequence` of exactly `n` strict integer bits. Sets, mappings, generators, strings, byte strings, Booleans, floating-point values, nonbinary integers, and wrong-length sequences are rejected.
 
-Verification checks every edge for non-monochromaticity. The empty instance accepts the empty colouring; one edge has exactly six satisfying colourings; global complementation preserves satisfaction; and the first violated edge is deterministic.
+Verification checks every edge for non-monochromaticity. The empty instance accepts the empty colouring; one edge has exactly six satisfying colourings; complementation preserves satisfaction; and the first violated edge is deterministic.
 
-## Reproducible test evidence
+## Reproducible verification
 
-From the tool directory:
+From `tools/monotone-nae-3sat/`:
 
 ```bash
-cd tools/monotone-nae-3sat
+python3 -m compileall -q nae3sat tests
 python3 -m unittest discover -s tests -v
 python3 -m nae3sat.cli validate tests/fixtures/fano-plane.json
 ```
 
-The committed suite contains 25 test methods. One method performs a deterministic independent reference cross-check over exactly 1,350 generated labelled instances:
+### Deterministic sampled cross-check
 
-- seed: `20260722`;
-- vertex counts: `0 <= n <= 8`;
-- 150 generated instances for each `n`;
-- independent component computation;
-- independent NAE witness evaluation;
-- canonical round-trip checks;
-- active-core map and edge checks;
+The committed suite contains a separate reference checker over exactly 1,350 generated labelled instances:
+
+- seed `20260722`;
+- vertex counts `0 <= n <= 8`;
+- 150 generated instances per vertex count;
+- independent component and NAE-verifier logic;
+- canonical round trips and active-core checks;
 - every binary colouring checked for every generated instance.
 
-This is finite computational verification of the implementation, not evidence for a universal satisfiability claim.
+### Exhaustive small-domain gate
 
-The Fano fixture summary is:
+A separate committed test exhausts every labelled 3-uniform hypergraph with at most five vertices:
+
+- 1,045 complete hypergraphs instances across `0 <= n <= 5`;
+- 33,047 total instance-colouring checks;
+- 33,047 induced-subinstance checks;
+- canonical round trips;
+- independent component decomposition;
+- active-core reconstruction;
+- verifier and first-violation agreement;
+- cross-process determinism under four `PYTHONHASHSEED` values.
+
+This exhaustiveness concerns the VS-01 implementation contract on that finite domain. It is not evidence for a universal satisfiability claim.
+
+### Runtime matrix
+
+GitHub Actions run `29930706766` completed successfully on:
+
+- Python 3.11;
+- Python 3.12;
+- Python 3.13.
+
+Each job compiled the package and tests, ran the complete suite, and exercised the CLI fixture path.
+
+The Fano fixture summary remains:
 
 ```json
 {"format":"nae3-v1-summary","id":"nae3-v1-sha256-3b78789e10d0828f0051c7a0cea558bf988e067433a230a5c62af86db9d45de8","n":7,"m":7,"components_total":1,"components_nontrivial":1,"encoded_bytes":113}
@@ -106,7 +129,7 @@ Let `n` be the explicitly listed vertex count, `m` the supplied edge count, and 
 
 - normalization: expected `O(m)` hash insertion plus `O(m log m)` constant-arity tuple comparisons;
 - direct canonical validation: `O(m)` after the immutable tuple exists;
-- parser schema and vertex-set validation: `O(L)` using a byte membership array rather than sorting;
+- parser schema and vertex-set validation: `O(L)`;
 - serialization, hashing, and byte measurement: `O(L)`;
 - colouring validation and witness verification: `O(n + m)`;
 - component decomposition: `O(n + m)`;
@@ -114,22 +137,25 @@ Let `n` be the explicitly listed vertex count, `m` the supplied edge count, and 
 - induced subinstance and active core: `O(n + m)` after the source instance is canonical;
 - retained graph and traversal memory: `O(n + m)`.
 
-Vertex labels use `O(log n)` bits. Because every vertex is explicitly serialized, all operations are polynomial in encoded input length. No pseudo-polynomial parameter is used.
+Vertex labels use `O(log n)` bits. Every vertex is explicitly serialized, so all operations are polynomial in encoded input length. No pseudo-polynomial parameter is used.
 
-## Full-review findings fixed
+## Defects found and corrected
 
-The final PR-wide review found and corrected:
+The review sequence found and fixed:
 
-1. unordered sets and mappings could be accepted as colourings despite the sequence contract;
-2. selected-vertex and active-core paths sorted and re-normalized, exceeding the claimed linear bound;
-3. parser vertex validation sorted the vertex list despite claiming linear schema validation;
-4. serialization functions lacked explicit wrong-instance rejection;
-5. the 1,350-instance break pass was described but not reproducible from committed code;
-6. the vertical-slice ledger had been over-compressed and lost exact downstream exit gates;
-7. the implementation specification still described a partial, differently laid-out package.
+1. unordered sets and mappings accepted as colourings;
+2. selected-vertex and active-core sorting and re-normalization beyond the claimed bound;
+3. parser vertex sorting despite a linear validation claim;
+4. missing wrong-instance rejection in serialization functions;
+5. a non-reproducible prose-only random break pass;
+6. loss of downstream exit gates through tracker over-compression;
+7. an obsolete implementation specification;
+8. an unnecessary component sort;
+9. an incorrect documented Fano byte count;
+10. an untested Python 3.11+ support claim.
 
-Earlier break-pass fixes retained here were removal of an unnecessary component sort and correction of the Fano canonical byte count to `113`.
+Every defect was corrected and the complete quality gate was rerun.
 
 ## Final determination
 
-`VS-01` is `COMPLETE / CHECKED` as an infrastructure slice. The next slice is `VS-02`: implement an exact exhaustive satisfiability oracle and record the first exhaustively justified labelled instance domain.
+`VS-01` is `COMPLETE / CHECKED` as a concrete infrastructure building block. No open prerequisite defect is known. `VS-02` is unlocked, subject to the same building-block quality gate before it may be promoted or used by `VS-03` and later slices.
