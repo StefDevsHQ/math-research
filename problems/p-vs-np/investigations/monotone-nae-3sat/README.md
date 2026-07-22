@@ -71,6 +71,7 @@ VS-04 calibrates the tractable mechanisms already implemented. Planar and bounde
 - [Current status](STATUS.md)
 - [Vertical slices and progress](VERTICAL-SLICES.md)
 - [Phase I closeout audit](VS-01-05-PHASE-AUDIT.md)
+- [Phase I implementation review](VS-01-05-IMPLEMENTATION-REVIEW.md)
 - [Building-block quality gate](BUILDING-BLOCK-GATE.md)
 - [VS-01 implementation specification](VS-01-IMPLEMENTATION.md)
 - [VS-01 completion audit](VS-01-AUDIT.md)
