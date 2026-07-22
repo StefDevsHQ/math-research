@@ -1,47 +1,53 @@
-# R1.3 — Canonical Decision Diagrams
+# R1.3 — Decision Diagrams
 
 **Subroute:** `R1.3`  
-**Status:** `CANDIDATE / NOT ACTIVATED`
+**Status:** `ORDERED VARIANT BLOCKED / BROADER VARIANTS UNASSESSED`
 
 ## Thesis
 
-Represent each residual completion function by a reduced canonical decision diagram under an explicit variable order.
+Represent residual completion behaviour by a canonical decision structure.
 
-Unlike PCRNF byte equality, equality of reduced diagrams under fixed conventions is intended to mean equality of the represented Boolean function.
+## Ordered variant
 
-## Candidate models
+For reduced ordered binary decision diagrams, node width at a level is at least the number of distinct residual Boolean functions induced by assignments to the processed prefix.
 
-- reduced ordered binary decision diagrams;
-- zero-suppressed decision diagrams where semantically appropriate;
-- other explicitly canonical decision-diagram variants.
+`NAE-020` gives central-lift instances with `2^{Omega(n)}` pairwise distinct live residual functions at one level for every variable ordering. Therefore every ordered decision diagram using one global variable order has exponential size on this family.
 
-Do not merge these models without a polynomial-overhead equivalence theorem.
+This closes the straightforward reduced ordered binary decision-diagram candidate as a universal polynomial representation.
+
+## What remains unassessed
+
+The theorem does not automatically cover:
+
+- free binary decision diagrams;
+- sentential decision diagrams under unrestricted vtrees;
+- zero-suppressed variants with a different represented semantics;
+- non-ordered branching programs;
+- circuits sharing many residual functions collectively.
+
+Each requires a separate model statement and subsumption analysis.
 
 ## Required distinctions
 
 Track separately:
 
-1. processing order of the original variables;
-2. variable order inside the decision diagram;
-3. number of residual states;
-4. number of shared diagram nodes;
-5. maximum and total encoded diagram size;
-6. cost of reduction, restriction and conjunction.
+1. processing order of original variables;
+2. decision-diagram ordering or decomposition structure;
+3. number of residual functions;
+4. total shared nodes;
+5. maximum and total encoded size;
+6. construction, reduction, restriction, and conjunction cost.
 
-## First attacks
+## Main boundary
 
-- reproduce the VS-07 genuine merge;
-- merge the VS-08 five-vertex PCRNF witness exactly;
-- measure both fan orderings;
-- search for ordering-sensitive exponential diagram growth;
-- test reduction-generated instances.
+Canonicity does not imply compactness. `NAE-020` is an all-order residual-subfunction lower bound for ordered diagrams, not a lower bound for arbitrary circuits or decision structures.
 
-## Main risk
+## Reopening gate
 
-Canonical equality does not imply compactness. General Boolean functions and structured constraint families can require exponentially large ordered decision diagrams.
+Activate another decision-diagram model only after stating:
 
-The route survives only if Monotone NAE-3SAT residual structure plus efficiently constructible ordering yields a new polynomial bound.
-
-## Activation gate
-
-Before implementation, state one exact model, one ordering algorithm or ordering conjecture, complete size accounting, and one explicit stop family.
+- its exact semantics;
+- its structural restriction;
+- why `NAE-020` does not already subsume it;
+- a complete size measure;
+- one hard family and stop condition.
