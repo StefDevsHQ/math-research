@@ -1,13 +1,13 @@
 # Status — Monotone NAE-3SAT Investigation
 
-**Phase:** `VS-01 COMPLETE / CHECKED`; `VS-02` unlocked  
+**Phase:** `VS-01` and `VS-02` complete; exact extension-profile engine ready  
 **Updated:** 2026-07-22
 
 ## Current position
 
-The investigation is open. The mathematical object, encoding discipline, source map, baseline theorems, attack plan, vertical-slice order, and canonical executable instance layer are prepared. No universal polynomial-time mechanism is claimed.
+The investigation is open. The canonical instance layer and the exact small-instance oracle are both `COMPLETE / CHECKED`. No universal polynomial-time mechanism is claimed.
 
-Every vertical slice is now governed by the mandatory [building-block quality gate](BUILDING-BLOCK-GATE.md). A dependent slice may begin only after each prerequisite is `COMPLETE / CHECKED` or stronger.
+Every vertical slice is governed by the mandatory [building-block quality gate](BUILDING-BLOCK-GATE.md). A dependent slice may begin only after each prerequisite is `COMPLETE / CHECKED` or stronger.
 
 ## Accepted baseline
 
@@ -19,24 +19,31 @@ Every vertical slice is now governed by the mandatory [building-block quality ga
 
 ## Vertical-slice progress
 
-The authoritative tracker is [VERTICAL-SLICES.md](VERTICAL-SLICES.md).
-
 - `VS-01` canonical instance model — `COMPLETE / CHECKED`.
-- `VS-02` exact small-instance oracle — `READY` and unlocked.
-- `VS-03` exact extension-profile engine — formally ready, but may not consume VS-02 outputs until VS-02 passes its own quality gate.
-- `VS-04` through `VS-08` — blocked on checked oracle/profile evidence.
+- `VS-02` exact small-instance oracle — `COMPLETE / CHECKED`.
+- `VS-03` exact extension-profile engine — `READY` and unlocked.
+- `VS-04` and `VS-05` — blocked on checked VS-03 profile outputs, though VS-02 ground truth is now available.
+- `VS-06` through `VS-08` — blocked on checked obstruction and profile evidence.
 - `VS-09` — `PARTIAL` through the existing bounded-boundary theorem only.
 - `VS-10` through `VS-12` — blocked until an atomic invariant exists.
 
-`VS-01` evidence:
+## VS-02 retained results
 
-- [implementation specification](VS-01-IMPLEMENTATION.md);
-- [completion and quality audit](VS-01-AUDIT.md);
-- [building-block gate](BUILDING-BLOCK-GATE.md);
-- executable package under `tools/monotone-nae-3sat/`;
-- automated Python 3.11, 3.12, and 3.13 workflow.
+The exact oracle provides decision, least witness, complete solution listing, exact counting, component-factorized counting, edge-minimal-unsatisfiability testing, labelled generation, and deterministic census output.
 
-The gate includes all 1,045 labelled 3-uniform hypergraphs on at most five vertices, 33,047 colouring checks, 33,047 induced-subinstance checks, a separate 1,350-instance seeded reference cross-check, malformed-input tests, cross-process determinism, and CLI verification.
+The first exhaustive domain contains all `1045` labelled 3-uniform hypergraphs on at most five vertices. Exactly `1044` are satisfiable and one is unsatisfiable: the complete 3-uniform hypergraph on five vertices. The census evaluated `33047` complete colourings.
+
+The Fano-plane control is unsatisfiable and edge-minimal unsatisfiable by committed exhaustive computation.
+
+Evidence:
+
+- [VS-02 implementation specification](VS-02-IMPLEMENTATION.md);
+- [VS-02 completion audit](VS-02-AUDIT.md);
+- deterministic corpus under `tools/monotone-nae-3sat/corpus/`;
+- executable package and exhaustive tests under `tools/monotone-nae-3sat/`;
+- Python 3.11, 3.12, and 3.13 automated gate.
+
+These are finite exact results, not a universal algorithm.
 
 ## Current obstruction
 
@@ -48,18 +55,14 @@ Ordinary boundary-state dynamic programming becomes exponential when useful inte
 
 ## Immediate next task
 
-Execute `VS-02` as a concrete building block:
+Execute `VS-03` as the next concrete building block:
 
-1. specify the exact oracle contract and exported guarantees;
-2. implement exhaustive binary-colouring search over the canonical model;
-3. prove any component or complement-symmetry optimization before use;
-4. return and independently verify witnesses;
-5. declare and exhaust the first labelled instance domain;
-6. add independent reference and adversarial tests;
-7. audit encoding, runtime, complete search size, and memory;
-8. require the cross-version automated gate before promotion.
-
-Only after `VS-02` is `COMPLETE / CHECKED` may its outputs support VS-03, control calibration, or obstruction claims.
+1. implement exact completion sets for fixed instances and orderings;
+2. quotient prefix assignments only by identical completion sets;
+3. construct and verify both colour transitions;
+4. compare final acceptance with checked VS-02 ground truth;
+5. record raw, boundary, quotient, and encoded-profile sizes;
+6. pass the full building-block quality gate before downstream use.
 
 ## Stop conditions
 
