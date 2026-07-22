@@ -6,27 +6,29 @@
 
 The Monotone NAE-3SAT investigation remains open.
 
-The current recommended continuation is `R1.2 — Exact semantic quotient over PCRNF`, with `R1.1-B — Restricted PCRNF classes` available as a parallel theorem track.
+`R1.1 — PCRNF` is now closed as a universal ordered state-enumeration route by the all-ordering expander lower bound. Exact PCRNF machinery and restricted PCRNF theorems remain retained.
 
 ## Route dashboard
 
 | Route | Status | Current subroute | Next decision |
 |---|---|---|---|
-| `R1` Exact-state representations | `ACTIVE` | `R1.2 READY`; `R1.1 retained` | Select one exact semantic quotient candidate or a direct state-count theorem. |
-| `R2` Decomposition and ordering | `RESTRICTED / OPEN` | `R2.1`, `R2.2` proved; `R2.3` ready | Prove the largest PCRNF restricted class or define a beyond-width decomposition. |
+| `R1` Exact-state representations | `ACTIVE / NARROWED` | `R1.1 universal closed`; collective representations remain | Select a representation that shares many distinct residual functions collectively rather than enumerating one state per function. |
+| `R2` Decomposition and ordering | `RESTRICTED / OPEN` | `R2.1`, `R2.2` proved; `R2.3` ready | Prove restricted PCRNF classes or a materially non-ordered decomposition. |
 | `R3` Algebraic encodings | `CANDIDATE` | none active | Select one exact algebraic language before experimentation. |
 | `R4` Obstruction and gluing | `CANDIDATE / EVIDENCE` | locality and obstruction baselines retained | Define a complete gluing invariant or obstruction family. |
-| `R5` Propagation and branching | `PARTIAL / OPEN` | exact PCRNF propagation retained | Supply a polynomial global branching or memoization bound. |
-| `R6` Representation barriers | `ONGOING SUPPORT` | summary, locality and byte-equality barriers retained | Attach a precise barrier model to each activated constructive subroute. |
+| `R5` Propagation and branching | `PARTIAL / OPEN` | exact PCRNF propagation retained | Supply a computation model not defeated by all-order residual-function growth. |
+| `R6` Representation barriers | `ACTIVE SUPPORT` | expander central-lift lower bound added | Determine which ordered or state-per-function models are subsumed. |
 
 ## Claim dashboard
 
 | Claim | Route | Status |
 |---|---|---|
 | `NAE-006` | `R1` | `CONJECTURE / DRAFT` |
-| `NAE-016` | `R1.1` | `CONJECTURE / CHECKED` |
+| `NAE-016` | `R1.1` | `DISPROVED / CHECKED` |
 | `NAE-017` | `R1.1`, `R5.1` | `PROVED / CHECKED` |
 | `NAE-018` | `R1.1`, `R6.3` | `DISPROVED / CHECKED` |
+| `NAE-019` | `R1.1`, `R6` | `PROVED / CHECKED` |
+| `NAE-020` | `R1.1`, `R6` | `PROVED / CHECKED` |
 | `NAE-005` | `R2.1` | `PROVED / CHECKED` |
 | `NAE-008` | `R2.2` | `PROVED / CHECKED` |
 | `NAE-012` | `R4.2`, `R6.2` | `PROVED / CHECKED` |
@@ -40,4 +42,4 @@ The current recommended continuation is `R1.2 — Exact semantic quotient over P
 - `BARRIER`: model-specific lower-bound or failure programme.
 - `CLOSED`: exact route claim or mechanism has reached a justified stop condition.
 
-A top-level route remains open when one child closes unless the route thesis itself is disproved or exhausted.
+The expander lower bound closes ordered state-per-residual enumeration, not the entire exact-representation programme.
