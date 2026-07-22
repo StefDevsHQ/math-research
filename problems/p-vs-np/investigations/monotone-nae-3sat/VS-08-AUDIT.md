@@ -2,7 +2,7 @@
 
 **Slice:** `VS-08`  
 **Status:** `COMPLETE / CHECKED`  
-**Route decision:** close the universal PCRNF route; retain exact oriented residualization  
+**Route decision:** close PCRNF byte equality as the complete merge mechanism; retain exact oriented residualization and leave `NAE-016` open  
 **Updated:** 2026-07-23
 
 ## Exact determination
@@ -14,13 +14,35 @@ The final result has four parts.
 1. Unoriented component-complement normalization is unsound for labelled completion semantics.
 2. Adding one orientation bit per residual component repairs soundness.
 3. Oriented PCRNF byte equality is not complete for exact completion equivalence.
-4. No polynomial bound on the complete reachable PCRNF state graph was proved or supported strongly enough to retain `NAE-016`.
+4. No polynomial bound on the complete reachable PCRNF state graph was proved or disproved.
 
 Accordingly:
 
-- `NAE-016` is `RETRACTED`, not `DISPROVED`;
+- `NAE-016` remains `CONJECTURE / CHECKED`;
 - exact oriented PCRNF residualization is retained as `NAE-017 — PROVED / CHECKED`;
-- semantic completeness of PCRNF byte equality is `NAE-018 — DISPROVED / CHECKED`.
+- semantic completeness of PCRNF byte equality is `NAE-018 — DISPROVED / CHECKED`;
+- the specific proof attempt using byte equality as the complete merge mechanism is closed.
+
+## Status correction for NAE-016
+
+The original VS-08 closeout labelled `NAE-016` as `RETRACTED`. That classification was too strong and is superseded by this audit.
+
+`NAE-016` is a precise existential-ordering conjecture. To disprove it, one would need a complete counterexample to its quantified statement, for example an infinite family for which every permitted ordering yields superpolynomially many reachable PCRNF states or superpolynomial total encoded state.
+
+VS-08 did not establish such a result.
+
+The five-vertex witness proves only that byte equality misses some exact semantic merges. The fan theorem proves exponential state growth for one ordering but also supplies a small-state ordering. Neither result contradicts the existential ordering claimed by `NAE-016`.
+
+The correct separation is therefore:
+
+```text
+NAE-016 mathematical claim                 CONJECTURE / CHECKED
+PCRNF exactness and transitions            PROVED / CHECKED
+byte equality as exact semantic quotient   DISPROVED / CHECKED
+first byte-equality proof strategy          CLOSED / DEFERRED
+```
+
+The version-one deterministic attack record preserves the earlier route-decision field as a historical artifact. The authoritative claim status is the claim ledger and this correction.
 
 ## NAE-017 — exact oriented residualization
 
@@ -91,9 +113,9 @@ For prefix `01`, the residual is one connected component containing:
 - signed constraints on `{1,3}` and `{2,3}`;
 - ternary NAE constraint `{1,2,3}`.
 
-The residual formulas define the same set of eight-bit-indexed completions but are not byte-identical. Hence PCRNF byte equality is strictly finer than exact extension equivalence.
+The residual formulas define the same completion set but are not byte-identical. Hence PCRNF byte equality is strictly finer than exact extension equivalence.
 
-This is a complete counterexample to semantic completeness of the selected equality relation.
+This is a complete counterexample to semantic completeness of the selected equality relation. It is not a counterexample to `NAE-016`.
 
 ## Finite exhaustive audit
 
@@ -135,13 +157,20 @@ One explicit PCRNF has polynomial encoded size: it contains at most the remainin
 
 This is insufficient for polynomial time. The complete memoized computation graph may contain exponentially many distinct PCRNFs, as the bad fan ordering demonstrates.
 
-No theorem was found that constructs, for every input, an ordering with polynomially many reachable PCRNFs and polynomial total encoded state. No exact merge rule beyond byte equality survived the requirement of polynomial-time construction without a semantic oracle.
+No theorem has yet been proved that constructs, for every input, an ordering with polynomially many reachable PCRNFs and polynomial total encoded state. Conversely, no theorem has disproved the existence of such an ordering.
 
 ## Route decision
 
-`NAE-016` is retracted because the proposed universal polynomial-state claim lacks a surviving theorem or mechanism.
+VS-08 closes only the claim that canonical PCRNF byte equality supplies the needed complete semantic merge mechanism.
 
-It is not marked `DISPROVED`: the five-vertex witness refutes semantic completeness of byte equality, but does not prove that every ordering of some family has exponentially many PCRNFs.
+`NAE-016` remains open because its existential ordering and global polynomial-state assertion has neither been proved nor refuted.
+
+The next legitimate continuations are:
+
+1. prove a direct polynomial state bound for PCRNF on a nontrivial class or universally;
+2. add a stronger polynomial-time exact merge layer over PCRNF;
+3. construct an every-ordering superpolynomial family that disproves `NAE-016`;
+4. defer the claim while pursuing a sibling exact-representation route.
 
 Retained results:
 
@@ -154,4 +183,4 @@ Retained results:
 
 ## Scope
 
-Nothing here proves `P=NP`, `P!=NP`, or a lower bound for arbitrary representations. The route should not be reopened without a new exact merge mechanism and a globally polynomial bound on the complete generated state graph.
+Nothing here proves `P=NP`, `P!=NP`, or a lower bound for arbitrary representations. The byte-equality subroute should not be reopened without a new exact merge mechanism, but the Monotone NAE-3SAT programme and `NAE-016` remain open.
