@@ -1,27 +1,133 @@
 from __future__ import annotations
-import argparse, json, sys
+
+import argparse
+import json
+import os
+import sys
+import tempfile
 from pathlib import Path
 from typing import Sequence
-from .errors import NAE3Error
+
+from .census import corpus_bytes
+from .errors import NAE3Error, ValidationError
 from .model import incidence_components
+from .oracle import count_satisfying_assignments, solve_exact
 from .serialization import FORMAT_VERSION, encoded_size_bytes, instance_id, parse_instance_json
+
+
+def _load(path: Path):
+    return parse_instance_json(path.read_bytes())
+
+
+def _dump(value: object) -> None:
+    print(json.dumps(value, separators=(",", ":"), ensure_ascii=True))
+
+
+def _write_atomic(path: Path, data: bytes) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    descriptor, temporary = tempfile.mkstemp(
+        prefix=path.name + ".",
+        suffix=".tmp",
+        dir=path.parent,
+    )
+    try:
+        with os.fdopen(descriptor, "wb") as handle:
+            handle.write(data)
+            handle.flush()
+            os.fsync(handle.fileno())
+        os.replace(temporary, path)
+    except Exception:
+        try:
+            os.unlink(temporary)
+        except OSError:
+            pass
+        raise
+
 
 def main(argv: Sequence[str] | None = None) -> int:
     parser = argparse.ArgumentParser(prog="python3 -m nae3sat.cli")
     sub = parser.add_subparsers(dest="command", required=True)
+
     validate = sub.add_parser("validate")
     validate.add_argument("path", type=Path)
+
+    solve = sub.add_parser("solve")
+    solve.add_argument("path", type=Path)
+    solve.add_argument("--no-symmetry", action="store_true")
+
+    count = sub.add_parser("count")
+    count.add_argument("path", type=Path)
+
+    census = sub.add_parser("census")
+    census.add_argument("--max-vertices", type=int, default=5)
+    census.add_argument("--output", type=Path, required=True)
+    census.add_argument("--allow-large-domain", action="store_true")
+
     args = parser.parse_args(argv)
     try:
-        instance = parse_instance_json(args.path.read_bytes())
-        components = incidence_components(instance)
-        active = {v for e in instance.edges for v in e}
-        summary = {"format":f"{FORMAT_VERSION}-summary","id":instance_id(instance),"n":instance.n,"m":len(instance.edges),"components_total":len(components),"components_nontrivial":sum(1 for c in components if any(v in active for v in c)),"encoded_bytes":encoded_size_bytes(instance)}
-        print(json.dumps(summary,separators=(",",":"),ensure_ascii=True))
+        if args.command == "validate":
+            instance = _load(args.path)
+            components = incidence_components(instance)
+            active = {vertex for edge in instance.edges for vertex in edge}
+            _dump(
+                {
+                    "format": f"{FORMAT_VERSION}-summary",
+                    "id": instance_id(instance),
+                    "n": instance.n,
+                    "m": len(instance.edges),
+                    "components_total": len(components),
+                    "components_nontrivial": sum(
+                        1
+                        for component in components
+                        if any(vertex in active for vertex in component)
+                    ),
+                    "encoded_bytes": encoded_size_bytes(instance),
+                }
+            )
+        elif args.command == "solve":
+            instance = _load(args.path)
+            result = solve_exact(
+                instance,
+                use_symmetry=not args.no_symmetry,
+            )
+            _dump(
+                {
+                    "format": f"{FORMAT_VERSION}-solve",
+                    "id": instance_id(instance),
+                    "satisfiable": result.satisfiable,
+                    "witness": (
+                        list(result.witness)
+                        if result.witness is not None
+                        else None
+                    ),
+                    "assignments_tested": result.assignments_tested,
+                    "symmetry_reduction": result.symmetry_reduction,
+                }
+            )
+        elif args.command == "count":
+            instance = _load(args.path)
+            _dump(
+                {
+                    "format": f"{FORMAT_VERSION}-count",
+                    "id": instance_id(instance),
+                    "satisfying_assignments": count_satisfying_assignments(
+                        instance
+                    ),
+                }
+            )
+        else:
+            if args.max_vertices < 0:
+                raise ValidationError("max vertices must be nonnegative")
+            if args.max_vertices > 5 and not args.allow_large_domain:
+                raise ValidationError(
+                    "max vertices above 5 requires --allow-large-domain"
+                )
+            _write_atomic(args.output, corpus_bytes(args.max_vertices))
         return 0
-    except (NAE3Error,OSError) as exc:
-        print(f"error: {exc}",file=sys.stderr)
+    except (NAE3Error, OSError) as exc:
+        print(f"error: {exc}", file=sys.stderr)
         return 2
+
 
 if __name__ == "__main__":
     raise SystemExit(main())
