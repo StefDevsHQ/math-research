@@ -83,6 +83,7 @@ This is the single authoritative source map for the top-level landscapes. Source
 - `[P64]` Zhenjian Lu and Igor C. Oliveira, “Theory and Applications of Probabilistic Kolmogorov Complexity,” 2022 — survey of probabilistic time-bounded Kolmogorov complexity and applications. https://arxiv.org/abs/2205.14718
 - `[P65]` John Gill, “Computational Complexity of Probabilistic Turing Machines,” *SICOMP* 6(4), 1977 — probabilistic polynomial-time classes. https://doi.org/10.1137/0206049
 - `[P66]` László Babai, “Trading Group Theory for Randomness,” *STOC*, 1985 — Arthur–Merlin public-coin proof systems. https://doi.org/10.1145/22145.22192
+- `[P67]` Emil Jeřábek, “On the Metamathematics of Complexity Theory,” ECCC TR25-041, 2025 — contemporary survey of formalizability, weak theories, and provability questions in complexity theory. https://eccc.weizmann.ac.il/report/2025/041/
 
 ## Scope determination
 
