@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import itertools
 import json
+import random
 import subprocess
 import sys
 import unittest
@@ -190,9 +191,94 @@ class VerifierTests(unittest.TestCase):
 
     def test_rejects_malformed_coloring(self):
         graph = normalize_instance(3, [[0,1,2]])
-        for coloring in [(0,1),(0,1,2),(0,1,True),(0,1,0.0),"010",b"010"]:
+        malformed = [
+            (0,1), (0,1,2), (0,1,True), (0,1,0.0), "010", b"010",
+            {0,1}, {0:"a",1:"b",2:"c"}, (bit for bit in (0,1,0)),
+        ]
+        for coloring in malformed:
             with self.subTest(coloring=coloring), self.assertRaises(ColoringError):
                 verify_coloring(graph, coloring)
+
+
+class PublicTypeTests(unittest.TestCase):
+    def test_public_instance_operations_reject_wrong_type(self):
+        operations = [
+            lambda: incidence_components(object()),
+            lambda: induced_subinstance(object(), []),
+            lambda: active_core(object()),
+            lambda: verify_coloring(object(), ()),
+            lambda: first_violated_edge(object(), ()),
+            lambda: to_canonical_json(object()),
+            lambda: canonical_bytes(object()),
+            lambda: instance_id(object()),
+            lambda: encoded_size_bytes(object()),
+        ]
+        for operation in operations:
+            with self.subTest(operation=operation), self.assertRaises(ValidationError):
+                operation()
+
+
+class ReferenceCrossCheckTests(unittest.TestCase):
+    @staticmethod
+    def _reference_components(n, edges):
+        adjacency = [set() for _ in range(n)]
+        for edge in edges:
+            for u in edge:
+                adjacency[u].update(v for v in edge if v != u)
+        seen = set()
+        components = []
+        for start in range(n):
+            if start in seen:
+                continue
+            stack = [start]
+            seen.add(start)
+            component = []
+            while stack:
+                vertex = stack.pop()
+                component.append(vertex)
+                for neighbour in adjacency[vertex]:
+                    if neighbour not in seen:
+                        seen.add(neighbour)
+                        stack.append(neighbour)
+            components.append(tuple(sorted(component)))
+        return tuple(components)
+
+    @staticmethod
+    def _reference_verify(edges, coloring):
+        return all(len({coloring[v] for v in edge}) == 2 for edge in edges)
+
+    def test_seeded_random_reference_cross_check(self):
+        rng = random.Random(20260722)
+        checked = 0
+        for n in range(9):
+            triples = list(itertools.combinations(range(n), 3))
+            for _ in range(150):
+                raw_edges = []
+                for edge in triples:
+                    if rng.random() < 0.35:
+                        shuffled = list(edge)
+                        rng.shuffle(shuffled)
+                        raw_edges.append(shuffled)
+                        if rng.random() < 0.10:
+                            raw_edges.append(list(reversed(shuffled)))
+                rng.shuffle(raw_edges)
+                graph = normalize_instance(n, raw_edges)
+                expected_edges = tuple(sorted(set(tuple(sorted(edge)) for edge in raw_edges)))
+                self.assertEqual(graph.edges, expected_edges)
+                self.assertEqual(parse_instance_json(to_canonical_json(graph)), graph)
+                self.assertEqual(incidence_components(graph), self._reference_components(n, graph.edges))
+                core = active_core(graph)
+                active = tuple(v for v in range(n) if any(v in edge for edge in graph.edges))
+                self.assertEqual(core.new_to_old, active)
+                index = {old: new for new, old in enumerate(active)}
+                expected_core_edges = tuple(tuple(index[v] for v in edge) for edge in graph.edges)
+                self.assertEqual(core.graph.edges, expected_core_edges)
+                for coloring in itertools.product((0, 1), repeat=n):
+                    expected = self._reference_verify(graph.edges, coloring)
+                    self.assertEqual(verify_coloring(graph, coloring), expected)
+                    self.assertEqual(first_violated_edge(graph, coloring) is None, expected)
+                checked += 1
+        self.assertEqual(checked, 1350)
 
 
 class CLITests(unittest.TestCase):
