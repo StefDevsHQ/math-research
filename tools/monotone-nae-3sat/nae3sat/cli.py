@@ -8,6 +8,7 @@ import tempfile
 from pathlib import Path
 from typing import Sequence
 
+from .calibration import calibration_bytes
 from .census import corpus_bytes
 from .errors import NAE3Error, ValidationError
 from .model import incidence_components
@@ -85,6 +86,9 @@ def main(argv: Sequence[str] | None = None) -> int:
     profile_census.add_argument("--output", type=Path, required=True)
     profile_census.add_argument("--allow-large-domain", action="store_true")
 
+    calibrate = sub.add_parser("calibrate")
+    calibrate.add_argument("--output", type=Path, required=True)
+
     args = parser.parse_args(argv)
     try:
         if args.command == "validate":
@@ -150,12 +154,14 @@ def main(argv: Sequence[str] | None = None) -> int:
                     "profile_bytes": len(profile_bytes(exact)),
                 }
             )
-        else:
+        elif args.command == "profile-census":
             if args.max_vertices < 0:
                 raise ValidationError("max vertices must be nonnegative")
             if args.max_vertices > 5 and not args.allow_large_domain:
                 raise ValidationError("max vertices above 5 requires --allow-large-domain")
             _write_atomic(args.output, profile_corpus_bytes(args.max_vertices))
+        else:
+            _write_atomic(args.output, calibration_bytes())
         return 0
     except (NAE3Error, OSError) as exc:
         print(f"error: {exc}", file=sys.stderr)
