@@ -1,0 +1,28 @@
+#!/bin/sh
+set -eu
+ROOT=$(git rev-parse --show-toplevel)
+HEAD_SHA=$(git -C "$ROOT" rev-parse HEAD)
+MODE=fast
+BRANCH_PUSH=0
+
+while read -r local_ref local_sha remote_ref remote_sha; do
+  case "$remote_ref" in
+    refs/heads/*)
+      case "$local_sha" in
+        *[!0]*) ;;
+        *) continue ;;
+      esac
+      BRANCH_PUSH=1
+      if [ "$local_sha" != "$HEAD_SHA" ]; then
+        printf '%s\n' "error: pre-push checks only the checked-out HEAD; push other refs separately" >&2
+        exit 2
+      fi
+      if [ "$remote_ref" = "refs/heads/main" ]; then
+        MODE=full
+      fi
+      ;;
+  esac
+done
+
+[ "$BRANCH_PUSH" -eq 0 ] && exit 0
+exec "$ROOT/scripts/check.sh" "$MODE"

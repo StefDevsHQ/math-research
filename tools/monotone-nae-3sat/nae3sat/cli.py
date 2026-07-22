@@ -12,6 +12,7 @@ from .calibration import calibration_bytes
 from .census import corpus_bytes
 from .errors import NAE3Error, ValidationError
 from .model import incidence_components
+from .obstruction_atlas import obstruction_atlas_bytes
 from .oracle import count_satisfying_assignments, solve_exact
 from .profile import build_exact_profile, profile_bytes
 from .profile_census import profile_corpus_bytes
@@ -89,6 +90,9 @@ def main(argv: Sequence[str] | None = None) -> int:
     calibrate = sub.add_parser("calibrate")
     calibrate.add_argument("--output", type=Path, required=True)
 
+    obstruction_atlas = sub.add_parser("obstruction-atlas")
+    obstruction_atlas.add_argument("--output", type=Path, required=True)
+
     args = parser.parse_args(argv)
     try:
         if args.command == "validate":
@@ -160,8 +164,10 @@ def main(argv: Sequence[str] | None = None) -> int:
             if args.max_vertices > 5 and not args.allow_large_domain:
                 raise ValidationError("max vertices above 5 requires --allow-large-domain")
             _write_atomic(args.output, profile_corpus_bytes(args.max_vertices))
-        else:
+        elif args.command == "calibrate":
             _write_atomic(args.output, calibration_bytes())
+        else:
+            _write_atomic(args.output, obstruction_atlas_bytes())
         return 0
     except (NAE3Error, OSError) as exc:
         print(f"error: {exc}", file=sys.stderr)

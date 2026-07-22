@@ -1,69 +1,46 @@
-name: Monotone NAE-3SAT VS-01 through VS-04
+name: Monotone NAE-3SAT main verification
 
 on:
-  pull_request:
-    paths:
-      - "tools/monotone-nae-3sat/**"
-      - "problems/p-vs-np/investigations/monotone-nae-3sat/**"
-      - ".github/workflows/monotone-nae-vs01.yml"
   push:
     branches:
       - main
     paths:
       - "tools/monotone-nae-3sat/**"
-      - "problems/p-vs-np/investigations/monotone-nae-3sat/**"
+      - "scripts/**"
+      - ".githooks/**"
       - ".github/workflows/monotone-nae-vs01.yml"
+  workflow_dispatch:
 
 permissions:
   contents: read
 
+concurrency:
+  group: monotone-nae-main-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
-  test:
+  compatibility:
+    name: Fast compatibility (${{ matrix.python-version }})
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
       matrix:
-        python-version: ["3.11", "3.12", "3.13"]
-    defaults:
-      run:
-        working-directory: tools/monotone-nae-3sat
+        python-version: ["3.11", "3.12"]
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
           python-version: ${{ matrix.python-version }}
-      - name: Compile
-        run: python -m compileall -q nae3sat tests
-      - name: Test
-        run: python -m unittest discover -s tests -v
-      - name: Full independent VS-03 reference gates
-        if: matrix.python-version == '3.13'
-        env:
-          NAE3_FULL_VS03_REFERENCE: "1"
-        run: python -m unittest discover -s tests -p 'test_vs03*.py' -v
-      - name: Validate fixture
-        run: python -m nae3sat.cli validate tests/fixtures/fano-plane.json
-      - name: Solve and count fixture
-        run: |
-          python -m nae3sat.cli solve tests/fixtures/single-edge.json
-          python -m nae3sat.cli count tests/fixtures/single-edge.json
-      - name: Profile fixture
-        run: python -m nae3sat.cli profile tests/fixtures/single-edge.json --ordering 2,0,1
-      - name: Reproduce VS-02 corpus
-        run: |
-          python -m nae3sat.cli census --max-vertices 5 --output /tmp/vs02-corpus.json
-          cmp /tmp/vs02-corpus.json corpus/all-labelled-n-le-5.json
-      - name: Reproduce VS-03 corpus
-        run: |
-          python -m nae3sat.cli profile-census --max-vertices 5 --output /tmp/vs03-corpus.json
-          cmp /tmp/vs03-corpus.json profile-corpus/all-labelled-orderings-n-le-5.json
-      - name: Generate VS-04 calibration
-        run: python -m nae3sat.cli calibrate --output /tmp/vs04-calibration.json
-      - name: Upload regenerated VS-04 calibration
-        if: matrix.python-version == '3.13'
-        uses: actions/upload-artifact@v4
+      - name: Fast repository gate
+        run: sh scripts/check.sh fast
+
+  full:
+    name: Full research gate (3.13)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
         with:
-          name: vs04-calibration-postmerge-review
-          path: /tmp/vs04-calibration.json
-      - name: Reproduce VS-04 calibration
-        run: cmp /tmp/vs04-calibration.json calibration/vs04-calibration.json
+          python-version: "3.13"
+      - name: Full repository gate
+        run: sh scripts/check.sh full
