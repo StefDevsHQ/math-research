@@ -10,19 +10,48 @@ It is the symmetry-first Boolean CSP testbed: one ternary relation, no negations
 
 ## Current phase
 
-`VS-01` through `VS-07` are `COMPLETE / CHECKED`:
+`VS-01` through `VS-08` are `COMPLETE / CHECKED`.
+
+The investigation now has:
 
 - canonical executable instances;
-- exact finite satisfiability;
-- exact fixed-order completion profiles;
-- tractable-control calibration;
-- minimal-obstruction evidence;
-- exact failures of explicitly defined naive summaries;
-- exact measurement of live semantic merging, symmetry, boundary state, encoding size, and ordering effects.
+- exact finite satisfiability and exact extension profiles;
+- tractable controls and bounded-boundary algorithms;
+- obstruction, locality-failure and summary-collision records;
+- exact measurements of live semantic merging and ordering effects;
+- an exact oriented PCRNF residual language and transition system;
+- a checked counterexample to PCRNF byte equality as complete semantic equality.
 
-`VS-08` is ready. It must select one concrete residual representation language and specify exact construction, equality, transitions, merge, acceptance, encoded size, proposed global bound, controls, and stop condition.
+The Monotone NAE-3SAT programme remains open.
 
-No universal polynomial-time mechanism or representation lower bound is claimed.
+`NAE-016` is `CONJECTURE / CHECKED`. VS-08 disproved one proposed merge mechanism but did not refute the existential polynomial-state claim.
+
+`VS-09` is `PARTIAL / READY` and must proceed through a clearly selected route or subroute.
+
+No universal polynomial-time mechanism or general representation lower bound is claimed.
+
+## Current route selection
+
+The active top-level family is:
+
+- [`R1 — Exact-state representations`](routes/exact-state-representations/README.md).
+
+Its current branches are:
+
+- [`R1.1 — PCRNF`](routes/exact-state-representations/pcrnf/README.md): exact substrate retained; byte equality incomplete; `NAE-016` open;
+- [`R1.2 — Semantic quotient over PCRNF`](routes/exact-state-representations/semantic-quotient/README.md): recommended next subroute;
+- [`R1.3 — Decision diagrams`](routes/exact-state-representations/decision-diagrams/README.md): registered candidate;
+- [`R1.4 — Decomposable circuits`](routes/exact-state-representations/decomposable-circuits/README.md): registered candidate.
+
+Other top-level route families remain registered separately rather than being mixed into R1:
+
+- decomposition and ordering;
+- algebraic encodings;
+- obstruction and gluing;
+- propagation and exact branching;
+- representation-specific barriers.
+
+See the [route registry](routes/README.md) and [route dashboard](routes/STATUS.md).
 
 ## Accepted baseline
 
@@ -32,43 +61,43 @@ No universal polynomial-time mechanism or representation lower bound is claimed.
 - `2^{O(w)} poly(L)` bounded-boundary algorithm — `PROVED / CHECKED`;
 - exact completion-mask construction — `PROVED / CHECKED`;
 - incidence-forest constructive colouring — `PROVED / CHECKED`;
-- single-deletion sufficiency — `PROVED / CHECKED`;
 - globally unsatisfiable instances have one dead successful-completion class at every level — `PROVED / CHECKED`;
-- every fixed locality radius admits equal-local-view/opposite-residual-satisfiability instances — `PROVED / CHECKED`;
+- every fixed locality radius can miss conditioned residual satisfiability — `PROVED / CHECKED`;
 - ten explicit naive summaries have checked collisions — `COMPUTATIONAL / CHECKED`;
-- the fan family has exponential live exact-state growth under one order and a constant-width alternative order — `PROVED / CHECKED`;
-- genuine all-live exact merging beyond component-complement prefix orbits occurs through four vertices — `COMPUTATIONAL / CHECKED`.
-
-## VS-07 result
-
-VS-07 separates raw prefixes, dead collapse, complement symmetry, exact live classes, semantic symmetry orbits, boundary states, reference encoding sizes, and ordering effects.
-
-The first recorded all-live genuine merge is the four-vertex instance with edges `{012,013}`, ordering `(0,2,3,1)`, and level three. Its eight prefixes form three exact live classes even though they occupy four prefix complement orbits.
-
-For the fan family `F_k` with edges `{c,a_i,b_i}`:
-
-- order `c,a_1,...,a_k,b_1,...,b_k` has `2^(k+1)-1` live exact classes at level `k+1`;
-- the reduction from raw prefixes is essentially only global complement symmetry;
-- order `c,a_1,b_1,...,a_k,b_k` has boundary width at most two and at most four live exact classes.
-
-Thus exact future equivalence can merge distinct boundary assignments, but a large quotient under one ordering can disappear under another. Exact class count is not the same as symbolic representation size.
+- the fan family has exponential live exact-state growth under one order and a constant-width alternative — `PROVED / CHECKED`;
+- genuine all-live exact merging occurs beyond component-complement prefix orbits — `COMPUTATIONAL / CHECKED`;
+- oriented PCRNF residualization and transitions are exact — `NAE-017, PROVED / CHECKED`;
+- PCRNF byte equality is not exact semantic equivalence — `NAE-018, DISPROVED / CHECKED`.
 
 ## Mandatory controls
 
-Graph 2-colouring, XOR-SAT, acyclic and bounded-width CSPs, planar and occurrence-at-most-three NAE instances, Positive 1-in-3 SAT, graph 3-colouring, linear 4-regular Monotone NAE-3SAT, and verified reduction-generated instances.
+Graph 2-colouring, XOR-SAT, acyclic and bounded-width CSPs, planar and occurrence-at-most-three NAE instances, Positive 1-in-3 SAT, graph 3-colouring, linear four-regular Monotone NAE-3SAT, Fano, `K_5^(3)`, both fan orderings, the VS-06 collision atlas, the VS-08 five-vertex witness, and verified reduction-generated instances.
 
 ## Navigation
 
-- [Current status](STATUS.md)
+### Operational
+
+- [Current investigation status](STATUS.md)
+- [Route registry](routes/README.md)
+- [Route dashboard](routes/STATUS.md)
 - [Vertical slices](VERTICAL-SLICES.md)
+- [Claim ledger](CLAIMS.md)
+- [Attack plan](PLAN.md)
+
+### Completed slices
+
 - [Phase I closeout](VS-01-05-PHASE-AUDIT.md)
 - [VS-06 implementation](VS-06-IMPLEMENTATION.md)
-- [VS-06 completion audit](VS-06-AUDIT.md)
+- [VS-06 audit](VS-06-AUDIT.md)
 - [VS-07 implementation](VS-07-IMPLEMENTATION.md)
-- [VS-07 completion audit](VS-07-AUDIT.md)
-- [Claim ledger](CLAIMS.md)
+- [VS-07 audit](VS-07-AUDIT.md)
+- [VS-08 preparation](VS-08-PREPARATION.md)
+- [VS-08 implementation](VS-08-IMPLEMENTATION.md)
+- [VS-08 completion and status-correction audit](VS-08-AUDIT.md)
+
+### Foundations
+
 - [Object specification](OBJECT.md)
-- [Attack plan](PLAN.md)
 - [Primary sources](references/SOURCES.md)
 - [P versus NP overview](../../README.md)
 
