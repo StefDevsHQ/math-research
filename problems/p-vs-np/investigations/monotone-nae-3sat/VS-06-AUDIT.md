@@ -89,14 +89,17 @@ The bounded-radius claim is proved symbolically for every fixed radius. The cano
 
 The first `main` run after the VS-06 merge, workflow run `29954395327`, failed on Python 3.11, 3.12, and 3.13. The review found a stale committed collision record rather than a failed mathematical collision.
 
-The committed JSON had retained an advertised digest from the final generator while containing values from an earlier prototype. In particular:
+The committed JSON had retained an advertised digest from the final generator while containing values from an earlier prototype. The first repair corrected the initially visible counts and moments, but workflow run `29955640016` still failed because the record had broader drift. Exact regeneration exposed and corrected all stale fields, including:
 
-- the satisfiable degree-sequence witness was recorded with `2` solutions instead of `10`;
-- the satisfiable pair-codegree witness was recorded with `2` solutions instead of `6`;
-- both stored least witnesses were stale;
-- the degree second moment was recorded as `270` instead of `180`.
+- every noncanonical instance identifier inherited from the prototype;
+- the satisfiable degree-sequence count and least witness;
+- the satisfiable pair-codegree count and least witness;
+- the seven-vertex star count, `42` rather than `54`;
+- the degree second moment, `180` rather than `270`;
+- the boundary-weight width, `3` rather than `2`;
+- the boundary-weight completion masks, `3` and `2` rather than `2` and `3`.
 
-Consequently the record failed its own strict envelope check and could not reproduce byte-for-byte from the checked generator. The record was regenerated from the current implementation. The semantic claims did not change.
+The final record is the exact byte output of the canonical serializer and `summary_collision_bytes()`, not a field-by-field repair. The semantic collision claims did not change.
 
 The review also strengthened the gate by:
 
@@ -115,6 +118,6 @@ The results are summary-specific. They do not prove that every local, algebraic,
 
 ## Final determination
 
-`VS-06` remains `COMPLETE / CHECKED` after correction of its reproducibility artifacts and strengthening of its independent verification boundary.
+`VS-06` remains `COMPLETE / CHECKED` after exact regeneration of its reproducibility artifact and strengthening of its independent verification boundary.
 
 The legitimate next slice is `VS-07`: measure genuine live semantic merging, separating dead-state collapse, complement symmetry, exact quotient count, boundary-state count, and encoded representation size.
