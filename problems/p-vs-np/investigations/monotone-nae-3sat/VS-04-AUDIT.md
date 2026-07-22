@@ -61,7 +61,7 @@ Every incidence edge is inspected a constant number of times, so the constructio
 The declared domain contains
 
 \[
-\sum_{n=0}^{5}2^{\binom n2}=1100
+\sum_{n=0}^{5}2^{\binom n2}=1100.
 \]
 
 labelled simple graphs.
@@ -115,8 +115,8 @@ These mechanisms are mathematically distinct. Success on one does not imply a un
 
 ## Imported boundaries
 
-- Planar NAE3SAT tractability — `ESTABLISHED / CHECKED` from Darmann and Döcker.
-- Occurrence-at-most-three tractability — `ESTABLISHED / CHECKED` from Porschen, Randerath, and Speckenmeyer and the restricted-hardness literature.
+- Planar NAE3SAT tractability — `ESTABLISHED / CHECKED` from Moret (1988).
+- Occurrence-at-most-three tractability — `ESTABLISHED / CHECKED` from Porschen, Bert Randerath, and Speckenmeyer (2003), together with the restricted-hardness literature.
 
 The calibration report contains source identifiers rather than claiming these as project-original proofs.
 
@@ -148,7 +148,7 @@ The attack checked:
 - report hashing and cross-version determinism;
 - arithmetic consistency of all aggregate census totals.
 
-The first CI pass caught an incorrect hand-summed graph aggregate (`427/673` instead of `428/672`). The per-size exhaustive results and both solvers were correct; the assertion and report expectation were corrected. No unresolved mathematical defect remains.
+The first CI pass caught an incorrect hand-summed graph aggregate (`427/673` instead of `428/672`). The per-size exhaustive results and both solvers were correct; the assertion and report expectation were corrected. A later post-merge audit corrected the incidence-forest implementation to traverse the incidence graph directly and repaired the external-source metadata. No unresolved mathematical defect remains.
 
 ## Reproducibility
 
