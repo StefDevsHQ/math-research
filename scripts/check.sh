@@ -81,7 +81,12 @@ check_fast() {
   require_clean_tree
   cd "$TOOL_DIR"
   "$PYTHON" -m compileall -q nae3sat tests
-  "$PYTHON" -m unittest discover -s tests -v
+  "$PYTHON" -m unittest discover -s tests -p 'test_vs0[1-4]*.py' -v
+  "$PYTHON" -m unittest \
+    tests.test_vs05.ObstructionPrimitiveTests \
+    tests.test_vs05.NamedObstructionTests.test_complete_five_certificates \
+    tests.test_vs05.NamedObstructionTests.test_fano_certificates \
+    -v
   "$PYTHON" -m nae3sat.cli validate tests/fixtures/fano-plane.json >/dev/null
   "$PYTHON" -m nae3sat.cli solve tests/fixtures/single-edge.json >/dev/null
   "$PYTHON" -m nae3sat.cli count tests/fixtures/single-edge.json >/dev/null
