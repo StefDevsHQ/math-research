@@ -1,0 +1,40 @@
+name: Monotone NAE-3SAT VS-01
+
+on:
+  pull_request:
+    paths:
+      - "tools/monotone-nae-3sat/**"
+      - "problems/p-vs-np/investigations/monotone-nae-3sat/**"
+      - ".github/workflows/monotone-nae-vs01.yml"
+  push:
+    branches:
+      - main
+    paths:
+      - "tools/monotone-nae-3sat/**"
+      - "problems/p-vs-np/investigations/monotone-nae-3sat/**"
+      - ".github/workflows/monotone-nae-vs01.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.11", "3.12", "3.13"]
+    defaults:
+      run:
+        working-directory: tools/monotone-nae-3sat
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Compile
+        run: python -m compileall -q nae3sat tests
+      - name: Test
+        run: python -m unittest discover -s tests -v
+      - name: Validate fixture
+        run: python -m nae3sat.cli validate tests/fixtures/fano-plane.json
