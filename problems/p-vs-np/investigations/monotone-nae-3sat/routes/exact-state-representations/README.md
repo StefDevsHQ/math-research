@@ -1,61 +1,73 @@
 # R1 — Exact-State Representations
 
-**Operational status:** `ACTIVE`  
-**Universal target:** `NAE-006` and the more concrete PCRNF conjecture `NAE-016`
+**Operational status:** `ACTIVE / NARROWED`  
+**Universal target:** `NAE-006`
 
 ## Thesis
 
-Represent the exact future completion relation of each processed prefix by a polynomially constructible symbolic object with:
+Represent exact completion behaviour by a polynomially constructible symbolic object with exact operations and polynomial total generated representation.
 
-- exact labelled semantics;
-- polynomial-time canonical equality or equivalence;
-- exact restriction and transition;
-- exact conjunction, merge, and acceptance;
-- polynomial maximum encoded state;
-- polynomial number and total encoded size of all generated states.
+`NAE-020` now forces a crucial distinction:
 
-Individual polynomial-size residuals are insufficient. The complete memoized computation graph must be polynomially bounded.
+```text
+polynomial number of residual functions
+```
+
+is impossible for ordered state enumeration on all inputs, but
+
+```text
+polynomial collective representation of many residual functions
+```
+
+remains open.
 
 ## Subroute registry
 
 | ID | Subroute | Status | Established result | Remaining gap |
 |---|---|---|---|---|
-| `R1.1` | [PCRNF](pcrnf/README.md) | `RETAINED / OPEN` | Exact oriented residualization and transitions are `NAE-017 — PROVED / CHECKED`. | Byte equality is incomplete; `NAE-016` remains open. |
-| `R1.2` | [Semantic quotient over PCRNF](semantic-quotient/README.md) | `READY — NEXT` | Exact PCRNF provides a trusted substrate. | Find a polynomial-time exact equivalence stronger than byte equality and prove global state bounds. |
-| `R1.3` | [Decision diagrams](decision-diagrams/README.md) | `CANDIDATE` | Canonical function representations can provide exact equality for fixed representation conventions. | General size may be exponential; ordering and total-node bounds must be attacked. |
-| `R1.4` | [Decomposable circuits](decomposable-circuits/README.md) | `CANDIDATE` | Decomposition may share repeated residual structure. | Canonical equality, determinism, construction cost, and total circuit size remain unresolved. |
+| `R1.1` | [PCRNF](pcrnf/README.md) | `CLOSED UNIVERSAL / RETAINED` | `NAE-017` exactness; `NAE-019/020` all-order state lower bound. | Restricted PCRNF classes only. |
+| `R1.2` | [Collective representation over PCRNF](semantic-quotient/README.md) | `REFORMULATION REQUIRED` | State-per-semantic-class quotients are blocked by `NAE-020`. | Share many distinct residual functions in one exact structure. |
+| `R1.3` | [Decision diagrams](decision-diagrams/README.md) | `ORDERED VARIANT BLOCKED` | Ordered residual-subfunction lower bound transfers from `NAE-020`. | Assess broader non-ordered models separately. |
+| `R1.4` | [Decomposable circuits](decomposable-circuits/README.md) | `CANDIDATE — NEXT` | Decomposition may share structure across distinct residual functions. | Fix a precise circuit language and prove exact construction and size bounds. |
 
 ## Claim map
 
 - `NAE-004` — exact extension equivalence has well-defined transitions — `PROVED / CHECKED`.
-- `NAE-006` — universal symbolic exact-completion representation — `CONJECTURE / DRAFT`.
-- `NAE-016` — polynomial-state PCRNF traversal under an efficiently constructible ordering — `CONJECTURE / CHECKED`.
+- `NAE-006` — universal collective exact-completion representation — `CONJECTURE / DRAFT`.
+- `NAE-016` — polynomial-state PCRNF traversal under some ordering — `DISPROVED / CHECKED`.
 - `NAE-017` — exact oriented PCRNF residualization and transition — `PROVED / CHECKED`.
 - `NAE-018` — PCRNF byte equality equals exact semantic equivalence — `DISPROVED / CHECKED`.
+- `NAE-019` — PCRNF states dominate exact residual-function count — `PROVED / CHECKED`.
+- `NAE-020` — expander central lifts force exponential residual-function count under every ordering — `PROVED / CHECKED`.
 
 ## Current decision
 
-Do not treat the failure of PCRNF byte equality as a failure of the entire route.
+The next universal candidate must be collective rather than state-per-residual-function.
 
-The next active choice is:
+Recommended order:
 
-1. `R1.2`: define a stronger exact quotient over PCRNF; or
-2. prove a direct polynomial reachable-state theorem for PCRNF on a substantial restricted class and determine whether it extends.
+1. formalize one deterministic decomposable circuit model under `R1.4`;
+2. prove exact representation and construction before claiming compression;
+3. test whether the `NAE-020` family has polynomial or exponential circuit size;
+4. audit all intermediate circuit operations and total generated size.
+
+The parallel theorem track remains restricted PCRNF and decomposition classes.
 
 ## Promotion gate
 
-A universal subroute survives only if it proves all of:
+A universal subroute survives only if it proves:
 
 1. exactness;
 2. polynomial construction and equality;
-3. polynomial transition and acceptance;
-4. polynomial maximum state size;
-5. polynomial reachable-state count;
-6. polynomial total encoded state;
-7. survival on reduction-generated hard controls.
+3. polynomial transition, restriction, or composition;
+4. polynomial maximum representation size;
+5. polynomial total generated representation;
+6. no hidden enumeration of exponentially many residual functions;
+7. survival on `NAE-020` and reduction-generated controls.
 
 ## Administration
 
 - [Route status](STATUS.md)
 - [Route claim ledger](CLAIMS.md)
+- [NAE-016 expander disproof](pcrnf/proofs/NAE-016-expander-disproof.md)
 - [Top-level route registry](../README.md)
