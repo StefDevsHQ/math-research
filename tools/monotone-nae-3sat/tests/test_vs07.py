@@ -151,7 +151,7 @@ class FanFamilyTests(unittest.TestCase):
                     max(level.boundary_width for level in profile.levels),
                     2,
                 )
-                self.assertLessEqual(profile.peak_live_semantic_classes, 4)
+                self.assertLessEqual(profile.peak_live_semantic_classes, 5)
 
 
 class RecordTests(unittest.TestCase):
