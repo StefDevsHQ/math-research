@@ -33,7 +33,7 @@ A deterministic polynomial-time algorithm for one NP-complete language proves `P
 | ETH or SETH lower bound | Quantitative conditional hardness | Does not prove `P!=NP` unconditionally |
 | Restricted-model lower bound | Separation only inside that model | Needs a polynomial-overhead subsumption theorem |
 | Uniform restricted-circuit lower bound | Separation for a uniform language against a stated circuit class | Does not by itself separate `P` from `NP` |
-| Independence from a weak arithmetic theory | That theory cannot prove the formalized statement | Does not decide the statement in standard mathematics |
+| Unprovability or independence in a named weak arithmetic theory | The named theory cannot prove, or in the independence case cannot decide, the formalized statement | Does not decide the statement in stronger standard foundations |
 | `IP=PSPACE` or another interactive-proof characterization | Equality in an interactive proof model | Does not imply `P=NP`; arithmetization may be nonrelativizing yet still algebrizing |
 | `NP` contained in `BQP` | Efficient quantum solution of NP problems | Does not imply classical `P=NP` |
 
@@ -81,7 +81,7 @@ A deterministic polynomial-time algorithm for one NP-complete language proves `P
 | `C07` | Advice and nonuniformity | Study `P/poly`, advice, and small circuit families | Karp-Lipton collapse consequences constrain NP having small circuits | Nonuniform algorithms need not be constructible uniformly | `[P38]` |
 | `C08` | Average-case complexity and cryptography | Prove distributional hardness and one-wayness | Supplies practical hardness and pseudorandom objects | Worst-case NP-completeness does not imply average-case hardness | `[P12]`, `[P22]` |
 | `C09` | Total search complexity | Study guaranteed-solution classes such as TFNP, PPAD, and PLS | Isolates equilibrium, parity, and local-optimum principles | Totality changes the problem type | `[P46]`, `[P58]` |
-| `C10` | Meta-mathematics and bounded arithmetic | Formalize complexity claims in weak theories and study feasible provability or independence | Connects proof complexity, bounded arithmetic, witnessing, and formal lower-bound statements | Independence from one theory does not decide truth; formalization strength must be explicit | `[P59]`, `[P60]` |
+| `C10` | Meta-mathematics and bounded arithmetic | Formalize complexity claims in weak theories and study feasible provability, unprovability, or independence | Connects proof complexity, bounded arithmetic, witnessing, and formal lower-bound statements | Unprovability in one theory does not decide truth; formalization strength must be explicit | `[P59]`, `[P60]`, `[P67]` |
 
 ## D. Conditional, quantitative, and neighbouring landscapes
 
@@ -109,19 +109,19 @@ A deterministic polynomial-time algorithm for one NP-complete language proves `P
 | Uniform/nonuniform confusion | Small circuits or advice do not automatically give a uniform polynomial-time algorithm; a uniform lower bound need not imply an unrestricted nonuniform one | `[P38]`, `[P63]`, `[P64]` |
 | Decision/counting/proof confusion | Counting, interactive-proof, or proof-system results do not automatically transfer to deterministic decision | `[P18]`, `[P29]`, `[P61]`, `[P62]` |
 | Promise/totality/error confusion | Promise, total-search, randomized, and interactive problems have different quantifiers and acceptance conditions from NP decision languages | `[P26]`, `[P58]`, `[P65]`, `[P66]` |
-| Formal-theory independence confusion | Unprovability in a named weak theory is not a proof that the statement is false or independent of stronger standard foundations | `[P59]`, `[P60]` |
+| Formal-theory independence confusion | Unprovability in a named weak theory is not a proof that the statement is false or independent of stronger standard foundations | `[P59]`, `[P60]`, `[P67]` |
 | Conditional/unconditional confusion | ETH, SETH, cryptographic, and average-case assumptions must remain explicit | `[P27]` |
 
 ## F. Randomized, promise, and interactive consequence map
 
 | Statement | Immediate reading | What it does not establish |
 |---|---|---|
-| `P=NP` | Deterministic polynomial-time verification search collapses to deterministic decision | Nothing stronger about `PSPACE`, counting, or quantum classes follows automatically |
+| `P=NP` | Every language in `NP` has a deterministic polynomial-time decision algorithm; standard NP witness search reduces to decision | Does not automatically imply `P=PSPACE` or collapse counting or quantum classes |
 | `P=BPP` | Randomness adds no power for bounded-error polynomial-time decision | Does not imply `P=NP` |
-| `NP=coNP` | Yes- and no-instances both have polynomial certificates | Does not by itself imply `P=NP` |
+| `NP=coNP` | Every language in `NP` and its complement have polynomially verifiable certificates | Does not by itself imply `P=NP` |
 | `NP=RP` | NP problems have one-sided-error randomized polynomial algorithms | Does not provide deterministic polynomial algorithms without derandomization |
 | `NP` contained in `BPP` | NP has bounded-error randomized polynomial algorithms | Does not imply `P=NP` without a derandomization theorem |
-| `NP` contained in `AM` | NP has public-coin interactive proofs, already true because `NP` is contained in `AM` | Gives no collapse toward `P` |
+| `NP` contained in `AM` | This unconditional inclusion gives NP languages public-coin interactive proofs | Gives no collapse toward `P` |
 | `IP=PSPACE` | Polynomial-space languages have interactive proofs | Gives no deterministic polynomial-time algorithm for PSPACE or NP |
 | Promise-problem algorithm | Correctness holds only on inputs satisfying the promise | Does not decide the corresponding unrestricted language |
 
@@ -134,7 +134,7 @@ A deterministic polynomial-time algorithm for one NP-complete language proves `P
 | Algorithms-to-lower-bounds | Circuit-SAT | Explicit restricted circuit class and transfer theorem |
 | Uniform lower-bound route | Explicit generation, compression, or Kolmogorov task | Exact uniform class consequence and nonuniform boundary |
 | No-instance certification | UNSAT and TAUT | Exact proof system and consequence map |
-| Formal-provability route | Bounded arithmetic theory plus formalized complexity statement | Exact theory, encoding, witnessing theorem, and independence scope |
+| Formal-provability route | Bounded arithmetic theory plus formalized complexity statement | Exact theory, encoding, witnessing theorem, and unprovability or independence scope |
 | Interactive-proof bridge | Arithmetized counting or proof task | Exact verifier model, error convention, and deterministic consequence |
 | Additive compression | Subset Sum and 0-1 ILP | Unary weights, affine equations, reduction-generated instances |
 | Global connectivity interfaces | Hamiltonian Cycle and TSP | Bounded-width controls and extension-complexity models |
@@ -147,7 +147,7 @@ Maintain two separate active-track types and four cross-cutting controls:
 
 1. **Positive track:** select an NP-complete testbed and a concrete exact mechanism.
 2. **Negative track:** select an explicit circuit, proof, communication, polyhedral, logical, magnification, or uniform model and state the exact class consequence.
-3. **Formal-theory control:** state the exact arithmetic theory before making provability or independence claims.
+3. **Formal-theory control:** state the exact arithmetic theory before making provability, unprovability, or independence claims.
 4. **Interactive/randomized control:** state error, promise, interaction, and derandomization assumptions.
 5. **Uniformity control:** separate uniform languages and algorithms from nonuniform circuit families.
 6. **Transfer control:** require an explicit theorem before moving between decision, counting, proof, algebraic, or restricted-model claims.
