@@ -12,12 +12,12 @@ Every slice is governed by the mandatory [building-block quality gate](BUILDING-
 | `VS-01` | Canonical instance model | `COMPLETE / CHECKED` | Canonical model, parser, serialization, components, relabelling, verifier, exhaustive tests, and cross-version automation are green. | Preserve the exported contract. |
 | `VS-02` | Exact small-instance oracle | `COMPLETE / CHECKED` | Exact decision, least witnesses, listing, counting, factorization, generator, Fano control, and deterministic 1045-instance census are checked. | Preserve as finite ground truth. |
 | `VS-03` | Exact extension-profile engine | `COMPLETE / CHECKED` | Exact completion masks, quotient classes, transitions, boundary metrics, canonical records, and a 123280-profile exhaustive census are checked. | Preserve as the semantic reference layer. |
-| `VS-04` | Control calibration | `READY` | Trusted oracle and exact profiles now exist. | Explain known easy controls using the shared laboratory. |
+| `VS-04` | Control calibration | `COMPLETE / CHECKED` | Graph parity, affine XOR, incidence forests, bounded boundaries, and disconnected products are separately calibrated and checked. | Use these mechanisms as controls, not as a universal synthesis. |
 | `VS-05` | Minimal obstruction atlas | `READY` | VS-02 and VS-03 provide exact decision and semantic-state evidence. | Build and verify the first obstruction atlas. |
 | `VS-06` | Destroy naive summaries | `BLOCKED` | Candidate summaries are listed. | Search checked obstruction/profile data. |
-| `VS-07` | Measure semantic merging | `BLOCKED` | Exact equivalence is implemented and initial finite measurements exist. | Proceed after control and obstruction calibration. |
+| `VS-07` | Measure semantic merging | `BLOCKED` | Exact equivalence and tractable controls are calibrated. | Proceed after obstruction calibration. |
 | `VS-08` | Extract first atomic invariant | `BLOCKED` | No representation language is selected. | Use checked VS-06 and VS-07 evidence. |
-| `VS-09` | Prove restricted theorem | `PARTIAL` | `NAE-005` proves only the baseline bounded-boundary algorithm. | Prove a future invariant on an exact subclass. |
+| `VS-09` | Prove restricted theorem | `PARTIAL` | Bounded-boundary and incidence-forest theorems are checked. | Prove a future invariant on a larger exact subclass. |
 | `VS-10` | Attack with hard families | `BLOCKED` | Hard controls are registered. | Attack a checked VS-08 invariant. |
 | `VS-11` | Global complexity audit | `BLOCKED` | Audit criteria exist. | Count the complete computation graph of a candidate mechanism. |
 | `VS-12` | Route decision | `BLOCKED` | Claim discipline is prepared. | Classify the route after VS-08 through VS-11. |
@@ -46,16 +46,9 @@ Evidence: [specification](VS-02-IMPLEMENTATION.md), [audit](VS-02-AUDIT.md), com
 
 ## VS-03 — Exact extension-profile engine
 
-**Exit gate:** satisfied after final PR automation.
+**Exit gate:** satisfied.
 
-Exports:
-
-- exact completion masks for every prefix;
-- deterministic exact quotient classes;
-- representative-independent zero/one transitions;
-- processed-boundary comparison counts;
-- canonical full profile records and summaries;
-- deterministic exhaustive profile-census output.
+Exports exact completion masks, deterministic exact quotient classes, representative-independent transitions, processed-boundary comparisons, canonical profile records, and deterministic profile-census output.
 
 Checked finite results:
 
@@ -65,17 +58,32 @@ Checked finite results:
 - `1818651` live classes;
 - `2865585` processed-valid boundary states;
 - maximum quotient size `8`;
-- `120` unsatisfiable-root profiles, corresponding to all orderings of the unique unsatisfiable five-vertex instance.
-
-The single-edge control under ordering `(0,1,2)` contains a genuine live merge: prefixes `01` and `10` have the same nonzero exact completion set.
+- `120` unsatisfiable-root profiles.
 
 Evidence: [specification](VS-03-IMPLEMENTATION.md), [proof and completion audit](VS-03-AUDIT.md), committed profile corpus, exact/reference tests, and Python 3.11–3.13 automation.
 
-These are finite exact measurements and a proved exponential construction. They do not establish a polynomial quotient or construction bound.
-
 ## VS-04 — Control calibration
 
-Run checked VS-02 and VS-03 on bipartiteness, acyclic and bounded-width systems, meaningful XOR analogues, disconnected unions, and known planar or low-occurrence controls. Explain the source of tractability. Exit only with reproducible checked reports.
+**Exit gate:** satisfied after final committed-report reproduction.
+
+Checked mechanisms:
+
+- graph bipartiteness through root-relative parity;
+- XOR consistency through affine row reduction;
+- incidence-forest NAE colouring through acyclic elimination;
+- bounded-boundary dynamic programming through complete finite interfaces;
+- disconnected factorization through exact component independence.
+
+Checked finite results:
+
+- all `1100` labelled graphs through five vertices: `428` bipartite, `672` non-bipartite;
+- all `16453` canonical XOR systems through three variables: `890` consistent, `15563` inconsistent;
+- all `36` incidence-forest NAE instances through five vertices are constructively colourable;
+- all `344` maximum-occurrence-at-most-three instances in that finite domain are satisfiable.
+
+Planar and occurrence-at-most-three tractability are retained as external results rather than project re-proofs.
+
+Evidence: [specification](VS-04-IMPLEMENTATION.md), [proof and completion audit](VS-04-AUDIT.md), executable controls, deterministic calibration report, exhaustive independent tests, and Python 3.11–3.13 automation.
 
 ## VS-05 — Minimal obstruction atlas
 
@@ -111,8 +119,8 @@ Record a surviving universal candidate, restricted theorem, complete disproof, r
 
 ## Immediate queue
 
-1. Execute VS-04 control calibration.
-2. Build VS-05 minimal obstruction atlas.
-3. Use VS-06 and VS-07 evidence before proposing VS-08.
+1. Build VS-05 minimal obstruction atlas.
+2. Use VS-06 to attack naive summaries against checked obstructions.
+3. Use VS-07 to measure genuine semantic merging after control effects are separated.
 
 Computational results remain `COMPUTATIONAL` unless accompanied by a proof or a complete exhaustiveness argument.

@@ -1,11 +1,11 @@
 # Status — Monotone NAE-3SAT Investigation
 
-**Phase:** `VS-01`, `VS-02`, and `VS-03` complete; controls and obstruction atlas ready  
+**Phase:** `VS-01` through `VS-04` complete; obstruction atlas next  
 **Updated:** 2026-07-22
 
 ## Current position
 
-The investigation is open. The canonical instance layer, exact small-instance oracle, and exact extension-profile engine are `COMPLETE / CHECKED`. No universal polynomial-time mechanism is claimed.
+The investigation is open. The canonical instance layer, exact small-instance oracle, exact extension-profile engine, and tractable-control calibration are `COMPLETE / CHECKED`. No universal polynomial-time mechanism is claimed.
 
 Every vertical slice is governed by the mandatory [building-block quality gate](BUILDING-BLOCK-GATE.md). A dependent slice may begin only after each prerequisite is `COMPLETE / CHECKED` or stronger.
 
@@ -17,68 +17,60 @@ Every vertical slice is governed by the mandatory [building-block quality gate](
 4. Exact extension equivalence has well-defined one-variable transitions — `PROVED / CHECKED`.
 5. Boundary width `w` gives a `2^{O(w)} poly(L)` exact algorithm — `PROVED / CHECKED`.
 6. Bottom-up exact completion masks correctly construct the full semantic quotient for fixed instances and orderings — `PROVED / CHECKED`.
+7. Every incidence-forest 3-uniform hypergraph is constructively two-colourable in linear incidence time — `PROVED / CHECKED`.
 
 ## Vertical-slice progress
 
 - `VS-01` canonical instance model — `COMPLETE / CHECKED`.
 - `VS-02` exact small-instance oracle — `COMPLETE / CHECKED`.
 - `VS-03` exact extension-profile engine — `COMPLETE / CHECKED`.
-- `VS-04` control calibration — `READY`.
+- `VS-04` control calibration — `COMPLETE / CHECKED`.
 - `VS-05` minimal obstruction atlas — `READY`.
-- `VS-06` and `VS-07` — blocked on checked control and obstruction evidence.
+- `VS-06` and `VS-07` — blocked on checked obstruction evidence.
 - `VS-08` — blocked until failure structure supports one precise invariant.
-- `VS-09` — `PARTIAL` through the existing bounded-boundary theorem only.
+- `VS-09` — `PARTIAL` through bounded-boundary and incidence-forest restricted theorems.
 - `VS-10` through `VS-12` — blocked until an atomic invariant exists.
 
-## VS-02 retained results
+## Retained finite evidence
 
-The first exhaustive domain contains all `1045` labelled 3-uniform hypergraphs on at most five vertices. Exactly `1044` are satisfiable and one is unsatisfiable: the complete 3-uniform hypergraph on five vertices. The Fano-plane control is unsatisfiable and edge-minimal unsatisfiable.
+### VS-02
 
-## VS-03 retained results
+All `1045` labelled 3-uniform hypergraphs through five vertices are classified exactly. Exactly `1044` are satisfiable and one is unsatisfiable: the complete 3-uniform hypergraph on five vertices. The Fano plane is unsatisfiable and edge-minimal unsatisfiable.
 
-The first profile domain contains every ordering of every labelled instance through five vertices:
+### VS-03
 
-\[
-123280
-\]
-
-instance-ordering profiles.
-
-The exact census records:
+All `123280` instance-ordering profiles through five vertices are measured exactly:
 
 - `7753542` raw prefixes;
 - `2153049` exact semantic classes;
 - `1818651` live exact classes;
 - `2865585` processed-valid boundary states;
-- maximum exact quotient size `8`;
-- `120` unsatisfiable-root profiles, the orderings of the unique unsatisfiable five-vertex instance.
+- maximum exact quotient size `8`.
 
-A pinned constrained live merge occurs for one edge under ordering `(0,1,2)`: prefixes `01` and `10` have the same nonzero completion set.
+### VS-04
 
-Evidence:
+Control calibration exhaustively checked:
 
-- [VS-03 implementation specification](VS-03-IMPLEMENTATION.md);
-- [VS-03 proof and completion audit](VS-03-AUDIT.md);
-- deterministic profile corpus under `tools/monotone-nae-3sat/profile-corpus/`;
-- executable profile engine and independent tests;
-- Python 3.11, 3.12, and 3.13 automated production gate;
-- complete independent `123280`-profile reference census on the pinned runtime.
+- `1100` labelled graphs through five vertices: `428` bipartite and `672` non-bipartite;
+- `16453` canonical XOR systems through three variables: `890` consistent and `15563` inconsistent;
+- `36` incidence-forest NAE instances through five vertices, all constructively colourable;
+- `344` maximum-occurrence-at-most-three NAE instances in the same finite domain, all satisfiable.
 
-These are finite exact measurements. They do not establish a polynomial asymptotic quotient bound.
+The calibrated mechanisms are distinct: graph parity, affine row space, acyclic elimination, bounded interface, and disconnected product decomposition. Planar and occurrence-at-most-three tractability remain externally established broader boundaries.
 
 ## Current obstruction
 
-Exact future equivalence is now executable and measurable. The remaining issue is not semantic definition but asymptotic structure: exact quotients may grow, and even small quotients may be expensive to construct or encode. A universal route requires a new symbolic mechanism with globally polynomial construction, transitions, representation, and total state.
+The easy controls do not reveal one common universal compression rule. Their tractability comes from different exact structures. Unrestricted Monotone NAE-3SAT still requires a symbolic mechanism with globally polynomial construction, transitions, representation, and total generated state.
 
 ## Current open claim
 
-`NAE-006` asks whether exact completion behaviour admits a universally polynomial symbolic representation with polynomial-time construction, transitions, equivalence, and acceptance. No representation language has yet been selected.
+`NAE-006` asks whether exact completion behaviour admits a universally polynomial symbolic representation with polynomial-time construction, transitions, equivalence, and acceptance. No representation language has yet survived formulation and attack.
 
 ## Immediate next tasks
 
-1. Execute `VS-04`: calibrate exact profiles on known easy controls and identify the actual tractability mechanism.
-2. Execute `VS-05`: construct the checked minimal obstruction atlas using VS-02 and VS-03.
-3. Only after those foundations, use `VS-06` and `VS-07` to attack summaries and measure nontrivial semantic merging.
+1. Execute `VS-05`: construct the checked minimal obstruction atlas using VS-02 and VS-03.
+2. Use the atlas in `VS-06` to destroy naive summaries.
+3. Use `VS-07` to separate genuine live merging from symmetry, dead-state collapse, and bounded-interface effects.
 
 ## Stop conditions
 

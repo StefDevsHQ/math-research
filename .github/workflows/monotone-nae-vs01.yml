@@ -1,4 +1,4 @@
-name: Monotone NAE-3SAT VS-01 through VS-03
+name: Monotone NAE-3SAT VS-01 through VS-04
 
 on:
   pull_request:
@@ -57,3 +57,7 @@ jobs:
         run: |
           python -m nae3sat.cli profile-census --max-vertices 5 --output /tmp/vs03-corpus.json
           cmp /tmp/vs03-corpus.json profile-corpus/all-labelled-orderings-n-le-5.json
+      - name: Reproduce VS-04 calibration
+        run: |
+          python -m nae3sat.cli calibrate --output /tmp/vs04-calibration.json
+          cmp /tmp/vs04-calibration.json calibration/vs04-calibration.json
