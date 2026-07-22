@@ -1,7 +1,7 @@
 # VS-02 Implementation Specification — Exact Small-Instance Oracle
 
 **Slice:** `VS-02`  
-**Status:** `READY` — implementation contract prepared; executable oracle and corpus remain  
+**Status:** `READY` — reviewed implementation contract; executable oracle and corpus remain  
 **Depends on:** `VS-01 — COMPLETE / CHECKED`  
 **Updated:** 2026-07-22
 
@@ -9,14 +9,7 @@
 
 Build a trusted exact satisfiability oracle for finite Monotone NAE-3SAT experiments.
 
-The oracle is not intended to be polynomial-time on unrestricted inputs. Its role is to provide mathematically exact answers on explicitly bounded domains so that later slices can:
-
-- validate extension-profile acceptance;
-- enumerate minimal unsatisfiable instances;
-- destroy insufficient summaries with complete counterexamples;
-- measure semantic compression against ground truth.
-
-Every universal claim remains outside the scope of this slice.
+The oracle is deliberately exponential. Its role is to provide exact finite ground truth for later slices: extension-profile validation, obstruction enumeration, summary counterexamples, and semantic-state measurements. Nothing in this slice is evidence for a polynomial-time algorithm.
 
 ## Exact problem
 
@@ -26,7 +19,7 @@ For a canonical instance
 H=(V,E),\qquad V=\{0,\ldots,n-1\},
 \]
 
-decide whether there exists
+decide whether there is a colouring
 
 \[
 \sigma:V\to\{0,1\}
@@ -34,9 +27,9 @@ decide whether there exists
 
 such that every edge contains both colours.
 
-The reference decision procedure is exhaustive enumeration of all binary colourings, checked by the `VS-01` verifier.
+The independent reference procedure enumerates all binary colourings in lexicographic order and checks each edge directly.
 
-## Required outputs
+## Required API
 
 ```python
 @dataclass(frozen=True, slots=True)
@@ -48,11 +41,11 @@ class SolveResult:
 
 
 def solve_exact(instance: Hypergraph3, *, use_symmetry: bool = True) -> SolveResult:
-    """Decide satisfiability exactly and return a verified witness when one exists."""
+    """Return the exact decision and lexicographically least witness."""
 
 
 def satisfying_assignments(instance: Hypergraph3) -> tuple[tuple[int, ...], ...]:
-    """Return every satisfying total colouring in lexicographic order."""
+    """Return every satisfying colouring in lexicographic order."""
 
 
 def count_satisfying_assignments(instance: Hypergraph3) -> int:
@@ -60,91 +53,139 @@ def count_satisfying_assignments(instance: Hypergraph3) -> int:
 
 
 def is_edge_minimal_unsatisfiable(instance: Hypergraph3) -> bool:
-    """Return whether the instance is unsatisfiable and every one-edge deletion is satisfiable."""
+    """Return whether H is unsatisfiable and each one-edge deletion is satisfiable."""
+
+
+def labelled_instances(n: int) -> Iterator[Hypergraph3]:
+    """Yield every labelled simple 3-uniform hypergraph on 0..n-1 once."""
 ```
 
-`SolveResult.witness` must be `None` exactly when `satisfiable` is false. Every non-`None` witness must be rechecked through `verify_coloring` before return.
+All public functions reject non-`Hypergraph3` instances with `ValidationError`.
+
+`witness is None` exactly when `satisfiable` is false. Every returned witness must be rechecked through the VS-01 public verifier before return.
+
+## Deterministic search accounting
+
+`assignments_tested` has one exact meaning:
+
+> the number of candidate assignments evaluated by the decision path's internal edge predicate, including the successful candidate when one is found.
+
+For `use_symmetry=False`, candidates are complete length-`n` colourings in ordinary tuple lexicographic order.
+
+For `use_symmetry=True`, candidates are assignments to the unfixed active vertices, in increasing vertex order and tuple lexicographic order. The fixed representative bits and isolated zero bits are inserted before edge evaluation. The empty active search space still has one candidate, the empty tuple.
+
+The only permitted values of `symmetry_reduction` are:
+
+- `"none-v1"`;
+- `"component-complement-v1"`.
+
+This makes accounting independently reproducible and prevents implementation-dependent counters.
 
 ## Baseline algorithm
 
-The baseline implementation enumerates colourings in lexicographic order.
+The baseline decision procedure enumerates complete colourings in lexicographic order.
 
-Without optimization:
-
-\[
-T(H)=O(2^n(n+m)),
-\]
-
-including strict colouring validation through the existing verifier.
-
-A direct internal edge loop may later reduce constant factors, but its result must remain cross-checked against `verify_coloring`.
-
-## Permitted symmetry reduction
-
-Global complementation preserves satisfaction:
+Using the public verifier directly gives
 
 \[
-\sigma\models H\iff (1-\sigma)\models H.
+O(2^n(n+m)).
 \]
 
-Therefore, for every nonempty incidence component, one chosen representative vertex may be fixed to colour `0` when deciding satisfiability.
+A validated internal edge predicate may reduce this to
 
-For an instance with `c` nonempty incidence components and `z` isolated vertices, the optimized decision search may enumerate only
+\[
+O(2^n m)
+\]
+
+after input validation. Its results must be exhaustively cross-checked against `verify_coloring`.
+
+Counting and listing use the complete baseline domain. They do not silently quotient symmetry.
+
+## Component-wise complement symmetry
+
+For any incidence component, complementing every colour inside that component preserves every constraint: each edge lies wholly inside one component and remains non-monochromatic after complementation.
+
+For each component containing an edge, choose its least-labelled vertex as representative and fix it to `0`. Isolated vertices are fixed to `0` for decision and witness search.
+
+If there are `c` nontrivial components and `z` isolated vertices, the optimized path enumerates exactly
 
 \[
 2^{n-c-z}
 \]
 
-assignments on active vertices after fixing one representative per nonempty component. Isolated vertices are assigned `0` in the returned canonical witness.
+active candidates in the unsatisfiable case.
 
-### Correctness obligation
+### Required proof
 
-The implementation must include a project proof that component-wise colour complementation maps any satisfying assignment to one satisfying the fixed representatives. No optimization may be enabled solely because it appears empirically valid.
+Given any satisfying colouring, independently complement every nontrivial component whose least vertex has colour `1`. The resulting colouring is satisfying and has every representative equal to `0`.
 
-### Important limitation
+Moreover, the lexicographically least satisfying full colouring necessarily has each nontrivial component's least vertex equal to `0`: otherwise complementing that component changes no earlier vertex and changes that first component vertex from `1` to `0`, producing a smaller satisfying colouring. Isolated bits are also `0` in the least witness.
 
-Symmetry reduction may be used for decision and one-witness search. It must not be used to count or list all satisfying assignments unless multiplicities and isolated-vertex factors are restored exactly.
+Therefore lexicographic enumeration of unfixed vertices with these bits fixed returns the true lexicographically least full witness.
+
+This optimization is allowed only for decision and one-witness search. Counting and listing must enumerate or exactly restore every omitted multiplicity.
 
 ## Component factorization
 
-For incidence components `H_1, ..., H_k` and `z` isolated vertices:
+Let `H_1,...,H_k` be the nontrivial incidence components and let `z` be the number of isolated vertices. Then
 
 \[
-H\text{ is satisfiable}
-\iff
-H_j\text{ is satisfiable for every }j.
+H\text{ is satisfiable}\iff H_j\text{ is satisfiable for every }j,
 \]
 
-Moreover,
+and
 
 \[
-\#\mathrm{Sat}(H)=2^z\prod_{j=1}^k \#\mathrm{Sat}(H_j).
+\#\mathrm{Sat}(H)=2^z\prod_{j=1}^{k}\#\mathrm{Sat}(H_j).
 \]
 
-The implementation may solve components independently, but this identity must be proved and exhaustively cross-checked before becoming the default path.
+The proof is the direct bijection between a full satisfying colouring and independent satisfying colourings of the nontrivial components together with arbitrary isolated bits.
 
-## Canonical witness policy
+Component-factorized counting may be implemented, but the simple full-enumeration count remains the reference semantics. Both paths must agree exhaustively before factorization can become the default.
 
-For deterministic output, `solve_exact` returns the lexicographically least satisfying colouring under the selected algorithm's full-instance semantics.
+## Edge-minimal unsatisfiability
 
-If component symmetry is used internally, the implementation must still reconstruct and compare candidates as necessary to return the true lexicographically least full colouring, or else explicitly define and expose a different witness policy. The preferred requirement is the true lexicographically least witness.
+`is_edge_minimal_unsatisfiable(H)` means:
 
-Isolated vertices are `0` in the least witness.
+1. `H` is unsatisfiable; and
+2. for every edge `e`, `H-e` is satisfiable.
+
+Checking one-edge deletions is sufficient for edge-minimality: satisfiability is preserved when further constraints are deleted, so if every one-edge deletion is satisfiable, every proper edge subset is satisfiable.
+
+This is distinct from vertex-minimality.
+
+## Canonical labelled generator
+
+For fixed `n`, let
+
+```python
+triples = tuple(itertools.combinations(range(n), 3))
+```
+
+in lexicographic order. For masks
+
+\[
+0\le M<2^{\binom n3},
+\]
+
+include triple `j` exactly when bit `j` of `M` is `1`.
+
+This is a bijection between masks and labelled simple 3-uniform hypergraphs on `0,...,n-1`. `labelled_instances(n)` yields increasing masks.
+
+Invalid `n`, including Booleans and negative values, is rejected.
 
 ## First exhaustive domain
 
-The first corpus must be the complete labelled domain
+The first authoritative census is
 
 \[
 \mathcal H_{\le5}
 =
 \bigcup_{n=0}^{5}
-\left\{
-(V,E):V=\{0,\ldots,n-1\},\ E\subseteq\binom{V}{3}
-\right\}.
+\{(V,E):V=\{0,\ldots,n-1\},\ E\subseteq\binom V3\}.
 \]
 
-Its size is
+Its exact size is
 
 \[
 \sum_{n=0}^{5}2^{\binom n3}
@@ -152,80 +193,79 @@ Its size is
 =1045.
 \]
 
-This domain is chosen because it is small enough for complete independent verification and already fixed by the VS-01 exhaustive model tests.
-
-### Required corpus record
-
-For each `n=0,...,5`, record:
+For each `n`, record:
 
 - total labelled instances;
-- satisfiable instances;
-- unsatisfiable instances;
+- satisfiable and unsatisfiable instances;
 - connected instances;
 - edge-minimal unsatisfiable instances;
-- total satisfying-colouring count distribution;
-- exact command and runtime environment.
+- a distribution mapping exact satisfying-colouring counts to numbers of instances;
+- total complete colourings evaluated by the reference census.
 
-No count may be entered into the authoritative record until reproduced by two independent implementations or one implementation plus a logically independent exhaustive checker.
+### Connectedness convention
 
-## Controls
+A labelled instance is `connected` exactly when `n>0` and `incidence_components(H)` contains one component. Thus:
 
-The oracle must pass at least:
+- the zero-vertex instance is not connected;
+- the one-vertex edgeless instance is connected;
+- an edgeless instance on at least two vertices is disconnected.
 
-1. empty graph: satisfiable with the empty witness;
-2. edgeless graph on `n` vertices: `2^n` satisfying assignments;
-3. one edge: six satisfying assignments;
-4. two disconnected edges: 36 satisfying assignments;
-5. overlap chain fixture: independently enumerated result;
+This convention includes isolated singleton components and removes ambiguity from corpus counts.
+
+No census count enters the authoritative record until production and logically independent reference implementations agree.
+
+## Required controls
+
+1. zero-vertex graph: satisfiable, empty least witness, count `1`;
+2. edgeless graph on `n` vertices: count `2^n`, least witness all zero;
+3. one edge: count `6`, least witness `001`;
+4. two disconnected edges: count `36`;
+5. overlap-chain fixture: independently enumerated decision, count, and least witness;
 6. Fano plane: unsatisfiable;
-7. disconnected unions: decision conjunction and count product identities;
-8. complement pairing: every satisfying assignment has a distinct complement for `n>0`;
-9. optimized and unoptimized decision paths agree on every instance in the first exhaustive domain;
-10. all returned witnesses pass the VS-01 verifier.
+7. every Fano one-edge deletion: satisfiable, establishing edge-minimality;
+8. disconnected decision conjunction and counting product;
+9. complement closure, with distinct complements whenever `n>0`;
+10. optimized and baseline decisions agree on all 1045 first-domain instances;
+11. every returned witness passes the VS-01 verifier.
 
-The Fano result must be established by the committed exact oracle and independently checked; it is not imported from fixture naming.
+The Fano plane is outside `\mathcal H_{\le5}` and is a separate exact control, not part of the first corpus totals.
 
 ## Independent reference implementation
 
-The test suite must contain a deliberately simple reference solver that:
+Tests must contain a deliberately simple reference solver that:
 
-- enumerates all `2^n` tuples through `itertools.product`;
-- checks each edge directly without calling the production solver;
-- does not use component factorization;
-- does not use symmetry reduction;
-- returns the lexicographically least satisfying colouring and exact count.
+- enumerates `itertools.product((0,1), repeat=n)`;
+- checks edges directly;
+- does not call production decision, count, listing, component, or symmetry logic;
+- returns the least witness, full satisfying list, and exact count.
 
-The production and reference implementations must agree on every instance in `\mathcal H_{\le5}`.
+Production and reference implementations must agree on every instance in `\mathcal H_{\le5}` and on all named controls.
 
-## Corpus format
+## Corpus record
 
-Store the first corpus summary as deterministic JSON, for example:
+The committed corpus is compact deterministic JSON with a semantic payload and a non-self-referential digest:
 
 ```json
 {
   "format":"nae3-vs02-corpus-v1",
   "domain":"all-labelled-3-uniform-hypergraphs-n-le-5",
-  "counts":[
-    {"n":0,"instances":1,"satisfiable":1,"unsatisfiable":0}
-  ]
+  "generator":"edge-mask-v1",
+  "computation":"finite-exhaustive",
+  "counts":[],
+  "totals":{},
+  "payload_sha256":"..."
 }
 ```
 
-The final schema must include:
+Define `payload_sha256` as SHA-256 of the compact canonical JSON encoding of the object with the `payload_sha256` field omitted. Keys have a fixed documented order; nested distribution keys are decimal strings sorted numerically before emission.
 
-- format version;
-- exact domain definition;
-- generator version or commit;
-- Python version;
-- totals and structural counts;
-- SHA-256 digest of the canonical record;
-- statement that results are finite exhaustive computation.
+Exact interpreter patch versions and run timestamps belong in `VS-02-AUDIT.md`, not in the semantic corpus payload. The committed corpus bytes and digest must be identical on Python 3.11, 3.12, and 3.13.
 
-Do not store all 1045 instances unless a later slice needs them. They can be regenerated canonically from edge masks.
+The corpus must state that it is finite exhaustive computation. It must not imply a universal theorem. The 1045 instances need not be stored individually because the generator reproduces them exactly.
 
 ## Command-line interface
 
-Extend the existing CLI with:
+Extend the CLI with:
 
 ```bash
 python3 -m nae3sat.cli solve path/to/instance.json
@@ -233,43 +273,27 @@ python3 -m nae3sat.cli count path/to/instance.json
 python3 -m nae3sat.cli census --max-vertices 5 --output path/to/corpus.json
 ```
 
-### `solve` output
+`solve` emits:
 
 ```json
 {"format":"nae3-v1-solve","id":"...","satisfiable":true,"witness":[0,0,1],"assignments_tested":2,"symmetry_reduction":"component-complement-v1"}
 ```
 
-### `count` output
+`count` emits:
 
 ```json
 {"format":"nae3-v1-count","id":"...","satisfying_assignments":6}
 ```
 
-### `census` requirements
+`census`:
 
-- refuse `--max-vertices` above the explicitly supported laboratory bound unless a separate override is provided;
-- produce deterministic output;
-- use the canonical labelled generator;
-- report progress only to standard error;
-- never label a sampled domain exhaustive.
-
-## Generator
-
-For fixed `n`, enumerate the triples
-
-```python
-triples = tuple(itertools.combinations(range(n), 3))
-```
-
-in lexicographic order. For edge mask
-
-\[
-0\le M<2^{\binom n3},
-\]
-
-include triple `j` exactly when bit `j` of `M` is one.
-
-This is a bijection between masks and labelled simple 3-uniform hypergraphs on `V`. The exhaustiveness proof must be recorded in the audit.
+- accepts `0 <= --max-vertices <= 5` by default;
+- requires the explicit flag `--allow-large-domain` above `5`;
+- writes deterministic compact JSON;
+- uses the canonical labelled generator;
+- reports optional progress only to standard error;
+- never labels a sampled or interrupted domain exhaustive;
+- writes atomically through a temporary file followed by replacement.
 
 ## Required tests
 
@@ -277,97 +301,114 @@ This is a bijection between masks and labelled simple 3-uniform hypergraphs on `
 
 - satisfiable and unsatisfiable controls;
 - witness/null consistency;
-- lexicographically least witness;
+- true lexicographically least witness;
 - strict wrong-instance rejection;
 - optimized/unoptimized agreement;
 - witness re-verification;
-- deterministic assignments-tested accounting.
+- exact `assignments_tested` values on fixed controls.
 
 ### Counting and listing
 
 - count equals list length;
-- list is lexicographically sorted and duplicate-free;
+- list is sorted and duplicate-free;
 - all listed assignments verify;
 - complement closure;
 - disconnected product law;
-- isolated-vertex factor `2^z`.
+- isolated factor `2^z`;
+- factorized and direct counts agree where both exist.
+
+### Generator
+
+- exact instance counts for `n=0,...,5`;
+- increasing mask order;
+- no duplicates;
+- all generated graphs are canonical;
+- invalid bounds rejected.
 
 ### Minimal unsatisfiability
 
-- satisfiable instances return false;
-- unsatisfiable instance with unsatisfiable edge deletion returns false;
-- Fano plane returns true only if every one-edge deletion is verified satisfiable;
+- satisfiable inputs return false;
+- an unsatisfiable graph with an unsatisfiable edge deletion returns false;
+- Fano returns true only after every one-edge deletion is found satisfiable;
 - empty and one-edge boundary cases.
 
 ### Exhaustive agreement
 
 For every one of the 1045 labelled instances with `n<=5`:
 
-- production and reference decisions agree;
-- production and reference counts agree;
+- production/reference decisions agree;
+- counts and complete lists agree;
 - least witnesses agree;
-- optimized and baseline production paths agree;
-- every returned witness verifies;
-- component product identities agree.
+- optimized/baseline decision paths agree;
+- all witnesses verify;
+- component product identities agree;
+- corpus aggregation agrees with a separate reference aggregation.
 
-### Runtime matrix
+### Reproducibility and runtime matrix
 
-Compile, test, CLI controls, and corpus reproduction must pass on Python 3.11, 3.12, and 3.13.
+On Python 3.11, 3.12, and 3.13:
+
+- compile all package modules;
+- run the complete VS-01 and VS-02 suite;
+- exercise `solve`, `count`, and `census`;
+- regenerate the corpus;
+- compare regenerated bytes with the committed record.
 
 ## Complexity accounting
 
-For a graph with `n` vertices and `m` edges:
+For `n` vertices, `m` edges, and `S` satisfying assignments:
 
-- baseline decision: `O(2^n(n+m))` using the public verifier;
-- direct internal decision loop: `O(2^n m)` after input validation;
-- complete listing: output-sensitive `O(2^n m + S n)`, where `S` is the number of satisfying assignments;
-- exact counting: `O(2^n m)`;
-- component-factorized counting: sum of component search costs plus multiplication of integers whose bit length is at most `n+1`;
-- complete labelled generation for fixed `n`: exactly `2^{\binom n3}` instances;
-- total first-domain census: 1045 instances, with total colouring workload explicitly recorded rather than hidden in big-O notation.
+- baseline decision using public verification: `O(2^n(n+m))`;
+- internal direct decision after validation: `O(2^n m)`;
+- symmetry decision: `O(2^{n-c-z}m)` for `c` nontrivial components and `z` isolates;
+- complete listing: `O(2^n m + Sn)` time and `Theta(Sn)` output space;
+- direct counting: `O(2^n m)` time and `O(n)` candidate space apart from the input;
+- factorized counting: sum of component enumeration costs plus multiplication of integers of at most `n+1` bits;
+- fixed-`n` labelled generation: exactly `2^{\binom n3}` instances;
+- first census: exactly 1045 instances, with exact tested-colouring totals recorded.
 
-No runtime result from this slice is evidence of polynomial-time solvability.
+These are exponential laboratory procedures. They are not candidate polynomial algorithms.
 
 ## Quality gate
 
-`VS-02` may become `COMPLETE / CHECKED` only when:
+`VS-02` becomes `COMPLETE / CHECKED` only when:
 
-1. `VS-01` remains green on all supported runtimes;
-2. production solver, counter, listing API, generator, and CLI exist;
-3. component and symmetry optimizations have written correctness proofs;
-4. the independent baseline solver is committed;
-5. exhaustive agreement holds on all 1045 instances with `n<=5`;
+1. VS-01 remains green on all supported runtimes;
+2. all required production APIs, generator, corpus builder, and CLI commands exist;
+3. component factorization, complement fixing, least-witness preservation, and generator exhaustiveness have written proofs;
+4. the independent reference implementation is committed;
+5. exhaustive production/reference agreement holds on all 1045 instances;
 6. Fano unsatisfiability and edge-minimality are independently verified;
-7. the deterministic corpus record is committed and reproducible;
-8. all complexity and encoded-output sizes are audited;
-9. CI passes on Python 3.11, 3.12, and 3.13;
-10. an independent break pass finds no unresolved substantive defect;
-11. `STATUS.md`, `VERTICAL-SLICES.md`, and the audit are synchronized.
+7. the deterministic corpus record is committed and byte-reproducible;
+8. complexity, integer bit lengths, output size, and assignment counters are audited;
+9. Python 3.11, 3.12, and 3.13 CI is green;
+10. an independent break pass leaves no unresolved substantive defect;
+11. `STATUS.md`, `VERTICAL-SLICES.md`, README, and the completion audit are synchronized.
 
-Until this gate is satisfied, no `VS-03` result may cite VS-02 output as trusted ground truth.
+Until then, no dependent slice may treat VS-02 output as trusted ground truth.
 
 ## Explicit non-goals
 
-This slice does not:
+VS-02 does not:
 
 - provide a polynomial-time algorithm;
-- use SAT solvers or external decision engines as the ground truth;
+- use an external SAT solver as ground truth;
 - claim novelty;
-- reduce instances up to isomorphism;
+- quotient graph isomorphism;
 - enumerate all six-vertex hypergraphs;
-- infer a universal theorem from the finite corpus;
+- infer a universal statement from the finite corpus;
 - extract a compression invariant.
 
 ## Implementation sequence
 
-1. prove component factorization and component-wise complement fixing;
-2. define result and witness policies;
-3. implement the simple reference solver;
-4. implement production baseline decision, count, and listing paths;
-5. add and verify component/symmetry optimizations;
-6. implement the canonical labelled generator;
-7. exhaustively cross-check `n<=5`;
-8. add CLI commands and deterministic corpus schema;
-9. reproduce the census on all supported Python versions;
-10. perform the independent attack and complexity audit;
+1. commit the correctness proofs and fixed semantics;
+2. implement the independent reference logic in tests;
+3. implement decision, listing, and counting;
+4. add the proved symmetry decision path;
+5. implement the canonical generator and corpus builder;
+6. exhaustively cross-check `n<=5`;
+7. add CLI commands and atomic corpus output;
+8. verify Fano unsatisfiability and edge-minimality independently;
+9. regenerate identical corpus bytes on all supported runtimes;
+10. perform the break pass and full complexity audit;
 11. promote only after the complete building-block gate passes.
