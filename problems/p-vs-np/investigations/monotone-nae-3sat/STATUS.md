@@ -1,82 +1,53 @@
 # Status — Monotone NAE-3SAT Investigation
 
-**Phase:** `VS-08` complete; `NAE-016` open; VS-09 route selection organized  
+**Phase:** `NAE-016` disproved; ordered state-enumeration route closed; collective representations next  
 **Updated:** 2026-07-23
 
 ## Current position
 
-`VS-01` through `VS-08` are `COMPLETE / CHECKED`.
+`VS-01` through `VS-08` remain `COMPLETE / CHECKED`.
 
-VS-08 implemented propagation-closed signed residual normal forms, repaired an orientation defect, proved exact oriented residualization, and found the first strict semantic-incompleteness witness for byte equality.
+The subsequent direct attack on `NAE-016` is also complete. Central lifts of constant-degree expanders force exponentially many pairwise distinct live exact completion functions under every variable ordering. Since exact PCRNF states cannot identify distinct completion functions, every ordering has exponentially many PCRNF states.
 
-The Monotone NAE-3SAT programme remains open. The byte-equality merge strategy is closed; the existential polynomial-state conjecture `NAE-016` remains open.
+The Monotone NAE-3SAT programme remains open. The universal ordered PCRNF route is closed.
 
-No universal polynomial-time mechanism or general representation lower bound is claimed.
+## Accepted results
+
+- `NAE-016 — DISPROVED / CHECKED`: no polynomial-state PCRNF ordering exists universally.
+- `NAE-017 — PROVED / CHECKED`: oriented PCRNF residualization and transitions are exact.
+- `NAE-018 — DISPROVED / CHECKED`: PCRNF byte equality is not complete semantic equality.
+- `NAE-019 — PROVED / CHECKED`: PCRNF state count dominates exact residual-function count.
+- `NAE-020 — PROVED / CHECKED`: central lifts of constant-degree expanders yield `2^{Omega(n)}` exact residual functions under every ordering.
+- `NAE-006 — CONJECTURE / DRAFT`: a broader polynomial collective exact representation remains unresolved.
 
 ## Route position
 
-The programme now has an explicit [route registry](routes/README.md) and [route dashboard](routes/STATUS.md).
+- [`R1.1 — PCRNF`](routes/exact-state-representations/pcrnf/README.md): closed as a universal ordered state-enumeration route; exact and restricted results retained.
+- [`R1.2 — Collective exact representation`](routes/exact-state-representations/semantic-quotient/README.md): reformulation required; state-per-semantic-class quotients are blocked by `NAE-020`.
+- [`R1.3 — Decision diagrams`](routes/exact-state-representations/decision-diagrams/README.md): reduced ordered variants blocked; broader models unassessed.
+- `R1.4 — Decomposable circuits`: remains a candidate collective representation route.
+- `R2`: restricted decomposition and ordering results remain valid.
+- `R6`: now contains an explicit all-ordering model-specific barrier.
 
-Current hierarchy:
-
-- [`R1 — Exact-state representations`](routes/exact-state-representations/README.md) — `ACTIVE`;
-  - [`R1.1 — PCRNF`](routes/exact-state-representations/pcrnf/README.md) — exact substrate retained, `NAE-016` open;
-  - [`R1.2 — Semantic quotient over PCRNF`](routes/exact-state-representations/semantic-quotient/README.md) — `READY`, recommended next subroute;
-  - `R1.3` decision diagrams and `R1.4` decomposable circuits — registered candidates.
-- [`R2 — Decomposition and ordering`](routes/decomposition-and-ordering/README.md) — restricted results and open candidates.
-- `R3` through `R6` — registered algebraic, gluing, branching and barrier families.
-
-## Accepted VS-08 results
-
-1. Orientation-free component-complement normalization is unsound for exact labelled completion semantics — `DISPROVED / CHECKED`.
-2. Direct substitution, propagation closure, and component normalization with an explicit orientation bit preserve exact labelled completion sets and exact transitions — `NAE-017, PROVED / CHECKED`.
-3. PCRNF byte equality is strictly finer than exact completion equivalence — `NAE-018, DISPROVED / CHECKED`.
-4. PCRNF equality coincides with exact completion classes throughout the exhaustive domain through four vertices — `COMPUTATIONAL / CHECKED`.
-5. The first strict gap occurs on a five-vertex six-edge instance at ordering `(0,4,1,2,3)` and level two.
-6. The fan family retains exponential bad-order PCRNF growth and bounded good-order growth.
-
-## Claim status
-
-- `NAE-016` — `CONJECTURE / CHECKED`.
-- `NAE-017` — `PROVED / CHECKED`.
-- `NAE-018` — `DISPROVED / CHECKED`.
-- `NAE-006` — `CONJECTURE / DRAFT`.
-
-Operationally:
+## Exact determination
 
 ```text
-mathematical conjecture NAE-016       OPEN
-exact oriented PCRNF substrate        RETAINED
-byte equality as complete quotient    CLOSED
-recommended next subroute             R1.2
-parallel restricted theorem track     R1.1-B / R2.3
+PCRNF exactness                              RETAINED
+PCRNF byte equality as semantic equality     DISPROVED
+polynomial PCRNF state under some ordering    DISPROVED
+ordered state per residual function           BLOCKED
+collective exact representations              OPEN
+restricted PCRNF classes                      OPEN
 ```
 
-## Vertical-slice progress
+## Scope boundary
 
-- `VS-01` through `VS-08` — `COMPLETE / CHECKED`.
-- `VS-09` — `PARTIAL / READY`:
-  - `Track A`: prove restricted polynomial PCRNF state bounds through `R1.1-B` and `R2.3`;
-  - `Track B`: define a stronger exact merge layer through `R1.2`.
-- `VS-10` through `VS-12` remain blocked until VS-09 produces a precise surviving candidate.
+The lower bound does not prove `P!=NP`, does not disprove `NAE-006`, and does not lower-bound arbitrary circuits or algorithms. It applies to ordered computations that materialize one exact state for each residual completion function.
 
-## Current obstruction
+## Next decision
 
-```text
-exact residual syntax != exact semantic equivalence
-```
+The strongest next constructive option is a collective representation route, most plausibly deterministic decomposable circuits or another non-ordered structure that can share information across exponentially many distinct residual functions.
 
-A stronger merge rule must identify semantically equal but syntactically different residuals without invoking satisfiability, exact completion enumeration, or another intractable semantic oracle. Alternatively, a direct theorem may bound the number of reachable PCRNFs despite incomplete merging.
+The parallel small-win track is to classify the largest restricted graph or hypergraph classes on which PCRNF state remains polynomial.
 
-Either continuation must bound the complete generated state graph, not only each individual state.
-
-## Continuation conditions
-
-Continue from `NAE-017` through one of two precise routes:
-
-1. prove polynomial reachable-state and total-encoding bounds on the largest identifiable structural class, then test whether the proof extends;
-2. define a polynomial-time exact merge criterion strictly stronger than byte equality and attack it on the five-vertex witness, fan family, Fano, linear four-regular instances, and canonical reduction outputs.
-
-A disproof of `NAE-016` requires an every-ordering superpolynomial family or another complete contradiction to its quantified statement.
-
-Evidence: [VS-08 completion and status-correction audit](VS-08-AUDIT.md), the deterministic PCRNF attack record, and the new route hierarchy.
+Evidence: [NAE-016 expander disproof](routes/exact-state-representations/pcrnf/proofs/NAE-016-expander-disproof.md).
