@@ -65,7 +65,7 @@ The Fano plane and a seven-edge satisfiable star instance both leave all root GA
 
 ## Retained exact control
 
-For a fixed instance and ordering, processed consistency plus the exact assignment on the processed boundary determines the remaining completion set. This is the standard exact-interface fact behind `NAE-005` and is exhaustively cross-checked through four vertices.
+For a fixed instance, ordering, and processing level, processed consistency plus the exact assignment on the processed boundary determines the remaining completion set. This is the standard exact-interface fact behind `NAE-005` and is exhaustively cross-checked through four vertices.
 
 It is not a universal compression theorem: the boundary can have linear size and therefore expose `2^w` states.
 
@@ -85,6 +85,28 @@ The slice was attacked for:
 
 The bounded-radius claim is proved symbolically for every fixed radius. The canonicalizer is used only to verify small samples and is not part of the theorem or a proposed algorithm.
 
+## Post-merge implementation review
+
+The first `main` run after the VS-06 merge, workflow run `29954395327`, failed on Python 3.11, 3.12, and 3.13. The review found a stale committed collision record rather than a failed mathematical collision.
+
+The committed JSON had retained an advertised digest from the final generator while containing values from an earlier prototype. In particular:
+
+- the satisfiable degree-sequence witness was recorded with `2` solutions instead of `10`;
+- the satisfiable pair-codegree witness was recorded with `2` solutions instead of `6`;
+- both stored least witnesses were stale;
+- the degree second moment was recorded as `270` instead of `180`.
+
+Consequently the record failed its own strict envelope check and could not reproduce byte-for-byte from the checked generator. The record was regenerated from the current implementation. The semantic claims did not change.
+
+The review also strengthened the gate by:
+
+- independently enumerating all assignments for every named whole-instance witness;
+- comparing stored solution counts and least witnesses with that independent enumeration;
+- checking the anchored graph-to-NAE reduction in both directions on odd-cycle, even-cycle, and radius-one controls;
+- checking the characteristic-polynomial routine on exact known matrices;
+- adding VS-06 to the generic strict-envelope adversarial tests;
+- making the test directory an explicit Python package for dotted unittest targets.
+
 ## Complexity and scope
 
 The atlas is a falsification instrument, not a decision algorithm. The finite witnesses are tiny, but finding collisions by exhaustive search can be exponential. The generic local-neighbourhood canonicalizer can be factorial in ball size. No such cost is described as polynomial.
@@ -93,6 +115,6 @@ The results are summary-specific. They do not prove that every local, algebraic,
 
 ## Final determination
 
-`VS-06` is `COMPLETE / CHECKED`.
+`VS-06` remains `COMPLETE / CHECKED` after correction of its reproducibility artifacts and strengthening of its independent verification boundary.
 
 The legitimate next slice is `VS-07`: measure genuine live semantic merging, separating dead-state collapse, complement symmetry, exact quotient count, boundary-state count, and encoded representation size.
