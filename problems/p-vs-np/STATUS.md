@@ -1,72 +1,75 @@
 # Status — P versus NP
 
-**Phase:** Monotone NAE-3SAT VS-07 complete; atomic representation selection next  
-**Updated:** 2026-07-22
+**Phase:** Monotone NAE-3SAT VS-08 complete; PCRNF route closed  
+**Updated:** 2026-07-23
 
 ## Current position
 
-The repository foundation and canonical landscapes are complete. The active Monotone NAE-3SAT investigation has completed `VS-01` through `VS-07` as checked infrastructure, falsification, and semantic-measurement work. No proof route, universal polynomial-time mechanism, or general representation lower bound has been accepted.
+The active Monotone NAE-3SAT investigation has completed `VS-01` through `VS-08` as checked infrastructure, falsification, semantic measurement, and one fully implemented representation attack.
 
-The Subset Sum investigation remains closed after two universal strategies failed within their stated models.
+No proof route, universal polynomial-time mechanism, or general representation lower bound has been accepted.
 
-## Active investigation
+The Subset Sum investigation remains closed after its universal structural-compression strategies failed within their stated models.
 
-[Monotone NAE-3SAT](investigations/monotone-nae-3sat/README.md) now provides:
+## VS-08 determination
 
-- canonical labelled instances;
-- an exact exponential oracle and exhaustive `n<=5` census;
-- exact successful-completion profiles for fixed orderings;
-- calibrated parity, affine, acyclic, bounded-boundary, and component controls;
-- exact `K_5^(3)` and Fano obstruction evidence;
-- the dead-successful-completion theorem for globally unsatisfiable instances;
-- ten explicit same-summary/different-semantics collisions;
-- a proved family showing every fixed locality radius can miss conditioned residual satisfiability;
-- exact measurements separating live semantic merging from dead collapse, complement symmetry, boundary states, representation bytes, and ordering effects;
-- a proved fan family with exponential live quotient growth under one order and constant-width behaviour under another;
-- finite exhaustive evidence of genuine all-live merging beyond complement-related prefix identification.
+Propagation-closed signed residual normal form was implemented in full.
 
-These results constrain specified mechanisms only. They do not lower-bound arbitrary exact representations.
+Retained:
 
-## Current mathematical target
+- exact direct residualization into unary, signed-binary and ternary constraints;
+- deterministic propagation closure;
+- exact next-variable transitions;
+- canonical component normalization with explicit orientation bits;
+- complete encoded-size and reachable-state measurements.
 
-Execute `VS-08`: define one atomic residual representation language motivated by the genuine merging observed in VS-07.
+Negative results:
 
-Before implementation, the candidate must specify:
+- dropping component orientation is unsound even on one NAE edge;
+- oriented PCRNF byte equality is not exact semantic equivalence;
+- the first strict incompleteness witness occurs on five vertices;
+- no polynomial bound on the complete reachable PCRNF state graph survived.
 
-- exact represented semantics;
-- canonical equality;
-- restriction, transition, conjunction, and merge;
-- acceptance;
-- encoded size;
-- proposed polynomial global state bound;
-- tractable controls;
-- adversarial high-width and reduction-generated families;
-- a stop condition.
+Claim status:
 
-The recommended first target is residual-constraint normalization under component complement. Complement symmetry alone is insufficient on the bad-order fan family, so the candidate must also explain the additional all-live merging seen in the four-vertex witness.
+- `NAE-016` — `RETRACTED / CHECKED`;
+- `NAE-017` — `PROVED / CHECKED`;
+- `NAE-018` — `DISPROVED / CHECKED`.
 
-## Mandatory controls
+The route is closed as a universal compression route, while exact oriented PCRNF remains a useful reference representation and restricted control.
 
-- graph 2-colouring;
-- XOR-SAT;
-- acyclic and bounded-width CSPs;
-- Positive 1-in-3 SAT;
-- canonical 3-SAT reductions;
-- linear 4-regular Monotone NAE-3SAT;
-- dense `K_5^(3)` and sparse linear Fano obstructions;
-- the VS-06 collision atlas;
-- the VS-07 first genuine merge and fan ordering-separation family.
+## Current obstruction
 
-## Retained Subset Sum results
+The central unresolved gap is now sharper:
 
-- the residue-completion lemma;
-- polynomial-time solvability under an efficiently constructible exact decomposition with polynomial total encoded state;
-- assignment-target embeddings and ordered-model lower bounds;
-- exact Minkowski composition identities;
-- representation-boundary theorems.
+```text
+polynomial explicit residual syntax
+is not the same as
+polynomially constructible exact semantic equivalence
+```
 
-No retained result proves `P=NP`, `P!=NP`, a general circuit lower bound, or a lower bound for arbitrary Subset Sum or Monotone NAE-3SAT algorithms.
+A new route must identify semantically equal residuals beyond syntax without hiding NP-hard reasoning inside equality or normalization, and it must prove a polynomial bound on the complete generated state graph.
+
+## Mandatory reopening conditions
+
+Do not reopen PCRNF without:
+
+1. a new exact merge criterion strictly stronger than byte equality;
+2. polynomial-time construction and equality;
+3. proof of exact transition and acceptance;
+4. a global polynomial bound on state count and total encoded state;
+5. successful attacks on the five-vertex PCRNF witness, fan family, Fano, linear four-regular samples, and verified reduction outputs.
+
+## Retained project results
+
+- Subset Sum residue-completion lemma and restricted exact-decomposition theorem;
+- Monotone NAE-3SAT exact quotient and bounded-boundary theorems;
+- incidence-forest constructive colouring;
+- obstruction, locality-failure, summary-collision and semantic-merging evidence;
+- exact oriented PCRNF residualization and its explicit model boundary.
+
+No retained result proves `P=NP`, `P!=NP`, a general circuit lower bound, or a lower bound for arbitrary algorithms.
 
 ## Next decision
 
-Open `VS-08` only with a complete atomic representation contract. If no candidate can explain the first genuine merge while surviving the fan, Fano, linear 4-regular, and reduction-generated controls, close or pivot rather than preserving an undefined compression narrative.
+Select a sibling exact-representation route, choose another P-versus-NP investigation, or pause the Monotone NAE-3SAT programme. Do not activate VS-09 through VS-12 without a materially new mechanism.
