@@ -64,7 +64,7 @@ jobs:
       - name: Generate VS-05 atlas
         run: python -m nae3sat.cli obstruction-atlas --output /tmp/vs05-obstruction-atlas.json
       - name: Upload generated VS-05 atlas
-        if: matrix.python-version == '3.13'
+        if: matrix.python-version == '3.11'
         uses: actions/upload-artifact@v4
         with:
           name: vs05-obstruction-atlas
