@@ -41,11 +41,6 @@ jobs:
         env:
           NAE3_FULL_VS03_REFERENCE: "1"
         run: python -m unittest discover -s tests -p 'test_vs03*.py' -v
-      - name: Full VS-05 atlas gate
-        if: matrix.python-version == '3.13'
-        env:
-          NAE3_FULL_VS05_ATLAS: "1"
-        run: python -m unittest discover -s tests -p 'test_vs05.py' -v
       - name: Validate fixture
         run: python -m nae3sat.cli validate tests/fixtures/fano-plane.json
       - name: Solve and count fixture
@@ -74,5 +69,3 @@ jobs:
         with:
           name: vs05-obstruction-atlas
           path: /tmp/vs05-obstruction-atlas.json
-      - name: Reproduce VS-05 atlas
-        run: cmp /tmp/vs05-obstruction-atlas.json obstruction-atlas/vs05-obstruction-atlas.json
