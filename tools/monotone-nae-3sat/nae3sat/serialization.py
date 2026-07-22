@@ -50,10 +50,13 @@ def parse_instance_json(data: str | bytes) -> Hypergraph3:
     if document["format"] != FORMAT_VERSION:
         raise ParseError(f"unsupported format version: {document['format']!r}")
     vertices = document["vertices"]
-    if type(vertices) is not list or any(type(v) is not int for v in vertices):
+    if type(vertices) is not list or any(type(vertex) is not int for vertex in vertices):
         raise ParseError("vertices must be a JSON array of integers excluding Booleans")
-    if len(set(vertices)) != len(vertices) or sorted(vertices) != list(range(len(vertices))):
-        raise ParseError("vertex set must be exactly 0, ..., n-1")
+    seen = bytearray(len(vertices))
+    for vertex in vertices:
+        if vertex < 0 or vertex >= len(vertices) or seen[vertex]:
+            raise ParseError("vertex set must be exactly 0, ..., n-1")
+        seen[vertex] = 1
     edges = document["edges"]
     if type(edges) is not list or any(type(edge) is not list for edge in edges):
         raise ParseError("edges must be a JSON array of arrays")
@@ -63,8 +66,19 @@ def parse_instance_json(data: str | bytes) -> Hypergraph3:
         raise ParseError(str(exc)) from exc
 
 
+def _require_instance(instance: object) -> Hypergraph3:
+    if not isinstance(instance, Hypergraph3):
+        raise ValidationError("instance must be a Hypergraph3")
+    return instance
+
+
 def to_canonical_json(instance: Hypergraph3) -> str:
-    document = {"format": FORMAT_VERSION, "vertices": list(range(instance.n)), "edges": [list(e) for e in instance.edges]}
+    instance = _require_instance(instance)
+    document = {
+        "format": FORMAT_VERSION,
+        "vertices": list(range(instance.n)),
+        "edges": [list(edge) for edge in instance.edges],
+    }
     return json.dumps(document, separators=(",", ":"), ensure_ascii=True, allow_nan=False)
 
 
