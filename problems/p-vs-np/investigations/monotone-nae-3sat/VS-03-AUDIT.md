@@ -16,8 +16,9 @@ The implementation is exponential. This audit does not claim that the exact quot
 Under `tools/monotone-nae-3sat/`:
 
 - `nae3sat/profile.py`: exact completion masks, quotient classes, transitions, boundary comparisons, and canonical profile records;
-- `nae3sat/profile_census.py`: deterministic exhaustive aggregate profile census;
-- `tests/test_vs03.py`: independent tuple-set reference engine, named controls, finite exhaustive gates, CLI checks, and corpus reproduction;
+- `nae3sat/profile_census.py`: deterministic exhaustive aggregate profile census and per-profile sequence digests;
+- `tests/test_vs03.py`: tuple-set reference engine, controls, finite exhaustive gates, CLI checks, and corpus reproduction;
+- `tests/test_vs03_sequence_digest.py`: independent ordered digest of every exact finite profile;
 - `profile-corpus/all-labelled-orderings-n-le-5.json`: canonical finite profile corpus;
 - CLI commands `profile` and `profile-census`;
 - Python 3.11, 3.12, and 3.13 automated gates.
@@ -36,7 +37,7 @@ For every canonical instance `H`, ordering `pi`, level `i`, and prefix assignmen
 
 Proceed by reverse induction on `i`.
 
-At `i=n`, the remainder is empty. There is one possible completion, the empty tuple. The construction assigns mask `1` exactly when the full assignment satisfies every edge and mask `0` otherwise. This is the required characteristic vector.
+At `i=n`, the remainder is empty. There is one possible completion, the empty tuple. The construction assigns mask `1` exactly when the full assignment satisfies every edge and mask `0` otherwise.
 
 Assume the claim at level `i+1`. Every completion at level `i` begins uniquely with next colour `0` or `1`. Under lexicographic completion order, the `0` completions form the lower half and the `1` completions form the upper half. If the child masks are `M_0` and `M_1`, the construction forms
 
@@ -50,23 +51,19 @@ By the induction hypothesis, the two halves are exactly the satisfying completio
 
 ## Quotient and transition correctness
 
-The implementation scans prefix masks in lexicographic prefix order and assigns a class identifier on first occurrence. Therefore two prefixes receive the same class exactly when their canonical completion masks are equal, which is exactly equality of completion sets by the theorem above.
+The implementation scans prefix masks in lexicographic prefix order and assigns a class identifier on first occurrence. Two prefixes receive the same class exactly when their canonical completion masks are equal, hence exactly when their completion sets are equal.
 
-For a class mask `M`, the `0` and `1` successors are the lower and upper mask halves. Equal parent masks have equal halves, so the transitions are independent of the chosen representative. Every successor half is looked up in the next level; absence is treated as an internal consistency failure.
+For a class mask `M`, the `0` and `1` successors are its lower and upper halves. Equal parent masks have equal halves, so transitions are independent of representative. Every successor half is looked up in the next level; absence is an internal consistency failure.
 
-At level zero, the unique root mask is nonzero exactly when some full satisfying assignment exists. At level `n`, masks are only `0` and `1`. Thus profile acceptance equals satisfiability.
-
-These implications are independently checked against VS-02 and against a tuple/frozenset reference engine.
+At level zero, the unique root mask is nonzero exactly when some satisfying assignment exists. At level `n`, masks are only `0` and `1`. Therefore profile acceptance equals satisfiability.
 
 **Status:** `PROVED / CHECKED`.
 
 ## Boundary comparison semantics
 
-For each level, the processed boundary contains precisely the processed vertices occurring in an edge that also contains an unprocessed vertex.
+At level `i`, the processed boundary contains precisely processed vertices occurring in an edge that also contains an unprocessed vertex.
 
-The recorded `processed_valid_boundary_states` count is the number of distinct boundary colourings induced by prefixes that have not already violated an edge wholly contained in the processed prefix.
-
-This quantity is a comparison with ordinary boundary dynamic programming. It is not the exact quotient and may be larger or smaller than the number of live exact classes for different reasons.
+`processed_valid_boundary_states` counts distinct boundary colourings induced by prefixes that have not violated any edge wholly contained in the processed prefix. It is a comparison with ordinary boundary dynamic programming, not the exact quotient.
 
 ## Exhaustive domain proof
 
@@ -76,31 +73,41 @@ For each `n`, edge masks enumerate all
 2^{\binom n3}
 \]
 
-labelled simple 3-uniform hypergraphs exactly once. `itertools.permutations(range(n))` enumerates all `n!` orderings exactly once. Therefore the declared domain contains exactly
+labelled simple 3-uniform hypergraphs exactly once. `itertools.permutations(range(n))` enumerates all `n!` orderings exactly once. Thus the declared domain has
 
 \[
-\sum_{n=0}^{5}2^{\binom n3}n!
-=123280
+\sum_{n=0}^{5}2^{\binom n3}n!=123280
 \]
 
 instance-ordering pairs.
 
-## Independent reference engine
+## Independent reference evidence
 
-The reference implementation does not use integer completion masks. It:
+The reference implementation does not use production integer-mask construction. It:
 
 - enumerates complete assignments directly;
 - stores each prefix completion set as a `frozenset` of completion tuples;
 - assigns classes by equality of those sets;
-- derives each transition from all class members;
+- derives each transition from every class member;
 - computes boundary states independently;
 - aggregates the complete finite census separately.
 
-The production and reference aggregate records agree on all `123280` declared profiles. Exact per-profile comparison is additionally performed for every profile through four vertices, all 120 orderings of the complete five-vertex obstruction, and named disconnected, chain, single-edge, isolated, and Fano controls.
+Exact per-profile comparison is performed through four vertices, for all 120 orderings of the complete five-vertex obstruction, and for named disconnected, chain, single-edge, isolated, and Fano controls.
+
+For the complete 123280-profile domain, both engines also compute an ordered profile-sequence SHA-256 for each `n`. Each profile signature contains its graph mask, ordering, every level's exact class masks, assignment partition, transitions, and boundary count. Therefore a disagreement in any individual profile changes the digest even if aggregate totals happen to cancel.
+
+The six independently checked sequence digests are:
+
+| `n` | Profile-sequence SHA-256 |
+|---:|---|
+| 0 | `383b6a55cb5c582dd98b505f0c0b7ab4ade288e4edf6e718524335f0cb1c44a9` |
+| 1 | `28914bb8bb75644fabf9e97c1289735d68a1ee4ff707d8879e28cd7afc30f1f7` |
+| 2 | `53d9dd4f1648414f7d05958cfd183518f245980f0db8197c10bee00143bf94e0` |
+| 3 | `e4ff0bd86f840e4cdd516e7a6fa71158f2a5224f7ff0dc1a781d5728f0a5b1d2` |
+| 4 | `26ffbfd05952ca42f3f64254cea3a58a704d0ef1b2914bb29d93e47368d6ad68` |
+| 5 | `92c78b0455e3ce450ab6e511f66bfa903253a2a17de44610d6fb0db904b06d77` |
 
 ## Exact finite results
-
-The committed corpus records:
 
 | Metric | Exact value |
 |---|---:|
@@ -118,22 +125,20 @@ The committed corpus records:
 
 The `120` unsatisfiable profiles are the 120 orderings of the unique unsatisfiable five-vertex instance from VS-02.
 
-These results are `COMPUTATIONAL / CHECKED`. They are exhaustive only for the declared finite domain.
+These results are `COMPUTATIONAL / CHECKED` and exhaustive only for the declared finite domain.
 
 ## Pinned live semantic merge
 
-For the single edge `((0,1,2),)` under ordering `(0,1,2)`, the distinct level-two prefixes `01` and `10` both have completion mask `3`, representing both remaining colours. This is a genuine nonzero exact merge, not dead-state collapse.
-
-The same profile also contains a dead final class for monochromatic full assignments.
+For the single edge `((0,1,2),)` under ordering `(0,1,2)`, the distinct level-two prefixes `01` and `10` both have completion mask `3`, representing both remaining colours. This is a genuine nonzero exact merge, not dead-state collapse. The same profile contains a dead final class for monochromatic assignments.
 
 ## Canonical records
 
-A profile record is canonical for a fixed labelled instance and ordering. Class masks are fixed-width hexadecimal strings whose width includes leading semantic zeros. The profile census digest is SHA-256 of the compact semantic payload with the digest field omitted.
+A profile record is canonical for a fixed labelled instance and ordering. Class masks are fixed-width hexadecimal strings whose width includes leading semantic zeros.
 
-The committed corpus digest is:
+The profile corpus digest is SHA-256 of compact canonical JSON with the digest field omitted. The strengthened committed corpus digest is:
 
 ```text
-a765b6164a0bd2bbc176c039e842de4cbf10793918798875f103f83ec099a9f8
+a80ecbcab9ab0972c7c6f1695bee652cca72bfeba858f103edb3ce0009b07192
 ```
 
 ## Complexity audit
@@ -141,20 +146,20 @@ a765b6164a0bd2bbc176c039e842de4cbf10793918798875f103f83ec099a9f8
 For `n` vertices and `m` edges:
 
 - full-assignment truth evaluation uses `O(2^n(n+m))` time in the concrete implementation;
-- the assignment-mask table contains exactly `(n+1)2^n` semantic bits before Python object overhead;
+- the assignment-mask table contains exactly `(n+1)2^n` semantic bits before Python overhead;
 - bottom-up construction and integer-mask hashing process `O(n2^n)` semantic bits;
-- the assignment-to-class maps contain `2^(n+1)-1` identifiers;
-- the number of directed colour transitions is `2 sum_{i=0}^{n-1} q_i`;
-- dense unique class-mask storage is
+- assignment-to-class maps contain `2^(n+1)-1` identifiers;
+- the number of directed colour transitions is `2 sum_{i=0}^{n-1}q_i`;
+- dense unique class-mask storage satisfies
   \[
   \sum_i q_i2^{n-i}\le(n+1)2^n;
   \]
 - direct processed-boundary enumeration is `O(n2^n m)`;
 - full canonical profile output is exponential and output-sensitive.
 
-Python integers, tuples, dictionaries, and sets add implementation-dependent object overhead. The audit records semantic bit counts separately and makes no claim that Python resident memory equals those bit counts.
+Python integers, tuples, dictionaries, and sets add implementation-dependent object overhead. Semantic bit counts are recorded separately from resident memory.
 
-The profile census has an optimized finite-domain implementation that precomputes violation masks for each ordering. This improves constants and avoids repeated edge interpretation; it does not change the exponential domain size.
+The profile census precomputes violation masks per ordering. This improves finite-domain constants without changing the exponential domain size.
 
 ## Break pass
 
@@ -164,6 +169,7 @@ The attack pass checked:
 - lexicographic completion orientation;
 - first-occurrence class numbering;
 - transition agreement for every member of a reference class;
+- per-profile ordered sequence identity across the entire finite domain;
 - dead versus live merging;
 - ordering validation and malformed CLI input;
 - root and final-level boundary cases;
@@ -175,6 +181,6 @@ No unresolved substantive defect remains pending the final automated PR result.
 
 ## Final determination
 
-After the automated matrix and pinned full reference gate pass, `VS-03` is `COMPLETE / CHECKED`.
+After the automated matrix and pinned full reference gates pass, `VS-03` is `COMPLETE / CHECKED`.
 
-The retained result is an exact exponential semantic-state laboratory. The next work is empirical control calibration and obstruction analysis, not a claim that exact quotient construction is tractable in general.
+The retained result is an exact exponential semantic-state laboratory. The next work is control calibration and obstruction analysis, not a claim that exact quotient construction is tractable in general.
