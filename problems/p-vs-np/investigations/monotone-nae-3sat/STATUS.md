@@ -1,50 +1,64 @@
 # Status — Monotone NAE-3SAT Investigation
 
-**Phase:** Formalization and route selection  
+**Phase:** Formalization complete; first route mechanism not yet activated  
 **Updated:** 2026-07-22
 
 ## Current position
 
-The investigation is open, but no proof route is active.
+The investigation is open. The object, encoding, primary sources, baseline theorems, mandatory controls, and complete attack plan are prepared. No universal polynomial-time mechanism is claimed.
 
-The selected object is Monotone NAE-3SAT, equivalently 2-colourability of a 3-uniform hypergraph. It is used as a symmetry-first complement to Positive 1-in-3 SAT.
+The selected object is Monotone NAE-3SAT, equivalently 2-colourability of a 3-uniform hypergraph. It is the symmetry-first counterpart to Positive 1-in-3 SAT.
 
-## Established external facts
+## Accepted baseline
 
-1. Monotone NAE-3SAT is in `NP`.
-2. Monotone NAE-3SAT is NP-complete.
-3. Therefore a deterministic polynomial-time algorithm for all instances would imply `P=NP`.
-4. Boolean CSPs restricted to unary and binary relations reduce to 2-SAT, so arity three is minimal for NP-completeness within fixed-template Boolean CSPs.
+1. Monotone NAE-3SAT is NP-complete — `ESTABLISHED / CHECKED`.
+2. A deterministic polynomial-time algorithm for all instances would prove `P=NP` — `PROVED / CHECKED`.
+3. Unary/binary fixed-template Boolean CSPs reduce to 2-SAT — `PROVED / CHECKED`.
+4. Exact extension equivalence has well-defined one-variable transitions — `PROVED / CHECKED`.
+5. Boundary width `w` gives a `2^{O(w)} poly(L)` exact algorithm — `PROVED / CHECKED`.
 
-These are established results or direct consequences, not project-original resolutions.
+These results establish the baseline, not a resolution.
+
+## Known structural boundaries
+
+The programme must correctly separate:
+
+- rank-two bipartiteness;
+- planar NAE-3SAT;
+- occurrence-at-most-three NAE;
+- bounded-width instances;
+- unrestricted NP-complete instances;
+- linear 4-regular NP-complete instances.
 
 ## Current mathematical obstruction
 
-Each constraint forbids only two of eight local assignments and is invariant under global colour complementation. Local feasibility is therefore abundant, while unsatisfiability can arise from incompatibility distributed across cycles and overlapping hyperedges.
+Each constraint forbids only two of eight local assignments. Local feasibility is abundant, while incompatibility can remain distributed across overlapping hyperedges.
 
-The candidate abstract object is exact global witness compatibility: partial colourings should be identified only when they admit exactly the same completions. This semantic quotient is exact but may be exponentially large and may be intractable to construct.
+Ordinary dynamic programming stores boundary colourings and becomes exponential when all useful interfaces are large. Exact extension profiles define the correct semantic state, but the raw quotient may be large and deciding or manipulating a compact description may itself hide NP-hard work.
 
-## Required next result
+## Current open claim
 
-Before a route is activated, produce one precise candidate invariant or composition theorem with:
+`NAE-006` asks whether exact completion behaviour has a universally polynomial symbolic representation with polynomial-time construction, transitions, equivalence, and acceptance.
 
-- exact soundness and completeness statements;
-- an explicit finite representation;
-- polynomial construction and update algorithms;
-- a polynomial bound on the complete computation graph and encoded intermediate state;
-- successful tests against graph 2-colouring, XOR-SAT, Positive 1-in-3 SAT, and reduction-generated hard instances.
+This is not yet a route-level conjecture because no representation language has been selected.
+
+## Immediate next task
+
+Execute the first stage of [the complete attack plan](PLAN.md):
+
+1. construct the exact small-instance and extension-profile harness;
+2. establish the first semantic merges beyond raw boundary assignments;
+3. falsify pairwise, affine, and other low-order summaries where possible;
+4. isolate the smallest missing compatibility relation;
+5. state and attack the first atomic route conjecture.
 
 ## Stop conditions
 
-Close or reject a candidate mechanism if any of the following occurs:
+Reject a candidate mechanism if it:
 
-1. it is only a bounded-width or local-consistency method with no universal completeness theorem;
-2. exact state generation is exponential on a polynomial-size family;
-3. it merges partial assignments that have different possible completions;
-4. it succeeds only on a restricted subclass;
-5. it relies on randomized correctness without an explicit deterministic consequence;
-6. it survives only because tested instances omit canonical hard reductions.
-
-## Next decision
-
-Select the first route mechanism. The leading candidate family is global-compatibility geometry: local solution systems, restriction maps, and exact future-equivalence classes. It remains an `OPEN` research proposal, not an established algorithm.
+- is only bounded-width or local consistency without universal completeness;
+- has superpolynomial construction, operations, or total representation;
+- merges states with different completion sets;
+- succeeds only on a restricted subclass;
+- relies on randomness without the required deterministic consequence;
+- avoids canonical reduction-generated or linear 4-regular hard instances.
