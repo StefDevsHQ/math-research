@@ -19,7 +19,9 @@ def _require_instance(instance: object) -> Hypergraph3:
 
 
 def _validate_bits(bits: object, *, maximum: int) -> tuple[int, ...]:
-    if isinstance(bits, (str, bytes, bytearray)) or not isinstance(bits, SequenceABC):
+    if isinstance(bits, (str, bytes, bytearray)) or not isinstance(
+        bits, SequenceABC
+    ):
         raise ValidationError("prefix bits must be a finite non-string sequence")
     values = tuple(bits)
     if len(values) > maximum:
@@ -38,7 +40,9 @@ def _bits_index(bits: tuple[int, ...]) -> int:
 
 def validate_ordering(instance: Hypergraph3, ordering: object) -> tuple[int, ...]:
     instance = _require_instance(instance)
-    if isinstance(ordering, (str, bytes, bytearray)) or not isinstance(ordering, SequenceABC):
+    if isinstance(ordering, (str, bytes, bytearray)) or not isinstance(
+        ordering, SequenceABC
+    ):
         raise ValidationError("ordering must be a finite non-string sequence")
     values = tuple(ordering)
     if len(values) != instance.n:
@@ -86,9 +90,13 @@ def _processed_valid_boundary_states(
     index: int,
     boundary: tuple[int, ...],
 ) -> int:
-    positions = {vertex: position for position, vertex in enumerate(ordering[:index])}
+    positions = {
+        vertex: position for position, vertex in enumerate(ordering[:index])
+    }
     completed = tuple(
-        edge for edge in instance.edges if all(vertex in positions for vertex in edge)
+        edge
+        for edge in instance.edges
+        if all(vertex in positions for vertex in edge)
     )
     states: set[tuple[int, ...]] = set()
     for prefix in itertools.product((0, 1), repeat=index):
@@ -100,8 +108,20 @@ def _processed_valid_boundary_states(
             )
             for u, v, w in completed
         ):
-            states.add(tuple(prefix[positions[vertex]] for vertex in boundary))
+            states.add(
+                tuple(prefix[positions[vertex]] for vertex in boundary)
+            )
     return len(states)
+
+
+def _validate_vertex_tuple(name: str, value: object) -> tuple[int, ...]:
+    if type(value) is not tuple:
+        raise ValidationError(f"{name} must be a tuple")
+    if any(type(vertex) is not int or vertex < 0 for vertex in value):
+        raise ValidationError(f"{name} must contain nonnegative integer vertices")
+    if len(set(value)) != len(value):
+        raise ValidationError(f"{name} must not contain duplicate vertices")
+    return value
 
 
 @dataclass(frozen=True, slots=True)
@@ -118,12 +138,29 @@ class ProfileLevel:
     def __post_init__(self) -> None:
         if type(self.index) is not int or self.index < 0:
             raise ValidationError("level index must be a nonnegative integer")
+        prefix = _validate_vertex_tuple("prefix_vertices", self.prefix_vertices)
+        remainder = _validate_vertex_tuple(
+            "remainder_vertices", self.remainder_vertices
+        )
+        boundary = _validate_vertex_tuple(
+            "boundary_vertices", self.boundary_vertices
+        )
+        if len(prefix) != self.index:
+            raise ValidationError("prefix length must equal the level index")
+        if set(prefix) & set(remainder):
+            raise ValidationError("prefix and remainder vertices must be disjoint")
+        if not set(boundary) <= set(prefix):
+            raise ValidationError("boundary vertices must belong to the prefix")
+        if type(self.assignment_class_ids) is not tuple:
+            raise ValidationError("assignment class map must be a tuple")
         if len(self.assignment_class_ids) != 1 << self.index:
             raise ValidationError("assignment class map has the wrong length")
-        if not self.class_masks:
-            raise ValidationError("each level must contain at least one class")
+        if type(self.class_masks) is not tuple or not self.class_masks:
+            raise ValidationError("each level must contain a nonempty mask tuple")
         if any(type(mask) is not int or mask < 0 for mask in self.class_masks):
             raise ValidationError("class masks must be nonnegative integers")
+        if len(set(self.class_masks)) != len(self.class_masks):
+            raise ValidationError("class masks must be pairwise distinct")
         if any(
             type(class_id) is not int
             or class_id < 0
@@ -131,13 +168,44 @@ class ProfileLevel:
             for class_id in self.assignment_class_ids
         ):
             raise ValidationError("assignment class identifier is out of range")
-        if self.transitions is not None and len(self.transitions) != len(self.class_masks):
-            raise ValidationError("transition count must equal the class count")
+
+        seen: set[int] = set()
+        next_identifier = 0
+        for class_id in self.assignment_class_ids:
+            if class_id not in seen:
+                if class_id != next_identifier:
+                    raise ValidationError(
+                        "class identifiers must follow first-occurrence order"
+                    )
+                seen.add(class_id)
+                next_identifier += 1
+        if len(seen) != len(self.class_masks):
+            raise ValidationError("every class must occur in the assignment map")
+
+        if self.transitions is not None:
+            if type(self.transitions) is not tuple:
+                raise ValidationError("transitions must be a tuple or None")
+            if len(self.transitions) != len(self.class_masks):
+                raise ValidationError("transition count must equal the class count")
+            for transition in self.transitions:
+                if (
+                    type(transition) is not tuple
+                    or len(transition) != 2
+                    or any(
+                        type(class_id) is not int or class_id < 0
+                        for class_id in transition
+                    )
+                ):
+                    raise ValidationError(
+                        "each transition must be a pair of nonnegative class identifiers"
+                    )
         if (
             type(self.processed_valid_boundary_states) is not int
             or self.processed_valid_boundary_states < 0
         ):
             raise ValidationError("boundary-state count must be nonnegative")
+        if self.processed_valid_boundary_states > 1 << len(boundary):
+            raise ValidationError("boundary-state count exceeds its state space")
 
     @property
     def raw_assignment_count(self) -> int:
@@ -166,21 +234,93 @@ class ExactProfile:
     levels: tuple[ProfileLevel, ...]
 
     def __post_init__(self) -> None:
-        _require_instance(self.instance)
-        validate_ordering(self.instance, self.ordering)
-        if len(self.levels) != self.instance.n + 1:
+        instance = _require_instance(self.instance)
+        ordering = validate_ordering(instance, self.ordering)
+        if type(self.levels) is not tuple:
+            raise ValidationError("profile levels must be a tuple")
+        if len(self.levels) != instance.n + 1:
             raise ValidationError("profile must contain one level per prefix length")
+
         for index, level in enumerate(self.levels):
+            if not isinstance(level, ProfileLevel):
+                raise ValidationError("every profile level must be a ProfileLevel")
             if level.index != index:
-                raise ValidationError("profile levels must be in increasing index order")
-            if level.prefix_vertices != self.ordering[:index]:
-                raise ValidationError("level prefix vertices disagree with the ordering")
-            if level.remainder_vertices != self.ordering[index:]:
-                raise ValidationError("level remainder vertices disagree with the ordering")
-            if index == self.instance.n and level.transitions is not None:
-                raise ValidationError("the final level cannot have transitions")
-            if index < self.instance.n and level.transitions is None:
+                raise ValidationError(
+                    "profile levels must be in increasing index order"
+                )
+            if level.prefix_vertices != ordering[:index]:
+                raise ValidationError(
+                    "level prefix vertices disagree with the ordering"
+                )
+            if level.remainder_vertices != ordering[index:]:
+                raise ValidationError(
+                    "level remainder vertices disagree with the ordering"
+                )
+            expected_boundary = _boundary(instance, ordering, index)
+            if level.boundary_vertices != expected_boundary:
+                raise ValidationError("level boundary is not the exact processed boundary")
+            expected_boundary_count = _processed_valid_boundary_states(
+                instance,
+                ordering,
+                index,
+                expected_boundary,
+            )
+            if level.processed_valid_boundary_states != expected_boundary_count:
+                raise ValidationError("level boundary-state count is incorrect")
+
+            completion_width = 1 << (instance.n - index)
+            if any(mask.bit_length() > completion_width for mask in level.class_masks):
+                raise ValidationError("class mask exceeds its semantic completion width")
+
+            if index == instance.n:
+                if level.transitions is not None:
+                    raise ValidationError("the final level cannot have transitions")
+                if any(mask not in (0, 1) for mask in level.class_masks):
+                    raise ValidationError("final-level class masks must be zero or one")
+            elif level.transitions is None:
                 raise ValidationError("nonfinal levels require transitions")
+
+        final = self.levels[instance.n]
+        for assignment_index, assignment in enumerate(
+            itertools.product((0, 1), repeat=instance.n)
+        ):
+            class_id = final.assignment_class_ids[assignment_index]
+            actual = final.class_masks[class_id]
+            expected = 1 if _satisfies_ordered(instance, ordering, assignment) else 0
+            if actual != expected:
+                raise ValidationError(
+                    "final assignment classes disagree with instance satisfaction"
+                )
+
+        for index in range(instance.n):
+            level = self.levels[index]
+            next_level = self.levels[index + 1]
+            assert level.transitions is not None
+            child_width = 1 << (instance.n - index - 1)
+            lower_mask = (1 << child_width) - 1
+
+            for class_id, transition in enumerate(level.transitions):
+                zero_class, one_class = transition
+                if (
+                    zero_class >= next_level.class_count
+                    or one_class >= next_level.class_count
+                ):
+                    raise ValidationError("transition target is out of range")
+                mask = level.class_masks[class_id]
+                if next_level.class_masks[zero_class] != mask & lower_mask:
+                    raise ValidationError("zero transition disagrees with mask slicing")
+                if next_level.class_masks[one_class] != mask >> child_width:
+                    raise ValidationError("one transition disagrees with mask slicing")
+
+            for prefix, class_id in enumerate(level.assignment_class_ids):
+                expected_transition = (
+                    next_level.assignment_class_ids[2 * prefix],
+                    next_level.assignment_class_ids[2 * prefix + 1],
+                )
+                if level.transitions[class_id] != expected_transition:
+                    raise ValidationError(
+                        "class transition disagrees with member assignment successors"
+                    )
 
     @property
     def satisfiable(self) -> bool:
@@ -298,7 +438,9 @@ def profile_record(profile: ExactProfile) -> dict[str, object]:
     for level in profile.levels:
         completion_width = 1 << len(level.remainder_vertices)
         class_id_bits = (
-            0 if level.class_count <= 1 else (level.class_count - 1).bit_length()
+            0
+            if level.class_count <= 1
+            else (level.class_count - 1).bit_length()
         )
         next_class_count = (
             profile.levels[level.index + 1].class_count
@@ -306,7 +448,9 @@ def profile_record(profile: ExactProfile) -> dict[str, object]:
             else 0
         )
         next_id_bits = (
-            0 if next_class_count <= 1 else (next_class_count - 1).bit_length()
+            0
+            if next_class_count <= 1
+            else (next_class_count - 1).bit_length()
         )
         level_records.append(
             {
@@ -317,16 +461,23 @@ def profile_record(profile: ExactProfile) -> dict[str, object]:
                 "raw_assignments": level.raw_assignment_count,
                 "class_count": level.class_count,
                 "live_class_count": level.live_class_count,
-                "processed_valid_boundary_states": level.processed_valid_boundary_states,
-                "dense_unique_completion_bits": level.class_count * completion_width,
-                "assignment_map_bits": level.raw_assignment_count * class_id_bits,
+                "processed_valid_boundary_states": (
+                    level.processed_valid_boundary_states
+                ),
+                "dense_unique_completion_bits": (
+                    level.class_count * completion_width
+                ),
+                "assignment_map_bits": (
+                    level.raw_assignment_count * class_id_bits
+                ),
                 "transition_bits": (
                     0
                     if level.transitions is None
                     else 2 * level.class_count * next_id_bits
                 ),
                 "class_masks": [
-                    _fixed_hex(mask, completion_width) for mask in level.class_masks
+                    _fixed_hex(mask, completion_width)
+                    for mask in level.class_masks
                 ],
                 "assignment_class_ids": list(level.assignment_class_ids),
                 "transitions": (
