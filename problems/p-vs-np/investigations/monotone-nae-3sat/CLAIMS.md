@@ -12,6 +12,7 @@ This is the authoritative investigation-level ledger for Monotone NAE-3SAT claim
 | `NAE-004` | For a fixed variable ordering, exact extension equivalence is a congruence under appending the next colour; explicit polynomial construction of all quotient states and transitions would decide Monotone NAE-3SAT in polynomial time. | `PROVED` | `CHECKED` | [Exact quotient transition theorem](OBJECT.md#claim-nae-004--exact-quotient-transition-theorem) | 2026-07-22 |
 | `NAE-005` | Given a variable ordering of maximum processed boundary width `w`, Monotone NAE-3SAT is decidable in `2^{O(w)} poly(L)` time and space. | `PROVED` | `CHECKED` | [Bounded-boundary dynamic programme](OBJECT.md#claim-nae-005--bounded-boundary-algorithm) | 2026-07-22 |
 | `NAE-006` | Every Monotone NAE-3SAT instance admits a polynomial-size, polynomial-time constructible symbolic representation of exact completion behaviour with polynomial-time exact transitions and acceptance. | `CONJECTURE` | `DRAFT` | [Attack plan](PLAN.md) | 2026-07-22 |
+| `NAE-007` | For every fixed labelled instance and ordering, the bottom-up completion-mask construction computes the exact completion set of every prefix; equality of masks is exact extension equivalence, mask slicing gives well-defined colour transitions, and root acceptance equals satisfiability. | `PROVED` | `CHECKED` | [VS-03 proof and implementation audit](VS-03-AUDIT.md) | 2026-07-22 |
 
 ## Current accepted state
 
@@ -21,9 +22,12 @@ The investigation has:
 - a checked consequence theorem linking a universal deterministic polynomial algorithm to `P=NP`;
 - a proved arity-minimality lemma;
 - a proved exact semantic transition theorem;
-- a proved bounded-interface dynamic programme.
+- a proved bounded-interface dynamic programme;
+- a checked executable exact-profile construction for fixed instances and orderings.
 
 `NAE-006` is the unresolved universal proposal. It is deliberately stronger than a claim that raw quotient classes are few: a compact symbolic representation may encode many semantic classes, as linear algebra does for XOR-SAT. It must therefore state its representation language and operations before it can become a route-level conjecture.
+
+`NAE-007` establishes correctness of the explicit exponential laboratory. It does not establish a polynomial bound on the quotient, construction, representation, or complete computation graph.
 
 ## Claim boundaries
 
@@ -33,6 +37,7 @@ The investigation has:
 - Polynomial recursion depth or local branching does not bound the complete computation graph.
 - A compact syntax is insufficient unless construction, transition, equivalence, acceptance, and total generated representation are polynomially bounded.
 - A lower bound for one representation model is model-specific unless a polynomial-overhead subsumption theorem is proved.
+- Finite exact-profile measurements do not imply asymptotic quotient bounds.
 
 ## Identifier policy
 
