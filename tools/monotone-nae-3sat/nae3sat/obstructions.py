@@ -9,7 +9,7 @@ from typing import Sequence
 
 from .controls import boundary_width, is_incidence_forest, is_linear, vertex_occurrences
 from .errors import ValidationError
-from .model import Coloring, Edge, Hypergraph3, RelabeledHypergraph3, incidence_components, induced_subinstance, normalize_instance, verify_coloring
+from .model import Coloring, Edge, Hypergraph3, RelabeledHypergraph3, incidence_components, induced_subinstance, verify_coloring
 from .oracle import is_edge_minimal_unsatisfiable, solve_exact
 from .profile import build_exact_profile, profile_bytes
 from .serialization import encoded_size_bytes, instance_id
@@ -57,7 +57,9 @@ class EdgeDeletionCertificate:
             raise ValidationError("certificate edge must be a canonical triple")
         if any(type(vertex) is not int for vertex in self.edge) or not self.edge[0] < self.edge[1] < self.edge[2]:
             raise ValidationError("certificate edge must be strictly increasing integers")
-        _strict_coloring(self.witness, len(self.witness))
+        witness = _strict_coloring(self.witness, len(self.witness))
+        if self.edge[-1] >= len(witness):
+            raise ValidationError("certificate edge must lie in the witness vertex range")
 
 
 @dataclass(frozen=True, slots=True)
@@ -67,16 +69,14 @@ class VertexDeletionCertificate:
     witness: Coloring
 
     def __post_init__(self) -> None:
-        if type(self.vertex) is not int or self.vertex < 0:
-            raise ValidationError("deleted vertex must be a nonnegative integer")
         if type(self.new_to_old) is not tuple:
             raise ValidationError("new_to_old must be a tuple")
-        if any(type(vertex) is not int or vertex < 0 for vertex in self.new_to_old):
-            raise ValidationError("new_to_old entries must be nonnegative integers")
-        if any(left >= right for left, right in zip(self.new_to_old, self.new_to_old[1:])):
-            raise ValidationError("new_to_old must be strictly increasing")
-        if self.vertex in self.new_to_old:
-            raise ValidationError("deleted vertex cannot remain in new_to_old")
+        original_n = len(self.new_to_old) + 1
+        if type(self.vertex) is not int or self.vertex < 0 or self.vertex >= original_n:
+            raise ValidationError("deleted vertex must be an in-range integer excluding Booleans")
+        expected = tuple(value for value in range(original_n) if value != self.vertex)
+        if self.new_to_old != expected:
+            raise ValidationError("new_to_old must contain every original label except the deleted vertex")
         _strict_coloring(self.witness, len(self.new_to_old))
 
 
