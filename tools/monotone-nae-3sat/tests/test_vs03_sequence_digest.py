@@ -190,12 +190,13 @@ class IndependentSequenceDigestTests(unittest.TestCase):
     )
     def test_every_profile_sequence_digest(self):
         record = profile_corpus_record(5)
-        for row in record["counts"]:
-            n = row["n"]
+        expected = record["profile_sequence_sha256_by_n"]
+        for n_text, digest in expected.items():
+            n = int(n_text)
             with self.subTest(n=n):
                 self.assertEqual(
                     _reference_sequence_digest(n),
-                    row["profile_sequence_sha256"],
+                    digest,
                 )
 
 
