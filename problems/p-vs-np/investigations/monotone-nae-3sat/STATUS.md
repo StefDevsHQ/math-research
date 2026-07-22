@@ -1,11 +1,11 @@
 # Status — Monotone NAE-3SAT Investigation
 
-**Phase:** Formalization complete; first route mechanism not yet activated  
+**Phase:** Vertical-slice execution prepared; executable laboratory not yet complete  
 **Updated:** 2026-07-22
 
 ## Current position
 
-The investigation is open. The object, encoding, primary sources, baseline theorems, mandatory controls, and complete attack plan are prepared. No universal polynomial-time mechanism is claimed.
+The investigation is open. The object, encoding, primary sources, baseline theorems, mandatory controls, complete attack plan, and ordered vertical slices are prepared. No universal polynomial-time mechanism is claimed.
 
 The selected object is Monotone NAE-3SAT, equivalently 2-colourability of a 3-uniform hypergraph. It is the symmetry-first counterpart to Positive 1-in-3 SAT.
 
@@ -18,6 +18,21 @@ The selected object is Monotone NAE-3SAT, equivalently 2-colourability of a 3-un
 5. Boundary width `w` gives a `2^{O(w)} poly(L)` exact algorithm — `PROVED / CHECKED`.
 
 These results establish the baseline, not a resolution.
+
+## Vertical-slice progress
+
+The authoritative operational tracker is [VERTICAL-SLICES.md](VERTICAL-SLICES.md).
+
+Current state:
+
+- `VS-01` canonical instance model — `PARTIAL`: mathematical specification complete; executable parser, normalizer, serializer, and verifier remain.
+- `VS-02` exact small-instance oracle — `READY`.
+- `VS-03` exact extension-profile engine — `READY`: semantics and transition theorem are proved; implementation remains.
+- `VS-04` through `VS-08` — `BLOCKED` on the oracle and profile engine.
+- `VS-09` restricted theorem — `PARTIAL`: the standard bounded-boundary theorem is complete, but no new invariant exists.
+- `VS-10` through `VS-12` — `BLOCKED` until an atomic invariant is extracted.
+
+No computational corpus, minimal-obstruction atlas, naive-summary collision, or semantic-growth dataset is yet recorded.
 
 ## Known structural boundaries
 
@@ -44,13 +59,13 @@ This is not yet a route-level conjecture because no representation language has 
 
 ## Immediate next task
 
-Execute the first stage of [the complete attack plan](PLAN.md):
+Execute the first three vertical slices:
 
-1. construct the exact small-instance and extension-profile harness;
-2. establish the first semantic merges beyond raw boundary assignments;
-3. falsify pairwise, affine, and other low-order summaries where possible;
-4. isolate the smallest missing compatibility relation;
-5. state and attack the first atomic route conjecture.
+1. finish the canonical executable instance model;
+2. build and validate the exhaustive small-instance oracle;
+3. build and cross-check the exact extension-profile engine.
+
+Only then begin control calibration, obstruction enumeration, summary destruction, and invariant extraction.
 
 ## Stop conditions
 
