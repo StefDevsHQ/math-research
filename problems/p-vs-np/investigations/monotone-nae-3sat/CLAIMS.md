@@ -5,7 +5,7 @@ This is the authoritative investigation-level ledger for Monotone NAE-3SAT claim
 ## Claims
 
 | ID | Statement | Status | Review | Evidence | Updated |
-|---|---|---|---|---|---|---|
+|---|---|---|---|---|---|
 | `NAE-001` | Monotone NAE-3SAT is NP-complete. | `ESTABLISHED` | `CHECKED` | [Schaefer and restricted-hardness sources](references/SOURCES.md) | 2026-07-22 |
 | `NAE-002` | A deterministic polynomial-time algorithm deciding every Monotone NAE-3SAT instance would prove `P=NP`. | `PROVED` | `CHECKED` | Membership in `NP`, `NAE-001`, and polynomial-time many-one completeness | 2026-07-22 |
 | `NAE-003` | Every fixed-template Boolean CSP using only unary and binary relations is polynomial-time reducible to 2-SAT. | `PROVED` | `CHECKED` | [Arity-minimality proof](OBJECT.md#arity-minimality) | 2026-07-22 |
@@ -16,6 +16,7 @@ This is the authoritative investigation-level ledger for Monotone NAE-3SAT claim
 | `NAE-008` | Every finite 3-uniform hypergraph whose incidence graph is a forest is two-colourable, and a valid colouring is constructible in linear incidence-graph time. | `PROVED` | `CHECKED` | [VS-04 incidence-forest proof and audit](VS-04-AUDIT.md#incidence-forest-theorem) | 2026-07-22 |
 | `NAE-009` | For an unsatisfiable hypergraph, satisfiability of every single-edge deletion is equivalent to satisfiability of every proper edge-subhypergraph; satisfiability of every single-vertex induced deletion is equivalent to satisfiability of every proper induced vertex subhypergraph. | `PROVED` | `CHECKED` | [VS-05 proof and audit](VS-05-AUDIT.md#single-deletion-sufficiency--nae-009) | 2026-07-22 |
 | `NAE-010` | In the complete labelled domain through five vertices, the unique unsatisfiable, edge-minimal-unsatisfiable, and vertex-minimal-unsatisfiable instance is `K_5^(3)`. | `COMPUTATIONAL` | `CHECKED` | [VS-05 exhaustive census](VS-05-AUDIT.md#exhaustive-small-domain--nae-010) | 2026-07-22 |
+| `NAE-011` | For every unsatisfiable Monotone NAE-3SAT instance and every variable ordering, every prefix has the empty set of satisfying full completions; consequently the exact successful-completion quotient has exactly one dead equivalence class at every level. | `PROVED` | `CHECKED` | [VS-05 all-ordering profile theorem](VS-05-AUDIT.md#exact-all-ordering-profile-evidence) | 2026-07-22 |
 
 ## Current accepted state
 
@@ -29,7 +30,8 @@ The investigation has:
 - a checked executable exact-profile construction for fixed instances and orderings;
 - a proved linear-time constructive theorem for incidence-forest instances;
 - checked graph-parity, affine-XOR, bounded-boundary, and component-factorization controls;
-- a checked exact atlas separating dense and sparse minimal obstructions.
+- a checked exact atlas separating dense and sparse minimal obstructions;
+- a proved limitation showing that successful-completion semantics completely collapses on globally unsatisfiable instances.
 
 `NAE-006` is the unresolved universal proposal. It is deliberately stronger than a claim that raw quotient classes are few: a compact symbolic representation may encode many semantic classes, as linear algebra does for XOR-SAT. It must therefore state its representation language and operations before it can become a route-level conjecture.
 
@@ -41,7 +43,7 @@ The investigation has:
 
 `NAE-010` is finite computation over an exhaustive declared domain. It does not classify six-vertex or larger critical hypergraphs.
 
-The VS-05 profile evidence adds a precise limitation: on any unsatisfiable instance every successful-completion set is empty, so the VS-03 quotient has one dead class at every level. Exact accepting-completion equivalence alone cannot expose internal obstruction structure.
+`NAE-011` is universal but representation-specific. It proves that accepting-completion equivalence cannot distinguish rejection structure inside unsatisfiable instances; it is not a lower bound against richer exact representations.
 
 ## Claim boundaries
 

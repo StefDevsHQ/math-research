@@ -1,13 +1,13 @@
 # Status — Monotone NAE-3SAT Investigation
 
-**Phase:** `VS-01` through `VS-05` complete; naive-summary attack next  
+**Phase:** Phase I (`VS-01` through `VS-05`) complete; `VS-06` formalization next  
 **Updated:** 2026-07-22
 
 ## Current position
 
-The investigation is open. The canonical instance layer, exact small-instance oracle, exact extension-profile engine, tractable-control calibration, and minimal-obstruction atlas are `COMPLETE / CHECKED`. No universal polynomial-time mechanism is claimed.
+The investigation remains open. The trusted laboratory phase consisting of the canonical instance layer, exact small-instance oracle, exact extension-profile engine, tractable-control calibration, and minimal-obstruction atlas is `COMPLETE / CHECKED`. No universal polynomial-time mechanism is claimed.
 
-Every vertical slice is governed by the mandatory [building-block quality gate](BUILDING-BLOCK-GATE.md). A dependent slice may begin only after each prerequisite is `COMPLETE / CHECKED` or stronger.
+The phase closeout is recorded in [VS-01-05-PHASE-AUDIT.md](VS-01-05-PHASE-AUDIT.md). `VS-06` may begin only from the exported contracts and limitations recorded there.
 
 ## Accepted baseline
 
@@ -19,6 +19,7 @@ Every vertical slice is governed by the mandatory [building-block quality gate](
 6. Bottom-up exact completion masks correctly construct the full semantic quotient for fixed instances and orderings — `PROVED / CHECKED`.
 7. Every incidence-forest 3-uniform hypergraph is constructively two-colourable in linear incidence time — `PROVED / CHECKED`.
 8. Single edge or vertex deletion checks suffice for the corresponding proper-subinstance minimality notions — `PROVED / CHECKED`.
+9. Every unsatisfiable instance collapses the successful-completion quotient to one dead class at every level under every ordering — `PROVED / CHECKED`.
 
 ## Vertical-slice progress
 
@@ -27,7 +28,7 @@ Every vertical slice is governed by the mandatory [building-block quality gate](
 - `VS-03` exact extension-profile engine — `COMPLETE / CHECKED`.
 - `VS-04` control calibration — `COMPLETE / CHECKED`.
 - `VS-05` minimal obstruction atlas — `COMPLETE / CHECKED`.
-- `VS-06` naive-summary destruction — `READY`.
+- `VS-06` naive-summary destruction — `READY FOR FORMALIZATION`.
 - `VS-07` — blocked on checked VS-06 failure evidence.
 - `VS-08` — blocked until failure structure supports one precise invariant.
 - `VS-09` — `PARTIAL` through bounded-boundary and incidence-forest restricted theorems.
@@ -37,7 +38,7 @@ Every vertical slice is governed by the mandatory [building-block quality gate](
 
 ### VS-02
 
-All `1045` labelled 3-uniform hypergraphs through five vertices are classified exactly. Exactly `1044` are satisfiable and one is unsatisfiable: the complete 3-uniform hypergraph on five vertices. The Fano plane is unsatisfiable and edge-minimal unsatisfiable.
+All `1045` labelled 3-uniform hypergraphs through five vertices are classified exactly. Exactly `1044` are satisfiable and one is unsatisfiable: `K_5^(3)`. The Fano plane is independently verified unsatisfiable and edge-minimal unsatisfiable.
 
 ### VS-03
 
@@ -58,30 +59,28 @@ Control calibration exhaustively checked:
 - `36` incidence-forest NAE instances through five vertices, all constructively colourable;
 - `344` maximum-occurrence-at-most-three NAE instances in the same finite domain, all satisfiable.
 
-The calibrated mechanisms are distinct: graph parity, affine row space, acyclic elimination, bounded interface, and disconnected product decomposition. Planar and occurrence-at-most-three tractability remain externally established broader boundaries.
-
 ### VS-05
 
 The complete `n<=5` obstruction census contains exactly one unsatisfiable object, `K_5^(3)`, and it is both edge-minimal and vertex-minimal. Complete least-witness certificates are stored for every edge and vertex deletion of `K_5^(3)` and the Fano plane.
 
-All `120` orderings of `K_5^(3)` and all `5040` orderings of the Fano plane were profiled. Both have exactly one completion-equivalence class at every level because every prefix has the empty set of satisfying full completions.
+All `120` orderings of `K_5^(3)` and all `5040` orderings of the Fano plane were profiled. Both have exactly one successful-completion class at every level because every prefix has the empty set of satisfying full completions.
 
 ## Current obstruction
 
-The easy controls do not reveal one common universal compression rule. The obstruction atlas adds a sharper limitation: successful-completion semantics becomes completely uninformative inside unsatisfiable instances. Dense `K_5^(3)` and sparse linear Fano collapse to the same one-dead-class pattern at every level despite radically different structure.
+The easy controls do not reveal one common universal compression rule. Successful-completion semantics becomes completely uninformative inside globally unsatisfiable instances. Dense `K_5^(3)` and sparse linear Fano collapse to the same one-dead-class pattern at every level despite radically different structure.
 
-A useful next representation must therefore preserve failure information, residual constraints, or another exact observable beyond the set of successful full completions.
+A useful next representation must therefore preserve failure information, residual constraints, or another exact observable beyond successful full completions.
 
 ## Current open claim
 
-`NAE-006` asks whether exact completion behaviour admits a universally polynomial symbolic representation with polynomial-time construction, transitions, equivalence, and acceptance. No representation language has yet survived formulation and attack. VS-05 shows that accepting-completion equivalence alone is too coarse to explain rejection structure.
+`NAE-006` asks whether exact completion behaviour admits a universally polynomial symbolic representation with polynomial-time construction, transitions, equivalence, and acceptance. No representation language has yet survived formulation and attack. `NAE-011` shows only that accepting-completion equivalence is too coarse to explain rejection structure; it is not a general compression lower bound.
 
 ## Immediate next tasks
 
-1. Execute `VS-06`: test and destroy naive local, boundary, degree, residue-like, and profile summaries on the checked obstruction atlas.
-2. Use `VS-07` to separate genuine live merging from symmetry, dead-state collapse, bounded-interface effects, and globally dead instances.
-3. Propose an atomic invariant only if the failure atlas reveals a common exact mechanism.
+1. Formalize `VS-06` summaries, semantic targets, collision criteria, and finite search domains.
+2. Attack degree, incidence, pair-codegree, parity, bounded-radius, local-consistency, spectral, boundary-only, and low-moment summaries.
+3. Use `VS-07` to separate genuine live merging from symmetry, dead-state collapse, bounded-interface effects, and globally dead instances.
 
 ## Stop conditions
 
-Reject a proposed universal mechanism if it is only local or bounded-width, has superpolynomial construction or total state, merges unequal completion sets, succeeds only on a restricted subclass, relies on unsupported randomness, ignores globally dead-state collapse, or avoids canonical hard families.
+Reject a proposed universal mechanism if it is only local or bounded-width, has superpolynomial construction or total state, merges unequal exact semantics, succeeds only on a restricted subclass, relies on unsupported randomness, ignores globally dead-state collapse, or avoids canonical hard families.
