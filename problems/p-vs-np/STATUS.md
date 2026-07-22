@@ -1,41 +1,37 @@
 # Status — P versus NP
 
-**Phase:** Monotone NAE-3SAT formalization and route selection after Subset Sum closeout  
+**Phase:** Monotone NAE-3SAT trusted laboratory complete; naive-summary attack next  
 **Updated:** 2026-07-22
 
 ## Current position
 
-The repository foundation and canonical landscapes are complete. The Monotone NAE-3SAT investigation is open in formalization mode, but no proof route is active.
+The repository foundation and canonical landscapes are complete. The active Monotone NAE-3SAT investigation has completed its first five vertical slices as one `COMPLETE / CHECKED` laboratory phase. No proof route and no universal polynomial-time mechanism has been accepted.
 
 The first concrete investigation, Subset Sum, closed two universal strategies:
 
 1. **Structural compression** did not produce a universal polynomial-time algorithm. Canonical no-carry SAT-to-Subset-Sum instances preserve assignment and clause compatibility under the proposed modular decomposition.
 2. **Exact-state compression barriers** produced correct model-specific lower bounds and representation boundaries, but no model simultaneously contained all retained structural mechanisms, excluded polynomial Boolean simulation, and admitted a superpolynomial hard-family lower bound.
 
-The programme maintains one canonical version of each top-level orientation artifact:
-
-- [Research-programme landscape](references/research-programme-landscape.md);
-- [Problem-testbed landscape](references/problem-testbed-landscape.md);
-- [Canonical source map](references/top-level-landscape-sources.md).
-
 ## Active investigation
 
 [Monotone NAE-3SAT](investigations/monotone-nae-3sat/README.md) is the symmetry-first testbed.
 
-The object has been formalized as 2-colourability of a 3-uniform hypergraph. Its claim ledger records:
+Phase I exports:
 
-- NP-completeness as an established external result;
-- the checked implication that a deterministic polynomial-time algorithm on all instances proves `P=NP`;
-- the elementary arity-minimality reduction from all unary/binary Boolean CSPs to 2-SAT;
-- a deliberately strong open conjecture concerning exact future-equivalence compression.
+- a canonical labelled 3-uniform-hypergraph model;
+- an exact exponential satisfiability oracle and exhaustive `n<=5` census;
+- exact successful-completion profiles for fixed orderings;
+- calibrated graph-parity, affine-XOR, incidence-forest, bounded-boundary, and component controls;
+- exact `K_5^(3)` and Fano obstruction evidence;
+- a proved limitation: globally unsatisfiable instances collapse successful-completion semantics to one dead class at every level.
 
 No algorithmic mechanism has been accepted.
 
 ## Current mathematical target
 
-Find an exact, polynomially constructible global-compatibility invariant for Monotone NAE-3SAT, or disprove the first candidate cleanly.
+Formalize and attack naive polynomial-time summaries for residual Monotone NAE-3SAT structure. For each summary, produce a complete same-summary/different-semantics collision or retain its exact unresolved scope.
 
-The initial candidate family represents local satisfying colourings by their exact future completion behaviour. A successful route must bound the complete computation graph and total encoded state, not merely recursion depth or local branching.
+The semantic target must be richer than successful-completion sets on globally unsatisfiable instances. Every proposed mechanism must specify its representation, construction, transition, equivalence, acceptance, encoded size, total computation graph, adversarial family, and stop condition before it becomes a route conjecture.
 
 ## Mandatory controls
 
@@ -44,7 +40,8 @@ The initial candidate family represents local satisfying colourings by their exa
 - acyclic and bounded-width CSPs;
 - Positive 1-in-3 SAT;
 - canonical 3-SAT reductions;
-- robust restricted Monotone NAE-3SAT hard families.
+- robust restricted Monotone NAE-3SAT hard families;
+- dense `K_5^(3)` and sparse linear Fano obstructions.
 
 ## Retained Subset Sum results
 
@@ -59,4 +56,4 @@ These results do not prove `P=NP`, `P!=NP`, a fixed-target Subset Sum lower boun
 
 ## Next decision
 
-State and attack the first atomic Monotone NAE-3SAT route conjecture. It must specify the decomposition, exact state representation, transition operation, proposed global polynomial bound, adversarial family, and stop condition before a route directory is activated.
+Execute `VS-06` in formalization-and-attack mode. Do not activate a route directory until one atomic representation claim survives explicit collision tests and states a global polynomial bound.
