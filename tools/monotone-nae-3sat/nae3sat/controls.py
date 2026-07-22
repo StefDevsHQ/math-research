@@ -237,7 +237,7 @@ def normalize_xor_system(n: int, equations: Iterable[tuple[Iterable[int] | int, 
             mask = 0
             for vertex in variables:
                 if type(vertex) is not int or vertex < 0 or vertex >= n:
-                    raise ValidationError("equation variables must be distinct in-range integers")
+                    raise ValidationError("equation variables must be in-range integers excluding Booleans")
                 mask ^= 1 << vertex
         if mask <= 0 or mask >= (1 << n):
             raise ValidationError("equation left side must be a nonempty in-range parity mask")
@@ -359,65 +359,94 @@ def color_incidence_forest(instance: Hypergraph3) -> tuple[int, ...]:
     instance = _require_instance(instance)
     if not is_incidence_forest(instance):
         raise ValidationError("instance incidence graph is not a forest")
+
+    adjacency = _incidence_adjacency(instance)
+    visited = [False] * len(adjacency)
     colors = [-1] * instance.n
-    edge_adjacency: list[list[int]] = [[] for _ in instance.edges]
-    vertex_edges: list[list[int]] = [[] for _ in range(instance.n)]
-    for edge_index, edge in enumerate(instance.edges):
-        for vertex in edge:
-            vertex_edges[vertex].append(edge_index)
-    for edges in vertex_edges:
-        for first, second in itertools.combinations(edges, 2):
-            edge_adjacency[first].append(second)
-            edge_adjacency[second].append(first)
-    seen_edges = [False] * len(instance.edges)
-    for root in range(len(instance.edges)):
-        if seen_edges[root]:
+
+    for root_edge_index, root_edge in enumerate(instance.edges):
+        root_node = instance.n + root_edge_index
+        if visited[root_node]:
             continue
-        root_edge = instance.edges[root]
+
         colors[root_edge[0]], colors[root_edge[1]], colors[root_edge[2]] = 0, 0, 1
-        seen_edges[root] = True
-        queue = deque([root])
+        visited[root_node] = True
+        queue = deque([(root_node, -1)])
+
         while queue:
-            parent = queue.popleft()
-            for child in edge_adjacency[parent]:
-                if seen_edges[child]:
+            node, parent = queue.popleft()
+            for neighbour in adjacency[node]:
+                if neighbour == parent:
                     continue
-                shared = set(instance.edges[parent]) & set(instance.edges[child])
-                if len(shared) != 1:
-                    raise AssertionError("forest edge adjacency must share exactly one vertex")
-                inherited = next(iter(shared))
-                fresh = [vertex for vertex in instance.edges[child] if vertex != inherited]
-                if any(colors[vertex] != -1 for vertex in fresh):
-                    raise AssertionError("forest traversal encountered previously coloured fresh vertex")
-                colors[fresh[0]], colors[fresh[1]] = 0, 1
-                seen_edges[child] = True
-                queue.append(child)
+                if visited[neighbour]:
+                    raise AssertionError("incidence-forest traversal encountered a cycle")
+
+                visited[neighbour] = True
+                if neighbour >= instance.n:
+                    if node >= instance.n or colors[node] == -1:
+                        raise AssertionError("child edge must be reached through one coloured vertex")
+                    child_edge = instance.edges[neighbour - instance.n]
+                    fresh = [vertex for vertex in child_edge if vertex != node]
+                    if len(fresh) != 2 or any(colors[vertex] != -1 for vertex in fresh):
+                        raise AssertionError("child edge must introduce exactly two fresh vertices")
+                    colors[fresh[0]], colors[fresh[1]] = 0, 1
+
+                queue.append((neighbour, node))
+
     for vertex in range(instance.n):
         if colors[vertex] == -1:
             colors[vertex] = 0
+
     result = tuple(colors)
     if not verify_coloring(instance, result):
         raise AssertionError("incidence-forest colouring failed verification")
     return result
 
 
+def _boundary_intervals(
+    instance: Hypergraph3,
+    ordering: Sequence[int],
+) -> tuple[tuple[int, ...], tuple[int, ...], tuple[int, ...]]:
+    order = validate_ordering(instance, ordering)
+    positions = [0] * instance.n
+    for position, vertex in enumerate(order):
+        positions[vertex] = position
+
+    expiry = positions.copy()
+    for edge in instance.edges:
+        last = max(positions[vertex] for vertex in edge)
+        for vertex in edge:
+            if last > expiry[vertex]:
+                expiry[vertex] = last
+
+    return order, tuple(positions), tuple(expiry)
+
+
 def processed_boundary(instance: Hypergraph3, ordering: Sequence[int], level: int) -> tuple[int, ...]:
     instance = _require_instance(instance)
-    order = validate_ordering(instance, ordering)
     if type(level) is not int or level < 0 or level > instance.n:
         raise ValidationError("level must be an integer between zero and n")
-    remainder = set(order[level:])
-    return tuple(
-        vertex
-        for vertex in order[:level]
-        if any(vertex in edge and any(other in remainder for other in edge) for edge in instance.edges)
-    )
+    order, _, expiry = _boundary_intervals(instance, ordering)
+    return tuple(vertex for vertex in order[:level] if expiry[vertex] >= level)
 
 
 def boundary_width(instance: Hypergraph3, ordering: Sequence[int]) -> int:
     instance = _require_instance(instance)
-    order = validate_ordering(instance, ordering)
-    return max((len(processed_boundary(instance, order, level)) for level in range(instance.n + 1)), default=0)
+    _, positions, expiry = _boundary_intervals(instance, ordering)
+    difference = [0] * (instance.n + 2)
+    for vertex in range(instance.n):
+        start = positions[vertex] + 1
+        end = expiry[vertex]
+        if start <= end:
+            difference[start] += 1
+            difference[end + 1] -= 1
+
+    current = maximum = 0
+    for level in range(instance.n + 1):
+        current += difference[level]
+        if current > maximum:
+            maximum = current
+    return maximum
 
 
 def minimum_boundary_width(instance: Hypergraph3, *, max_vertices: int = 8) -> int:
