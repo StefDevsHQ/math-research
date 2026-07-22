@@ -1,69 +1,75 @@
 # Vertical Slices — Monotone NAE-3SAT
 
-**Purpose:** Operational execution order and progress ledger for the Monotone NAE-3SAT attack programme.  
+**Purpose:** Authoritative execution order and progress ledger for the Monotone NAE-3SAT attack programme.  
 **Updated:** 2026-07-22
+
+Every slice is governed by the mandatory [building-block quality gate](BUILDING-BLOCK-GATE.md). A dependent slice may begin only when each prerequisite is `COMPLETE / CHECKED` or stronger.
 
 ## Status vocabulary
 
-- `COMPLETE` — the slice exit gate is satisfied and its evidence is recorded.
-- `PARTIAL` — a theorem, specification, or implementation component exists, but the exit gate is not yet satisfied.
-- `READY` — prerequisites are available and execution may begin.
-- `BLOCKED` — execution depends on outputs from earlier slices.
-- `NOT STARTED` — no substantive work has been recorded.
+- `COMPLETE / CHECKED` — exit gate, reproducible evidence, independent attack, and required automation are complete.
+- `COMPLETE / DRAFT` — the exit gate appears satisfied, but independent attack or automation remains.
+- `PARTIAL` — substantive work exists, but the exit gate is not met.
+- `READY` — checked prerequisites exist and execution may begin.
+- `BLOCKED` — earlier checked outputs are required.
+- `NOT STARTED` — no substantive work is recorded.
 
 ## Progress summary
 
 | Slice | Name | Status | Current result | Next action |
 |---:|---|---|---|---|
-| `VS-01` | Canonical instance model | `PARTIAL` | Mathematical input model, normalization rules, encoding discipline, component decomposition, and complement symmetry are specified. | Implement and test a canonical parser, normalizer, serializer, and verifier. |
-| `VS-02` | Exact small-instance oracle | `READY` | Exhaustive-colouring decision method is defined conceptually; no executable oracle or exhaustively justified corpus is recorded. | Implement brute-force satisfiability and witness verification, then generate the first complete labelled domain. |
-| `VS-03` | Exact extension-profile engine | `READY` | Exact completion sets, equivalence classes, and well-defined transitions are formalized and proved in `NAE-004`. | Implement quotient construction for a fixed instance and ordering; cross-check against `VS-02`. |
-| `VS-04` | Control calibration | `BLOCKED` | Required controls are identified; bounded-boundary correctness is proved in `NAE-005`. No shared empirical run exists. | Run the oracle and profile engine on bipartite, XOR, acyclic, bounded-width, and disconnected controls. |
-| `VS-05` | Minimal obstruction atlas | `BLOCKED` | Fano plane and minimally unsatisfiable instances are selected as targets. No exhaustive atlas exists. | Enumerate unsatisfiable instances and verify minimality by edge deletion. |
-| `VS-06` | Destroy naive summaries | `BLOCKED` | Candidate summaries are listed, but no verified same-summary/different-future collision has been recorded. | Search the corpus for collisions in degree, intersection, parity, local-consistency, and bounded-radius summaries. |
-| `VS-07` | Measure semantic merging | `BLOCKED` | Exact equivalence is defined; no measured quotient-growth or nontrivial merge dataset exists. | Compare raw prefix assignments, boundary states, complement pairs, and exact future classes across orderings. |
-| `VS-08` | Extract first atomic invariant | `BLOCKED` | No representation language or atomic compatibility relation is selected. | Use the first failures from `VS-06` and `VS-07` to define one falsifiable invariant. |
-| `VS-09` | Prove restricted theorem | `PARTIAL` | The bounded-boundary theorem `NAE-005` is proved. This is a baseline restricted theorem, not a theorem about a new invariant. | Prove the first new invariant on the largest exact subclass supported by evidence. |
-| `VS-10` | Attack with hard families | `BLOCKED` | Linear 4-regular and reduction-generated families are mandatory controls; no candidate invariant exists to attack. | Apply the `VS-08` invariant to verified hard families. |
-| `VS-11` | Global complexity audit | `BLOCKED` | Audit requirements are specified. No candidate algorithm exists whose total computation graph can be counted. | Audit construction, equivalence, transitions, branching, memory, and total encoded state. |
-| `VS-12` | Route decision | `BLOCKED` | Investigation state and claim discipline are prepared; no route mechanism has reached a decision gate. | Classify the first mechanism after `VS-08` through `VS-11`. |
+| `VS-01` | Canonical instance model | `COMPLETE / CHECKED` | Canonical model, parser, serialization, identifiers, components, relabelling, verifier, exhaustive small-domain tests, cross-version automation, and audit are green. | Freeze the exported contract while building VS-02. |
+| `VS-02` | Exact small-instance oracle | `READY` | VS-01 is a checked dependency. No exact oracle or exhaustively justified satisfiability corpus exists. | Specify, implement, attack, and quality-gate the oracle. |
+| `VS-03` | Exact extension-profile engine | `READY` | Completion equivalence and transitions are proved in `NAE-004`; implementation remains. | Implement, but do not consume unpromoted VS-02 outputs. |
+| `VS-04` | Control calibration | `BLOCKED` | Controls are identified; no checked oracle/profile run exists. | Run checked VS-02 and VS-03 on tractable controls. |
+| `VS-05` | Minimal obstruction atlas | `BLOCKED` | Targets are identified; no checked exhaustive atlas exists. | Enumerate and verify minimal unsatisfiable instances after VS-02. |
+| `VS-06` | Destroy naive summaries | `BLOCKED` | Candidate summaries are listed; no checked collisions exist. | Search the checked corpus using exact profiles. |
+| `VS-07` | Measure semantic merging | `BLOCKED` | Exact equivalence is defined; no checked quotient-growth dataset exists. | Measure states after VS-03 is checked. |
+| `VS-08` | Extract first atomic invariant | `BLOCKED` | No representation language is selected. | Use checked VS-06 and VS-07 evidence. |
+| `VS-09` | Prove restricted theorem | `PARTIAL` | `NAE-005` proves only the baseline bounded-boundary algorithm. | Prove the future invariant on an exact subclass. |
+| `VS-10` | Attack with hard families | `BLOCKED` | Hard controls are registered; no candidate invariant exists. | Attack the checked VS-08 invariant. |
+| `VS-11` | Global complexity audit | `BLOCKED` | Audit criteria exist; no candidate algorithm exists. | Count the complete computation graph of the VS-08 mechanism. |
+| `VS-12` | Route decision | `BLOCKED` | Claim discipline is prepared. | Classify the route after VS-08 through VS-11. |
 
-## Ordered slices
+## `VS-01` — Canonical instance model
 
-### `VS-01` — Canonical instance model
+**Goal:** Establish one executable representation used by every later proof check and experiment.
 
-**Goal:** Establish one executable representation used by every proof and experiment.
+**Completed work:** canonical immutable labelled hypergraphs; strict versioned parsing; deterministic serialization and identifiers; isolated-vertex preservation; components; induced and active-core relabelling; strict total-colouring verification; CLI; fixtures; complexity audit.
 
-**Work:**
+**Quality evidence:**
 
-- represent a simple 3-uniform hypergraph on indexed vertices;
-- validate pairwise distinct vertices in every edge;
-- sort and deduplicate edges;
-- remove isolated vertices or preserve them under an explicit convention;
-- split incidence-connected components;
-- provide deterministic canonical serialization;
-- verify a proposed two-colouring;
-- record binary encoded length.
+- [mathematical object](OBJECT.md);
+- [implementation specification](VS-01-IMPLEMENTATION.md);
+- [completion and quality audit](VS-01-AUDIT.md);
+- executable package under `tools/monotone-nae-3sat/`;
+- all 1,045 labelled 3-uniform hypergraphs through five vertices;
+- 33,047 colouring checks;
+- 33,047 induced-subinstance checks;
+- a separate 1,350-instance seeded reference cross-check;
+- four hash-seed process checks;
+- Python 3.11, 3.12, and 3.13 automation.
 
-**Exit gate:** Parser, normalizer, serializer, and witness verifier agree on a test suite covering empty instances, isolated vertices, duplicates, malformed edges, disconnected components, satisfiable instances, and unsatisfiable instances.
+**Exit gate:** Satisfied. The slice exports infrastructure only and makes no satisfiability claim.
 
-**Evidence already available:** `OBJECT.md`, especially encoding, normalization, symmetry, and component rules.
-
-### `VS-02` — Exact small-instance oracle
+## `VS-02` — Exact small-instance oracle
 
 **Goal:** Create a trusted exact decision oracle for finite discovery experiments.
 
 **Work:**
 
-- enumerate colourings, fixing one colour per connected component to remove global complement duplication;
+- define the exact API and witness semantics;
+- enumerate binary colourings;
+- prove component and complement-symmetry optimizations before use;
 - return satisfiable/unsatisfiable and a witness when one exists;
 - independently recheck every returned witness;
-- generate instances under an explicitly stated labelled or isomorphism-reduced domain;
-- record the exhaustiveness argument for every claimed finite domain.
+- define the generated labelled or isomorphism-reduced domain;
+- record an exhaustiveness argument, commands, counts, runtime, memory, and limitations;
+- add exhaustive, adversarial, independent-reference, and cross-version tests.
 
-**Exit gate:** The oracle is cross-checked against hand-certified examples and exhaustively evaluates the first declared domain with reproducible commands and counts.
+**Exit gate:** The oracle agrees with independently certified controls, exhaustively evaluates the first declared domain with reproducible counts, passes the building-block gate, and is `COMPLETE / CHECKED` before any downstream result relies on it.
 
-### `VS-03` — Exact extension-profile engine
+## `VS-03` — Exact extension-profile engine
 
 **Goal:** Compute the exact semantic state against which every proposed compression is judged.
 
@@ -75,165 +81,90 @@ For ordering \(\pi=(v_1,\ldots,v_n)\), compute
 
 and quotient prefix assignments by equal completion sets.
 
-**Work:**
+**Work:** enumerate prefix assignments and completion bitsets; canonicalize exact future classes; construct both colour transitions; mark the dead class; verify final acceptance against checked VS-02; record raw, boundary, quotient, and encoded-profile sizes.
 
-- enumerate prefix assignments and completion bitsets;
-- canonicalize exact future-equivalence classes;
-- construct both colour transitions;
-- mark the dead class explicitly;
-- verify final acceptance against the oracle;
-- record raw assignment count, boundary-state count, quotient count, and encoded profile size.
+**Exit gate:** Every tested instance and ordering agrees with checked VS-02, transition well-definedness is checked, representation sizes are recorded, and the building-block gate passes.
 
-**Exit gate:** Every tested instance and ordering has a transition graph whose final acceptance equals `VS-02`, and transition well-definedness is checked computationally.
-
-**Proof already available:** `NAE-004` in `OBJECT.md`.
-
-### `VS-04` — Control calibration
+## `VS-04` — Control calibration
 
 **Goal:** Verify that the laboratory explains known easy cases before examining hard instances.
 
-**Controls:**
+**Controls:** graph bipartiteness; acyclic incidence hypergraphs; bounded-boundary instances; meaningful XOR-SAT analogues; disconnected unions; planar and occurrence-at-most-three NAE instances.
 
-- graph bipartiteness;
-- acyclic incidence hypergraphs;
-- bounded-boundary instances;
-- XOR-SAT analogues where the comparison is meaningful;
-- disconnected unions;
-- planar and occurrence-at-most-three NAE instances.
+**Exit gate:** A checked report identifies why each control is easy and whether compactness comes from interfaces, algebra, decomposition, or component factorization.
 
-**Exit gate:** A report states why each control is easy, what exact state the engine observes, and whether compactness comes from small interfaces, algebraic closure, decomposition, or component factorization.
-
-### `VS-05` — Minimal obstruction atlas
+## `VS-05` — Minimal obstruction atlas
 
 **Goal:** Identify the smallest exact failures of global compatibility.
 
-**Work:**
+**Work:** enumerate unsatisfiable instances in a declared domain; test edge-minimality and separately named vertex-minimality; include and independently verify the Fano plane; record degree, linearity, incidence cycles, automorphisms, and profiles; separate disconnected copies from connected cores.
 
-- enumerate unsatisfiable instances in the declared domain;
-- test edge-minimal unsatisfiability;
-- test vertex-minimality separately if used;
-- include and independently verify the Fano plane;
-- record automorphism, degree, linearity, girth-like incidence data, and extension profiles;
-- separate isolated copies and decomposable obstructions from connected cores.
+**Exit gate:** Every object called minimal has all relevant proper subinstances checked satisfiable, complete instance data, reproducible verification, and a passed building-block gate.
 
-**Exit gate:** Every object called minimal has all relevant proper subinstances verified satisfiable, with complete instance data and reproducible verification.
-
-### `VS-06` — Destroy naive summaries
+## `VS-06` — Destroy naive summaries
 
 **Goal:** Eliminate insufficient invariants with complete collisions.
 
-**Summaries to test:**
+**Summaries:** degree sequence; edge-intersection multiset; pair co-occurrence; parity and affine summaries; local consistency; bounded-radius incidence neighbourhoods; component and elementary spectral data; fixed-order low-moment completion statistics.
 
-- degree sequence;
-- edge-intersection multiset;
-- pair co-occurrence data;
-- parity and affine summaries;
-- local-consistency closure;
-- bounded-radius incidence neighbourhoods;
-- component counts and elementary spectral data;
-- fixed-order low-moment completion statistics.
+**Exit gate:** Each rejected summary has a complete checked collision, a smallest-known statement, remaining scope, and a passed building-block gate.
 
-**Required disproof format:** Two complete instances or partial states with the same proposed summary but different satisfiability or different exact completion sets.
+## `VS-07` — Measure genuine semantic merging
 
-**Exit gate:** Each rejected summary has a smallest known verified collision and a statement of the remaining scope.
+**Goal:** Determine exact compression beyond trivial symmetry.
 
-### `VS-07` — Measure genuine semantic merging
+**Work:** compare raw prefix assignments, boundary colourings, and exact future classes; separate dead and live merging; quotient complement symmetry; optimize over small orders; measure maximum and total quotient size; distinguish class count from representation size.
 
-**Goal:** Determine what exact compression exists beyond trivial symmetry.
+**Exit gate:** A checked reproducible dataset identifies the first nontrivial live semantic merge and the first significant quotient-growth family.
 
-**Work:**
+## `VS-08` — Extract the first atomic invariant
 
-- compare raw prefix assignments with boundary colourings and exact future classes;
-- separate dead-state merging from live-state merging;
-- quotient global complement symmetry explicitly;
-- optimize over small variable orderings;
-- measure maximum and total quotient size;
-- distinguish number of semantic classes from size of a representation for those classes.
+**Goal:** Turn empirical failure structure into one precise mechanism.
 
-**Exit gate:** A reproducible dataset identifies the first nontrivial live semantic merge and the first family showing significant quotient growth.
+**Required artifact:** one conjecture specifying representation language and semantics; construction and transitions; correctness target; predicted total-state bound; controls; first adversarial family; stop condition.
 
-### `VS-08` — Extract the first atomic invariant
+**Exit gate:** The conjecture is falsifiable, hides no satisfiability/equivalence operation, and passes the building-block specification gate.
 
-**Goal:** Turn empirical failure structure into one precise mathematical mechanism.
+## `VS-09` — Prove a restricted theorem first
 
-**Required artifact:** One conjecture specifying:
+**Goal:** Establish correctness before universality.
 
-- the representation language;
-- its semantics;
-- construction and transition operations;
-- soundness and completeness target;
-- predicted total state bound;
-- mandatory controls;
-- first adversarial family;
-- stop condition.
+**Work:** Prove the invariant on the largest exact subclass supported by evidence, including quantifiers, boundary cases, encoding, runtime, memory, and total-state bounds.
 
-**Exit gate:** The conjecture is falsifiable and does not hide satisfiability, equivalence, or transition computation inside an undefined operation.
+**Existing baseline:** `NAE-005` proves the ordinary bounded-boundary algorithm only.
 
-### `VS-09` — Prove a restricted theorem first
+**Exit gate:** A complete `PROVED / DRAFT` theorem, independent proof attack, dependency audit, and building-block promotion.
 
-**Goal:** Establish correctness before claiming universality.
+## `VS-10` — Attack with hard families
 
-**Work:** Prove the invariant on the largest exact subclass supported by the evidence, with all quantifiers, boundary cases, encoding, runtime, memory, and total-state bounds.
+**Goal:** Test genuine hardness rather than curated examples.
 
-**Existing baseline:** `NAE-005` proves the ordinary bounded-boundary dynamic programme. It does not validate a future stronger invariant.
+**Families:** Fano-derived and minimal obstructions; linear 4-regular Monotone NAE-3SAT; verified NP-hard reduction outputs; high-width instances; defined Positive 1-in-3 SAT or graph 3-colouring transfers.
 
-**Exit gate:** A complete `PROVED / DRAFT` theorem for the new invariant, followed by an independent attempt to break the proof.
+**Exit gate:** Produce a checked counterexample, sharply restricted surviving theorem, or candidate surviving all recorded attacks.
 
-### `VS-10` — Attack with hard families
-
-**Goal:** Test whether the candidate survives genuine hardness rather than curated examples.
-
-**Families:**
-
-- Fano-derived and minimal obstruction families;
-- linear 4-regular Monotone NAE-3SAT;
-- verified NP-hard reduction outputs;
-- high-width instances;
-- Positive 1-in-3 SAT and graph 3-colouring transfers where defined.
-
-**Exit gate:** Produce a complete counterexample, a sharply restricted surviving theorem, or a candidate that survives all recorded attacks.
-
-### `VS-11` — Global complexity audit
+## `VS-11` — Global complexity audit
 
 **Goal:** Prevent local polynomial reasoning from hiding exponential total work.
 
-**Audit:**
+**Audit:** input and intermediate bit lengths; construction; equivalence and transitions; recursion depth and branching; complete generated-state graph; duplicate detection; memory; normalization; witness reconstruction; uniformity; deterministic correctness.
 
-- input and intermediate bit lengths;
-- construction cost;
-- equivalence and transition cost;
-- recursion depth and branching;
-- complete generated-state graph;
-- duplicate-state detection cost;
-- memory;
-- representation normalization;
-- witness reconstruction;
-- uniformity and deterministic correctness.
+**Exit gate:** A checked complete polynomial bound or explicit superpolynomial obstruction for the named algorithm and representation.
 
-**Exit gate:** A complete polynomial bound or an explicit superpolynomial obstruction for the named algorithm and representation.
-
-### `VS-12` — Route decision
+## `VS-12` — Route decision
 
 **Goal:** Record the exact mathematical outcome.
 
-**Possible decisions:**
+**Possible decisions:** universal candidate survives; restricted theorem; complete disproof; representation-specific barrier without inferring `P!=NP`; no material mechanism and return to route selection.
 
-- universal algorithm candidate survives — continue verification toward `P=NP`;
-- restricted theorem — retain with exact hypotheses;
-- conjecture disproved — preserve counterexample and close the mechanism;
-- representation-specific barrier — retain without inferring `P!=NP`;
-- no material mechanism — return to route selection.
+**Exit gate:** Claim ledger, status, route record, evidence, dependency quality, limitations, and reopening conditions are synchronized.
 
-**Exit gate:** Claim ledger, status, route record, evidence, limitations, and reopening conditions are synchronized.
+## Immediate queue
 
-## Immediate execution queue
+1. Execute VS-02 using the frozen checked VS-01 contract.
+2. Promote VS-02 only after its own complete quality gate.
+3. Implement and cross-check VS-03 against checked VS-02.
+4. Run VS-04 and VS-05 before designing a new invariant.
+5. Use checked VS-06 and VS-07 evidence to extract VS-08.
 
-1. Finish `VS-01` by implementing the canonical model and verifier.
-2. Execute `VS-02` on the first exhaustively justified domain.
-3. Implement `VS-03` and cross-check it against the oracle.
-4. Run `VS-04` and `VS-05` before designing a new invariant.
-5. Use `VS-06` and `VS-07` to extract the first atomic route candidate in `VS-08`.
-
-## Progress discipline
-
-A slice may advance to `COMPLETE` only when its exit gate and evidence path are both recorded. Computational results remain `COMPUTATIONAL`; they do not promote a universal statement without an exhaustiveness argument or proof.
+Computational results remain `COMPUTATIONAL` unless accompanied by a complete exhaustiveness argument or proof.
