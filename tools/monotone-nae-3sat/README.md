@@ -1,41 +1,23 @@
 # Monotone NAE-3SAT Research Tool
 
-Standard-library Python laboratory for canonical labelled 3-uniform hypergraphs, exact finite satisfiability, exact extension profiles, tractable controls, and checked minimal-obstruction records.
+Standard-library Python laboratory for canonical labelled 3-uniform hypergraphs, exact finite satisfiability, exact extension profiles, tractable controls, minimal obstructions, and naive-summary collision analysis.
 
-## Completed phase — VS-01 through VS-05
+## Completed slices
 
-### VS-01 — canonical instance model
+- `VS-01`: canonical model, strict parser, serialization, components, relabelling, and witness verification;
+- `VS-02`: exact solver, least witnesses, listing, direct and factorized counting, generation, and finite census;
+- `VS-03`: exact completion masks, semantic quotient classes, transitions, boundary metrics, and profile census;
+- `VS-04`: graph parity, affine XOR, incidence forests, bounded boundaries, disconnected products, and calibration;
+- `VS-05`: edge/vertex minimality, deletion certificates, `K_5^(3)` and Fano controls, obstruction census, and all-ordering aggregates;
+- `VS-06`: degree, intersection, pair-codegree, parity, moment, spectral, local-consistency, induced-subinstance, and boundary-summary collisions plus a fixed-radius locality-failure family.
 
-Strict versioned parsing, canonical normalization, stable labelled identifiers, incidence components, deterministic relabelling, and strict witness verification.
-
-### VS-02 — exact small-instance oracle
-
-Exact decision, true least witnesses, complete assignment listing, exact direct and component-factorized counting, minimal-unsatisfiability checks, labelled generation, and deterministic census output.
-
-### VS-03 — exact extension profiles
-
-Exact completion masks, deterministic semantic classes, representative-independent transitions, boundary comparisons, canonical records, and exhaustive profile census.
-
-### VS-04 — control calibration
-
-- graph bipartiteness by parity propagation;
-- XOR consistency, rank, counts, and least witnesses by Gaussian elimination;
-- constructive incidence-forest NAE colouring;
-- linearity, occurrence, and boundary utilities;
-- deterministic control census and named-control report.
-
-### VS-05 — minimal obstruction atlas
-
-Separate edge- and induced-vertex-minimality predicates, complete deletion certificates, exact `K_5^(3)` and Fano controls, the exhaustive labelled `n<=5` obstruction census, and all-ordering profile aggregates.
-
-The exact oracle, profile, census, calibration, and atlas procedures are finite exponential or factorial laboratory tools. The graph, XOR, incidence-forest, bounded-boundary, and component controls are restricted tractable mechanisms, not a universal algorithm.
+The exact oracle, profiles, censuses, atlases, and collision searches are finite exponential or factorial laboratory tools. They are not a universal polynomial algorithm.
 
 ## Runtime
 
 - Python 3.11, 3.12, and 3.13;
 - Python standard library only;
-- automated compile, test, CLI, record-envelope, byte-reproduction, and independent-reference gates;
-- routine checks are restricted to active research scopes through `.verification/active-paths`.
+- active-scope compile, tests, CLI, record-envelope, byte-reproduction, and independent-reference gates.
 
 ## Input format
 
@@ -43,11 +25,9 @@ The exact oracle, profile, census, calibration, and atlas procedures are finite 
 {"format":"nae3-v1","vertices":[0,1,2,3],"edges":[[0,1,2],[1,2,3]]}
 ```
 
-The vertex set must be exactly `0,...,n-1`. Input edges may be unsorted and repeated; parsing normalizes them. Malformed JSON, duplicate keys, unsupported versions, invalid UTF-8, malformed edges, Booleans, floating-point labels, and unknown fields are rejected.
+Canonical output is deterministic for a fixed labelling, not up to hypergraph isomorphism.
 
-Canonical output is deterministic for a fixed vertex labelling, not up to hypergraph isomorphism.
-
-## Verification commands
+## Verification
 
 From the repository root:
 
@@ -56,82 +36,50 @@ sh scripts/check.sh fast
 sh scripts/check.sh full
 ```
 
-From this directory, individual reproducibility commands include:
+Reproducibility commands:
 
 ```bash
-python3 -m unittest discover -s tests -v
-python3 -m nae3sat.cli validate tests/fixtures/fano-plane.json
-python3 -m nae3sat.cli solve tests/fixtures/single-edge.json
-python3 -m nae3sat.cli count tests/fixtures/single-edge.json
-python3 -m nae3sat.cli profile tests/fixtures/single-edge.json --ordering 2,0,1
-python3 -m nae3sat.cli census --max-vertices 5 --output /tmp/vs02-corpus.json
-python3 -m nae3sat.cli profile-census --max-vertices 5 --output /tmp/vs03-corpus.json
-python3 -m nae3sat.cli calibrate --output /tmp/vs04-calibration.json
-python3 -m nae3sat.cli obstruction-atlas --output /tmp/vs05-obstruction-atlas.json
-cmp /tmp/vs02-corpus.json corpus/all-labelled-n-le-5.json
-cmp /tmp/vs03-corpus.json profile-corpus/all-labelled-orderings-n-le-5.json
-cmp /tmp/vs04-calibration.json calibration/vs04-calibration.json
-cmp /tmp/vs05-obstruction-atlas.json obstruction-atlas/vs05-obstruction-atlas.json
+python3 -m nae3sat.cli census --max-vertices 5 --output /tmp/vs02.json
+python3 -m nae3sat.cli profile-census --max-vertices 5 --output /tmp/vs03.json
+python3 -m nae3sat.cli calibrate --output /tmp/vs04.json
+python3 -m nae3sat.cli obstruction-atlas --output /tmp/vs05.json
+python3 -m nae3sat.cli summary-collisions --output /tmp/vs06.json
+cmp /tmp/vs02.json corpus/all-labelled-n-le-5.json
+cmp /tmp/vs03.json profile-corpus/all-labelled-orderings-n-le-5.json
+cmp /tmp/vs04.json calibration/vs04-calibration.json
+cmp /tmp/vs05.json obstruction-atlas/vs05-obstruction-atlas.json
+cmp /tmp/vs06.json summary-collisions/vs06-summary-collisions.json
 ```
 
-All census, calibration, and atlas commands write deterministic compact JSON atomically.
+All record commands write deterministic compact JSON atomically. Public `verify_*_record` functions validate the strict versioned envelope and digest. Semantic verification remains regeneration plus byte comparison and independent tests.
 
-The public `verify_*_record` functions validate the exact versioned top-level envelope and payload digest. They establish record integrity, not semantic truth. The semantic gate is regeneration plus byte comparison, supplemented by the independent reference tests.
+## VS-06 APIs
 
-## Checked finite records
+The package exports:
 
-### VS-02
+- degree, intersection, pair-codegree, parity, second-moment, and incidence-Gram-spectrum summaries;
+- root generalized arc consistency and proper-induced-satisfiability summaries;
+- exact, weight, and parity boundary summaries;
+- exact completion masks;
+- graph cycle-union, bipartiteness, rooted bounded-radius, and anchored-NAE helpers;
+- named collision constructors;
+- deterministic summary-collision payload, record, bytes, and strict verifier.
 
-- `1045` labelled instances through five vertices;
-- `1044` satisfiable and `1` unsatisfiable;
-- `33047` complete reference colourings evaluated.
+## Checked records
 
-### VS-03
+- VS-02: `1045` labelled instances through five vertices;
+- VS-03: `123280` instance-ordering profiles and `2153049` exact classes;
+- VS-04: exhaustive graph, XOR, incidence-forest, and bounded-occurrence controls on declared domains;
+- VS-05: unique `n<=5` obstruction, complete named deletion certificates, and all-ordering aggregates;
+- VS-06: ten explicit same-summary/different-semantics collisions and checked radius-one/radius-two samples of a proved all-fixed-radius family.
 
-- `123280` instance-ordering profiles;
-- `7753542` raw prefixes;
-- `2153049` exact classes;
-- `1818651` live classes;
-- maximum quotient size `8`.
+## Complexity boundaries
 
-### VS-04
-
-- `1100` labelled graphs: `428` bipartite, `672` non-bipartite;
-- `16453` canonical XOR systems: `890` consistent, `15563` inconsistent;
-- `36` incidence-forest NAE instances, all constructively colourable;
-- `344` maximum-occurrence-at-most-three NAE instances in the small domain, all satisfiable.
-
-### VS-05
-
-- the unique unsatisfiable labelled instance through five vertices is `K_5^(3)`;
-- `K_5^(3)` is edge-minimal and induced-vertex-minimal unsatisfiable;
-- complete least-witness deletion certificates are stored for `K_5^(3)` and the Fano plane;
-- all `120` orderings of `K_5^(3)` and `5040` orderings of the Fano plane are aggregated;
-- both unsatisfiable controls have one dead successful-completion class at every level.
-
-These are finite exhaustive measurements on their declared domains or named-instance checks. They do not establish unrestricted asymptotic tractability or a general representation lower bound.
-
-## Public API
-
-The package exports the canonical model, serialization, exact oracle, profile engine, corpus APIs, and:
-
-- `Graph2`, `Graph2Result`, `normalize_graph2`, `solve_graph2`, and `labelled_graphs`;
-- `XorSystem`, `XorResult`, `normalize_xor_system`, `solve_xor`, and `labelled_xor_systems`;
-- `is_incidence_forest`, `color_incidence_forest`, `is_linear`, and `vertex_occurrences`;
-- `processed_boundary`, `boundary_width`, and guarded `minimum_boundary_width`;
-- calibration payload, record, byte, and verification APIs;
-- obstruction constructors, deletion operations and certificates, minimality predicates, profile aggregates, and atlas APIs;
-- strict public record-envelope verifiers for VS-02 through VS-05.
-
-## Complexity
-
-- exact NAE decision/counting: exponential in vertex count;
-- exact profile construction/output: exponential and output-sensitive;
-- all-ordering profile aggregation: factorial in vertex count;
-- graph parity solver: `O(n+m)`;
-- direct XOR elimination: polynomial in rows and variable count;
-- incidence-forest recognition and colouring: linear incidence work;
-- one-ordering boundary width: `O(n(n+m))` in the direct implementation;
-- exhaustive minimum ordering width: factorial and explicitly guarded.
+- exact NAE decision and counting: exponential;
+- exact profiles: exponential and output-sensitive;
+- all-ordering aggregation: factorial;
+- generic rooted-radius canonicalization: factorial in the ball size;
+- exact boundary dynamic programming: exponential in boundary width;
+- graph parity, affine XOR, and incidence-forest controls: polynomial on their stated domains.
 
 No result here implies `P=NP` or `P!=NP`.

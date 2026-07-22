@@ -16,7 +16,13 @@ from .obstruction_atlas import obstruction_atlas_bytes
 from .oracle import count_satisfying_assignments, solve_exact
 from .profile import build_exact_profile, profile_bytes
 from .profile_census import profile_corpus_bytes
-from .serialization import FORMAT_VERSION, encoded_size_bytes, instance_id, parse_instance_json
+from .serialization import (
+    FORMAT_VERSION,
+    encoded_size_bytes,
+    instance_id,
+    parse_instance_json,
+)
+from .summary_atlas import summary_collision_bytes
 
 
 def _load(path: Path):
@@ -56,7 +62,9 @@ def _parse_ordering(text: str | None, n: int) -> tuple[int, ...]:
     try:
         return tuple(int(part) for part in text.split(","))
     except ValueError as exc:
-        raise ValidationError("ordering must be a comma-separated integer permutation") from exc
+        raise ValidationError(
+            "ordering must be a comma-separated integer permutation"
+        ) from exc
 
 
 def main(argv: Sequence[str] | None = None) -> int:
@@ -93,12 +101,19 @@ def main(argv: Sequence[str] | None = None) -> int:
     obstruction_atlas = sub.add_parser("obstruction-atlas")
     obstruction_atlas.add_argument("--output", type=Path, required=True)
 
+    summary_collisions = sub.add_parser("summary-collisions")
+    summary_collisions.add_argument("--output", type=Path, required=True)
+
     args = parser.parse_args(argv)
     try:
         if args.command == "validate":
             instance = _load(args.path)
             components = incidence_components(instance)
-            active = {vertex for edge in instance.edges for vertex in edge}
+            active = {
+                vertex
+                for edge in instance.edges
+                for vertex in edge
+            }
             _dump(
                 {
                     "format": f"{FORMAT_VERSION}-summary",
@@ -116,13 +131,20 @@ def main(argv: Sequence[str] | None = None) -> int:
             )
         elif args.command == "solve":
             instance = _load(args.path)
-            result = solve_exact(instance, use_symmetry=not args.no_symmetry)
+            result = solve_exact(
+                instance,
+                use_symmetry=not args.no_symmetry,
+            )
             _dump(
                 {
                     "format": f"{FORMAT_VERSION}-solve",
                     "id": instance_id(instance),
                     "satisfiable": result.satisfiable,
-                    "witness": list(result.witness) if result.witness is not None else None,
+                    "witness": (
+                        list(result.witness)
+                        if result.witness is not None
+                        else None
+                    ),
                     "assignments_tested": result.assignments_tested,
                     "symmetry_reduction": result.symmetry_reduction,
                 }
@@ -133,14 +155,18 @@ def main(argv: Sequence[str] | None = None) -> int:
                 {
                     "format": f"{FORMAT_VERSION}-count",
                     "id": instance_id(instance),
-                    "satisfying_assignments": count_satisfying_assignments(instance),
+                    "satisfying_assignments": (
+                        count_satisfying_assignments(instance)
+                    ),
                 }
             )
         elif args.command == "census":
             if args.max_vertices < 0:
                 raise ValidationError("max vertices must be nonnegative")
             if args.max_vertices > 5 and not args.allow_large_domain:
-                raise ValidationError("max vertices above 5 requires --allow-large-domain")
+                raise ValidationError(
+                    "max vertices above 5 requires --allow-large-domain"
+                )
             _write_atomic(args.output, corpus_bytes(args.max_vertices))
         elif args.command == "profile":
             instance = _load(args.path)
@@ -162,12 +188,19 @@ def main(argv: Sequence[str] | None = None) -> int:
             if args.max_vertices < 0:
                 raise ValidationError("max vertices must be nonnegative")
             if args.max_vertices > 5 and not args.allow_large_domain:
-                raise ValidationError("max vertices above 5 requires --allow-large-domain")
-            _write_atomic(args.output, profile_corpus_bytes(args.max_vertices))
+                raise ValidationError(
+                    "max vertices above 5 requires --allow-large-domain"
+                )
+            _write_atomic(
+                args.output,
+                profile_corpus_bytes(args.max_vertices),
+            )
         elif args.command == "calibrate":
             _write_atomic(args.output, calibration_bytes())
-        else:
+        elif args.command == "obstruction-atlas":
             _write_atomic(args.output, obstruction_atlas_bytes())
+        else:
+            _write_atomic(args.output, summary_collision_bytes())
         return 0
     except (NAE3Error, OSError) as exc:
         print(f"error: {exc}", file=sys.stderr)

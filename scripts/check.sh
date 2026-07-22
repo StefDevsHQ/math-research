@@ -67,6 +67,7 @@ from nae3sat import (
     verify_corpus_record,
     verify_obstruction_atlas_record,
     verify_profile_corpus_record,
+    verify_summary_collision_record,
 )
 
 records = (
@@ -74,12 +75,13 @@ records = (
     (Path("profile-corpus/all-labelled-orderings-n-le-5.json"), verify_profile_corpus_record),
     (Path("calibration/vs04-calibration.json"), verify_calibration_record),
     (Path("obstruction-atlas/vs05-obstruction-atlas.json"), verify_obstruction_atlas_record),
+    (Path("summary-collisions/vs06-summary-collisions.json"), verify_summary_collision_record),
 )
 for path, verify in records:
     value = json.loads(path.read_text(encoding="utf-8"))
     if not verify(value):
         raise SystemExit(f"record verification failed: {path}")
-print("committed record digests passed")
+print("committed record envelopes passed")
 PY
 }
 
@@ -98,6 +100,7 @@ check_fast() {
     tests.test_vs05.NamedObstructionTests.test_complete_five_certificates \
     tests.test_vs05.NamedObstructionTests.test_fano_certificates \
     -v
+  "$PYTHON" -m unittest discover -s tests -p 'test_vs06.py' -v
   "$PYTHON" -m nae3sat.cli validate tests/fixtures/fano-plane.json >/dev/null
   "$PYTHON" -m nae3sat.cli solve tests/fixtures/single-edge.json >/dev/null
   "$PYTHON" -m nae3sat.cli count tests/fixtures/single-edge.json >/dev/null
@@ -125,6 +128,10 @@ check_full() {
   cmp "$output_dir/vs03.json" profile-corpus/all-labelled-orderings-n-le-5.json
   "$PYTHON" -m nae3sat.cli calibrate --output "$output_dir/vs04.json"
   cmp "$output_dir/vs04.json" calibration/vs04-calibration.json
+  "$PYTHON" -m nae3sat.cli obstruction-atlas --output "$output_dir/vs05.json"
+  cmp "$output_dir/vs05.json" obstruction-atlas/vs05-obstruction-atlas.json
+  "$PYTHON" -m nae3sat.cli summary-collisions --output "$output_dir/vs06.json"
+  cmp "$output_dir/vs06.json" summary-collisions/vs06-summary-collisions.json
   printf '%s\n' "full checks passed"
 }
 

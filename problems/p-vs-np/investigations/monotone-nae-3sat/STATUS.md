@@ -1,25 +1,25 @@
 # Status — Monotone NAE-3SAT Investigation
 
-**Phase:** Phase I (`VS-01` through `VS-05`) complete; `VS-06` formalization next  
+**Phase:** `VS-06` complete; `VS-07` ready  
 **Updated:** 2026-07-22
 
 ## Current position
 
-The investigation remains open. The trusted laboratory phase consisting of the canonical instance layer, exact small-instance oracle, exact extension-profile engine, tractable-control calibration, and minimal-obstruction atlas is `COMPLETE / CHECKED`. No universal polynomial-time mechanism is claimed.
+The investigation remains open. `VS-01` through `VS-06` are `COMPLETE / CHECKED`. No universal polynomial-time mechanism is claimed.
 
-The phase closeout is recorded in [VS-01-05-PHASE-AUDIT.md](VS-01-05-PHASE-AUDIT.md). `VS-06` may begin only from the exported contracts and limitations recorded there.
+The trusted laboratory provides canonical instances, exact finite semantics, exact fixed-order completion profiles, calibrated tractable controls, a minimal-obstruction atlas, and a checked atlas of failures for explicitly defined naive summaries.
 
 ## Accepted baseline
 
 1. Monotone NAE-3SAT is NP-complete — `ESTABLISHED / CHECKED`.
 2. A deterministic polynomial-time algorithm for all instances would prove `P=NP` — `PROVED / CHECKED`.
-3. Unary/binary fixed-template Boolean CSPs reduce to 2-SAT — `PROVED / CHECKED`.
-4. Exact extension equivalence has well-defined one-variable transitions — `PROVED / CHECKED`.
-5. Boundary width `w` gives a `2^{O(w)} poly(L)` exact algorithm — `PROVED / CHECKED`.
-6. Bottom-up exact completion masks correctly construct the full semantic quotient for fixed instances and orderings — `PROVED / CHECKED`.
-7. Every incidence-forest 3-uniform hypergraph is constructively two-colourable in linear incidence time — `PROVED / CHECKED`.
-8. Single edge or vertex deletion checks suffice for the corresponding proper-subinstance minimality notions — `PROVED / CHECKED`.
-9. Every unsatisfiable instance collapses the successful-completion quotient to one dead class at every level under every ordering — `PROVED / CHECKED`.
+3. Exact extension equivalence has well-defined transitions — `PROVED / CHECKED`.
+4. Boundary width `w` gives a `2^{O(w)} poly(L)` exact algorithm — `PROVED / CHECKED`.
+5. Exact completion masks correctly construct fixed-order semantic profiles — `PROVED / CHECKED`.
+6. Incidence-forest instances are constructively two-colourable in linear incidence time — `PROVED / CHECKED`.
+7. Every globally unsatisfiable instance collapses successful-completion semantics to one dead class at every level — `PROVED / CHECKED`.
+8. For every fixed radius, equal rooted-radius neighbourhood multisets can coexist with opposite conditioned residual satisfiability — `PROVED / CHECKED`.
+9. Ten explicit naive summaries have checked same-summary/different-semantics collisions — `COMPUTATIONAL / CHECKED`.
 
 ## Vertical-slice progress
 
@@ -28,59 +28,46 @@ The phase closeout is recorded in [VS-01-05-PHASE-AUDIT.md](VS-01-05-PHASE-AUDIT
 - `VS-03` exact extension-profile engine — `COMPLETE / CHECKED`.
 - `VS-04` control calibration — `COMPLETE / CHECKED`.
 - `VS-05` minimal obstruction atlas — `COMPLETE / CHECKED`.
-- `VS-06` naive-summary destruction — `READY FOR FORMALIZATION`.
-- `VS-07` — blocked on checked VS-06 failure evidence.
-- `VS-08` — blocked until failure structure supports one precise invariant.
-- `VS-09` — `PARTIAL` through bounded-boundary and incidence-forest restricted theorems.
+- `VS-06` naive-summary destruction — `COMPLETE / CHECKED`.
+- `VS-07` semantic-merging measurement — `READY`.
+- `VS-08` — blocked until VS-07 isolates a candidate invariant.
+- `VS-09` — `PARTIAL` through bounded-boundary and incidence-forest theorems.
 - `VS-10` through `VS-12` — blocked until an atomic invariant exists.
 
-## Retained finite evidence
+## VS-06 retained results
 
-### VS-02
+The committed collision atlas separates whole-instance satisfiability from prefix completion semantics.
 
-All `1045` labelled 3-uniform hypergraphs through five vertices are classified exactly. Exactly `1044` are satisfiable and one is unsatisfiable: `K_5^(3)`. The Fano plane is independently verified unsatisfiable and edge-minimal unsatisfiable.
+Disproved summaries:
 
-### VS-03
+- degree sequence;
+- edge-intersection multiset;
+- pair-codegree multiset;
+- parity data;
+- second moments;
+- incidence-Gram spectrum;
+- root generalized arc consistency;
+- satisfiability of all proper induced subinstances;
+- boundary Hamming weight;
+- boundary Hamming parity.
 
-All `123280` instance-ordering profiles through five vertices are measured exactly:
-
-- `7753542` raw prefixes;
-- `2153049` exact semantic classes;
-- `1818651` live exact classes;
-- `2865585` processed-valid boundary states;
-- maximum exact quotient size `8`.
-
-### VS-04
-
-Control calibration exhaustively checked:
-
-- `1100` labelled graphs through five vertices: `428` bipartite and `672` non-bipartite;
-- `16453` canonical XOR systems through three variables: `890` consistent and `15563` inconsistent;
-- `36` incidence-forest NAE instances through five vertices, all constructively colourable;
-- `344` maximum-occurrence-at-most-three NAE instances in the same finite domain, all satisfiable.
-
-### VS-05
-
-The complete `n<=5` obstruction census contains exactly one unsatisfiable object, `K_5^(3)`, and it is both edge-minimal and vertex-minimal. Complete least-witness certificates are stored for every edge and vertex deletion of `K_5^(3)` and the Fano plane.
-
-All `120` orderings of `K_5^(3)` and all `5040` orderings of the Fano plane were profiled. Both have exactly one successful-completion class at every level because every prefix has the empty set of satisfying full completions.
+The exact boundary assignment remains a complete control but can expose `2^w` states. The fixed-radius family rules out every constant locality radius, not radii growing with input size.
 
 ## Current obstruction
 
-The easy controls do not reveal one common universal compression rule. Successful-completion semantics becomes completely uninformative inside globally unsatisfiable instances. Dense `K_5^(3)` and sparse linear Fano collapse to the same one-dead-class pattern at every level despite radically different structure.
+Easy global statistics, fixed local views, weak local consistency, and coarse boundary aggregates can preserve unresolved logical compatibility. Their failure does not lower-bound richer representations.
 
-A useful next representation must therefore preserve failure information, residual constraints, or another exact observable beyond successful full completions.
+`NAE-006` remains open because no concrete symbolic language with polynomial construction, transition, equivalence, acceptance, and total generated size has yet been selected and survived attack.
 
-## Current open claim
+## Immediate next task
 
-`NAE-006` asks whether exact completion behaviour admits a universally polynomial symbolic representation with polynomial-time construction, transitions, equivalence, and acceptance. No representation language has yet survived formulation and attack. `NAE-011` shows only that accepting-completion equivalence is too coarse to explain rejection structure; it is not a general compression lower bound.
+Run `VS-07` to measure genuine live semantic merging separately from:
 
-## Immediate next tasks
+- dead-state collapse;
+- componentwise complement symmetry;
+- exact boundary-state count;
+- quotient-state count;
+- representation byte size;
+- ordering effects.
 
-1. Formalize `VS-06` summaries, semantic targets, collision criteria, and finite search domains.
-2. Attack degree, incidence, pair-codegree, parity, bounded-radius, local-consistency, spectral, boundary-only, and low-moment summaries.
-3. Use `VS-07` to separate genuine live merging from symmetry, dead-state collapse, bounded-interface effects, and globally dead instances.
-
-## Stop conditions
-
-Reject a proposed universal mechanism if it is only local or bounded-width, has superpolynomial construction or total state, merges unequal exact semantics, succeeds only on a restricted subclass, relies on unsupported randomness, ignores globally dead-state collapse, or avoids canonical hard families.
+The slice must end with reproducible first merges, first substantial growth families, and an exact distinction between semantic compression and compact symbolic representation.
