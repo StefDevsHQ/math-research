@@ -1,63 +1,71 @@
 # Status — Monotone NAE-3SAT Investigation
 
-**Phase:** `VS-07` reviewed; `VS-08` prepared  
-**Updated:** 2026-07-22
+**Phase:** `VS-08` complete; PCRNF route closed  
+**Updated:** 2026-07-23
 
 ## Current position
 
-`VS-01` through `VS-07` are `COMPLETE / CHECKED`. The post-merge VS-07 review preserves `NAE-014` and `NAE-015`, sharpens the good-fan live bound to four in executable assertions, adds explicit unsatisfiable controls, and removes repeated exact-profile reconstruction.
+`VS-01` through `VS-08` are `COMPLETE / CHECKED`.
+
+VS-08 implemented propagation-closed signed residual normal forms, repaired an orientation defect, proved exact oriented residualization, found the first strict semantic-incompleteness witness, and closed the universal PCRNF compression conjecture.
 
 No universal polynomial-time mechanism or general representation lower bound is claimed.
 
-## Accepted baseline
+## Accepted VS-08 results
 
-1. Monotone NAE-3SAT is NP-complete — `ESTABLISHED / CHECKED`.
-2. A deterministic polynomial-time algorithm for all instances would prove `P=NP` — `PROVED / CHECKED`.
-3. Exact extension equivalence has well-defined transitions — `PROVED / CHECKED`.
-4. Boundary width `w` gives a `2^{O(w)} poly(L)` exact algorithm — `PROVED / CHECKED`.
-5. Incidence-forest instances are constructively two-colourable in linear incidence time — `PROVED / CHECKED`.
-6. Every globally unsatisfiable instance collapses successful-completion semantics to one dead class at every level — `PROVED / CHECKED`.
-7. Fixed-radius local views can miss conditioned residual satisfiability — `PROVED / CHECKED`.
-8. Ten explicit naive summaries have checked collisions — `COMPUTATIONAL / CHECKED`.
-9. The fan family has exponential live exact-state growth under one order and constant-width behaviour under an interleaved order — `PROVED / CHECKED`.
-10. Genuine all-live merging beyond component-complement prefix orbits occurs through four vertices — `COMPUTATIONAL / CHECKED`.
+1. Orientation-free component-complement normalization is unsound for exact labelled completion semantics — `DISPROVED / CHECKED`.
+2. Direct substitution, propagation closure, and component normalization with an explicit orientation bit preserve exact labelled completion sets and exact transitions — `NAE-017, PROVED / CHECKED`.
+3. PCRNF byte equality is strictly finer than exact completion equivalence — `NAE-018, DISPROVED / CHECKED`.
+4. PCRNF equality coincides with exact completion classes throughout the exhaustive domain through four vertices — `COMPUTATIONAL / CHECKED`.
+5. The first strict gap occurs on a five-vertex six-edge instance at ordering `(0,4,1,2,3)` and level two.
+6. The fan family retains exponential bad-order PCRNF growth and bounded good-order growth.
+
+## Claim status
+
+- `NAE-016` — `RETRACTED / CHECKED`.
+- `NAE-017` — `PROVED / CHECKED`.
+- `NAE-018` — `DISPROVED / CHECKED`.
+- `NAE-006` remains `CONJECTURE / DRAFT` and unresolved.
+
+`NAE-016` is retracted rather than disproved because the five-vertex witness refutes semantic completeness of byte equality, not the existence of some polynomial-state ordering for every instance.
+
+## Retained implementation
+
+The tool now provides:
+
+- immutable oriented residual components;
+- unary, signed-binary, and ternary residual constraints;
+- deterministic propagation closure;
+- exact next-variable restriction;
+- exact residual evaluation and completion masks;
+- canonical complete JSON encoding;
+- memoized level traversal;
+- exact-profile comparison;
+- deterministic attack record and strict validation.
 
 ## Vertical-slice progress
 
-- `VS-01` through `VS-07` — `COMPLETE / CHECKED`.
-- `VS-08` propagation-closed signed residual normal form — `PREPARED`.
-- `VS-09` — `PARTIAL` through bounded-boundary and incidence-forest theorems.
-- `VS-10` through `VS-12` — blocked until `NAE-016` survives VS-08.
+- `VS-01` through `VS-08` — `COMPLETE / CHECKED`.
+- `VS-09` remains `PARTIAL` only through the previously proved bounded-boundary and incidence-forest results.
+- `VS-10` through `VS-12` remain blocked pending a materially new exact representation mechanism.
 
-## VS-07 review findings
+## Current obstruction
 
-- The mathematical claims survive.
-- The version-one record stores the conservative value five in a field named as a live bound; the sharp live bound is four and five is only the possible total-class bound including one dead class.
-- Version-one record bytes are preserved for reproducibility; core assertions and tests enforce four.
-- `K_5^(3)` and Fano now explicitly test pure dead-state collapse.
-- Profile measurement now reuses one exact profile across all levels.
-- Per-level byte counters are raw payload measures, not complete self-delimiting encodings.
+PCRNF exposes the core difficulty clearly:
 
-Evidence: [VS-07 post-merge review](VS-07-REVIEW.md).
+```text
+exact residual syntax != exact semantic equivalence
+```
 
-## Prepared VS-08 candidate
+A stronger merge rule must identify semantically equal but syntactically different residuals without invoking satisfiability, exact completion enumeration, or another intractable semantic oracle. It must also bound the complete generated state graph, not only each individual state.
 
-`NAE-016 — CONJECTURE / DRAFT` proposes memoized traversal by **propagation-closed signed residual normal forms**.
+## Reopening condition
 
-The representation contains:
+Do not reopen PCRNF as a universal route without:
 
-- contradiction;
-- labelled unprocessed vertices;
-- unary colour requirements;
-- signed binary constraints forbidding both endpoints from one colour;
-- remaining ternary NAE constraints;
-- deterministic propagation closure;
-- residual-component normalization under simultaneous colour complement.
+1. a new polynomial-time exact merge criterion strictly stronger than byte equality;
+2. proof that the criterion preserves labelled completion semantics;
+3. a globally polynomial bound on reachable state count and total encoded state;
+4. successful tests on the five-vertex incompleteness witness, fan family, Fano, linear four-regular instances, and canonical reduction outputs.
 
-The universal claim is not that one residual is small. It is that some polynomial-time constructible ordering yields polynomially many reachable normalized residuals of polynomial maximum and total encoded size, with polynomial-time exact transitions, equality, and acceptance.
-
-Evidence: [VS-08 preparation](VS-08-PREPARATION.md).
-
-## Immediate next task
-
-Execute `VS-08A`: implement and prove the exact labelled residual object and direct edge residualization. Do not assume the polynomial global state bound. Attack correctness and canonicality before measuring compression.
+Evidence: [VS-08 completion audit](VS-08-AUDIT.md) and the deterministic PCRNF attack record.
