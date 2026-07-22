@@ -1,6 +1,6 @@
 # Status — Monotone NAE-3SAT Investigation
 
-**Phase:** `VS-08` complete; `NAE-016` open; select VS-09 continuation  
+**Phase:** `VS-08` complete; `NAE-016` open; VS-09 route selection organized  
 **Updated:** 2026-07-23
 
 ## Current position
@@ -9,9 +9,22 @@
 
 VS-08 implemented propagation-closed signed residual normal forms, repaired an orientation defect, proved exact oriented residualization, and found the first strict semantic-incompleteness witness for byte equality.
 
-The Monotone NAE-3SAT programme remains open. The specific byte-equality merge strategy is closed; the existential polynomial-state conjecture `NAE-016` is not disproved and remains open.
+The Monotone NAE-3SAT programme remains open. The byte-equality merge strategy is closed; the existential polynomial-state conjecture `NAE-016` remains open.
 
 No universal polynomial-time mechanism or general representation lower bound is claimed.
+
+## Route position
+
+The programme now has an explicit [route registry](routes/README.md) and [route dashboard](routes/STATUS.md).
+
+Current hierarchy:
+
+- [`R1 — Exact-state representations`](routes/exact-state-representations/README.md) — `ACTIVE`;
+  - [`R1.1 — PCRNF`](routes/exact-state-representations/pcrnf/README.md) — exact substrate retained, `NAE-016` open;
+  - [`R1.2 — Semantic quotient over PCRNF`](routes/exact-state-representations/semantic-quotient/README.md) — `READY`, recommended next subroute;
+  - `R1.3` decision diagrams and `R1.4` decomposable circuits — registered candidates.
+- [`R2 — Decomposition and ordering`](routes/decomposition-and-ordering/README.md) — restricted results and open candidates.
+- `R3` through `R6` — registered algebraic, gluing, branching and barrier families.
 
 ## Accepted VS-08 results
 
@@ -27,9 +40,7 @@ No universal polynomial-time mechanism or general representation lower bound is 
 - `NAE-016` — `CONJECTURE / CHECKED`.
 - `NAE-017` — `PROVED / CHECKED`.
 - `NAE-018` — `DISPROVED / CHECKED`.
-- `NAE-006` remains `CONJECTURE / DRAFT` and unresolved.
-
-The former `RETRACTED` classification of `NAE-016` was too strong. VS-08 refuted semantic completeness of byte equality and failed to prove a global polynomial bound; it did not refute the existence of a polynomial-state ordering for every instance.
+- `NAE-006` — `CONJECTURE / DRAFT`.
 
 Operationally:
 
@@ -37,32 +48,19 @@ Operationally:
 mathematical conjecture NAE-016       OPEN
 exact oriented PCRNF substrate        RETAINED
 byte equality as complete quotient    CLOSED
-next proof mechanism                  NOT YET SELECTED
+recommended next subroute             R1.2
+parallel restricted theorem track     R1.1-B / R2.3
 ```
-
-## Retained implementation
-
-The tool now provides:
-
-- immutable oriented residual components;
-- unary, signed-binary, and ternary residual constraints;
-- deterministic propagation closure;
-- exact next-variable restriction;
-- exact residual evaluation and completion masks;
-- canonical complete JSON encoding;
-- memoized level traversal;
-- exact-profile comparison;
-- deterministic attack record and strict validation.
 
 ## Vertical-slice progress
 
 - `VS-01` through `VS-08` — `COMPLETE / CHECKED`.
-- `VS-09` — `PARTIAL / READY`: use `NAE-017` either to prove a restricted polynomial-state theorem or to define a stronger exact merge layer over PCRNF.
+- `VS-09` — `PARTIAL / READY`:
+  - `Track A`: prove restricted polynomial PCRNF state bounds through `R1.1-B` and `R2.3`;
+  - `Track B`: define a stronger exact merge layer through `R1.2`.
 - `VS-10` through `VS-12` remain blocked until VS-09 produces a precise surviving candidate.
 
 ## Current obstruction
-
-PCRNF exposes the core difficulty clearly:
 
 ```text
 exact residual syntax != exact semantic equivalence
@@ -70,7 +68,7 @@ exact residual syntax != exact semantic equivalence
 
 A stronger merge rule must identify semantically equal but syntactically different residuals without invoking satisfiability, exact completion enumeration, or another intractable semantic oracle. Alternatively, a direct theorem may bound the number of reachable PCRNFs despite incomplete merging.
 
-Either route must bound the complete generated state graph, not only each individual state.
+Either continuation must bound the complete generated state graph, not only each individual state.
 
 ## Continuation conditions
 
@@ -81,4 +79,4 @@ Continue from `NAE-017` through one of two precise routes:
 
 A disproof of `NAE-016` requires an every-ordering superpolynomial family or another complete contradiction to its quantified statement.
 
-Evidence: [VS-08 completion and status-correction audit](VS-08-AUDIT.md) and the deterministic PCRNF attack record.
+Evidence: [VS-08 completion and status-correction audit](VS-08-AUDIT.md), the deterministic PCRNF attack record, and the new route hierarchy.
