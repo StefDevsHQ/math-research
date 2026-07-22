@@ -72,7 +72,7 @@ reproduces `tools/monotone-nae-3sat/summary-collisions/vs06-summary-collisions.j
 
 The record contains ten explicit collisions, the bounded-radius family theorem and checked samples for radii one and two, the retained exact-boundary control, limitations, and a strict versioned payload digest.
 
-The initial post-merge record was stale and caused workflow run `29954395327` to fail on all supported runtimes. It was regenerated from the checked implementation. The corrected semantic payload retains digest:
+The initial post-merge record was stale and caused workflow run `29954395327` to fail on all supported runtimes. A partial field repair left additional prototype drift and caused workflow run `29955640016` to fail. The final correction replaces the entire record with the exact output of the canonical serializer and current generator. The corrected payload digest is:
 
 ```text
 ee7f47f96beafcda088848d8d29312e66df033376e68ac793f5e398a04aa8df6
@@ -84,7 +84,7 @@ The executable gate now checks:
 
 - every named summary collision;
 - independent complete assignment enumeration for each whole-instance witness;
-- exact stored solution counts and least witnesses;
+- exact stored identifiers, solution counts, and least witnesses through record reproduction and independent semantics;
 - exact characteristic-polynomial values on known matrices;
 - the anchored inequality reduction in both directions on odd and even controls;
 - exact-boundary completeness through four vertices;
