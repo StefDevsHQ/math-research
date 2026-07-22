@@ -1,7 +1,7 @@
 # VS-04 Completion Audit — Control Calibration
 
 **Slice:** `VS-04`  
-**Status:** `COMPLETE / CHECKED` pending final committed-report reproduction and merge  
+**Status:** `COMPLETE / CHECKED`  
 **Classification:** Proof, implementation, exhaustive finite computation, imported tractability boundaries, and complexity audit  
 **Updated:** 2026-07-22
 
@@ -24,6 +24,7 @@ Under `tools/monotone-nae-3sat/`:
 - `nae3sat/controls.py`: strict graph and XOR control models, exact solvers and generators, incidence-forest recognition and colouring, linearity, occurrence, and boundary utilities;
 - `nae3sat/calibration.py`: deterministic calibration census and named-control report;
 - `tests/test_vs04.py`: exhaustive independent graph and XOR references plus complete small NAE filtered-domain checks;
+- `calibration/vs04-calibration.json`: committed deterministic semantic record;
 - CLI command `calibrate`;
 - Python 3.11, 3.12, and 3.13 automation.
 
@@ -36,6 +37,8 @@ For a graph component, fixing one root colour determines every other colour by p
 ## Affine XOR theorem
 
 A finite XOR system is a linear system over `GF(2)`. Gaussian elimination decides consistency and computes coefficient rank `r`. A consistent system on `n` variables has affine solution-space dimension `n-r` and exactly `2^(n-r)` solutions. The implementation obtains the lexicographically least solution by trying each variable as zero in order and retaining zero exactly when the augmented system remains consistent.
+
+Iterable left sides are normalized over `GF(2)`: repeated variable occurrences cancel before the nonzero canonical row mask is stored.
 
 **Status:** `PROVED / CHECKED`.
 
@@ -55,15 +58,13 @@ Every incidence edge is inspected a constant number of times, so the constructio
 
 ## Exhaustive graph evidence
 
-The declared graph domain contains
+The declared domain contains
 
 \[
 \sum_{n=0}^{5}2^{\binom n2}=1100
 \]
 
 labelled simple graphs.
-
-Exact results:
 
 | Metric | Value |
 |---|---:|
@@ -75,15 +76,11 @@ Production parity results, exact counts, and least witnesses agree with direct c
 
 ## Exhaustive XOR evidence
 
-For `n<=3`, every subset of the `2(2^n-1)` possible nonzero-mask equations is included. The domain contains
+For `n<=3`, every subset of the `2(2^n-1)` possible canonical nonzero-mask equations is included:
 
 \[
-1+2^2+2^6+2^{14}=16453
+1+2^2+2^6+2^{14}=16453.
 \]
-
-systems.
-
-Exact results:
 
 | Metric | Value |
 |---|---:|
@@ -109,7 +106,7 @@ The occurrence result is finite-domain evidence only. General tractability at oc
 ## Mechanism calibration
 
 - **Graph bipartiteness:** a component is represented by root-relative parity, not by enumerating all colourings.
-- **XOR:** an exponential solution set is represented by a polynomial affine row space. This demonstrates why explicit semantic-state count and symbolic representation size are different questions.
+- **XOR:** an exponential solution set is represented by a polynomial affine row space. Explicit semantic-state count and symbolic representation size are different questions.
 - **Incidence forests:** compatibility cannot return through a second path, so processed subtrees may be eliminated irreversibly.
 - **Bounded boundary:** all future-relevant information is retained explicitly on a small interface; exponential dependence is confined to interface width.
 - **Disconnected components:** exact decision and counting factor because no edge crosses components.
@@ -153,8 +150,16 @@ The attack checked:
 
 The first CI pass caught an incorrect hand-summed graph aggregate (`427/673` instead of `428/672`). The per-size exhaustive results and both solvers were correct; the assertion and report expectation were corrected. No unresolved mathematical defect remains.
 
+## Reproducibility
+
+The complete VS-01 through VS-04 suite, inherited VS-03 independent reference gate, CLI controls, and byte reproduction of the VS-02, VS-03, and VS-04 committed records pass on the documented Python runtime matrix. The VS-04 semantic payload digest is:
+
+```text
+be8a013fdf80c7fd252581e975b07aa18eebda916fb714fbaca404ce8fb137bb
+```
+
 ## Final determination
 
-After the committed calibration report reproduces byte for byte on Python 3.11, 3.12, and 3.13, VS-04 is `COMPLETE / CHECKED`.
+`VS-04` is `COMPLETE / CHECKED`.
 
 The retained lesson is negative as well as positive: tractable controls succeed through identifiable parity, affine, acyclic, bounded-interface, or product structure. None supplies a universal unrestricted compression theorem.
