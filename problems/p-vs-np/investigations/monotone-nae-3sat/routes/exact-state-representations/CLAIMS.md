@@ -1,6 +1,6 @@
 # Claims — R1 Exact-State Representations
 
-This ledger maps investigation claims to the route and its subroutes. Investigation-wide status remains authoritative in [`../../../CLAIMS.md`](../../../CLAIMS.md).
+This ledger maps investigation claims to the route and its subroutes. Investigation-wide status remains authoritative in [`../../CLAIMS.md`](../../CLAIMS.md).
 
 | Claim | Subroute | Status | Role |
 |---|---|---|---|
