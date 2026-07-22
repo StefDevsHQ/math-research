@@ -1,4 +1,4 @@
-name: Monotone NAE-3SAT VS-01
+name: Monotone NAE-3SAT VS-01 and VS-02
 
 on:
   pull_request:
@@ -38,3 +38,11 @@ jobs:
         run: python -m unittest discover -s tests -v
       - name: Validate fixture
         run: python -m nae3sat.cli validate tests/fixtures/fano-plane.json
+      - name: Solve and count fixture
+        run: |
+          python -m nae3sat.cli solve tests/fixtures/single-edge.json
+          python -m nae3sat.cli count tests/fixtures/single-edge.json
+      - name: Reproduce corpus
+        run: |
+          python -m nae3sat.cli census --max-vertices 5 --output /tmp/vs02-corpus.json
+          cmp /tmp/vs02-corpus.json corpus/all-labelled-n-le-5.json
