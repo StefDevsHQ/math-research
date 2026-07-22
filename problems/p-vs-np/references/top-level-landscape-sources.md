@@ -1,7 +1,7 @@
 # Source Map — P versus NP Top-Level Landscapes
 
 **Classification:** Canonical primary-source and project-record map  
-**Cutoff:** 2026-07-16  
+**Cutoff:** 2026-07-22  
 **Use:** Supports [research-programme-landscape.md](research-programme-landscape.md) and [problem-testbed-landscape.md](problem-testbed-landscape.md)
 
 This is the single authoritative source map for the top-level landscapes. Source identifiers are stable within the repository. A source supports only the role stated below. Barrier theorems constrain technique families; they are not evidence that P versus NP is unresolvable.
@@ -240,8 +240,42 @@ Role: existential second-order logic characterizes NP on finite structures.
 “On the Complexity of the Parity Argument and Other Inefficient Proofs of Existence,” *JCSS* 48(3), 1994.  
 Role: total-search and PPAD foundations. https://doi.org/10.1016/S0022-0000(05)80063-7
 
+## Meta-mathematics, interaction, and uniform lower bounds
+
+### `[P59]` Cook and Nguyen — bounded arithmetic and proof complexity
+*Logical Foundations of Proof Complexity*, Cambridge University Press, 2010.  
+Role: bounded arithmetic, propositional translations, witnessing, and feasible reasoning. https://doi.org/10.1017/CBO9780511676277
+
+### `[P60]` Krajíček — bounded arithmetic and propositional proof complexity
+*Bounded Arithmetic, Propositional Logic, and Complexity Theory*, Cambridge University Press, 1995.  
+Role: foundational connection between weak arithmetic theories, proof systems, and complexity statements. https://doi.org/10.1017/CBO9780511529948
+
+### `[P61]` Lund, Fortnow, Karloff, and Nisan — arithmetized interactive proofs
+“Algebraic Methods for Interactive Proof Systems,” *JACM* 39(4), 1992.  
+Role: algebraic and sum-check methods for interactive proof systems; nonrelativizing proof technology. https://doi.org/10.1145/146585.146605
+
+### `[P62]` Shamir — interactive proofs equal polynomial space
+“IP = PSPACE,” *JACM* 39(4), 1992.  
+Role: exact interactive-proof characterization of PSPACE; demonstrates the power and limits of arithmetization. https://doi.org/10.1145/146585.146609
+
+### `[P63]` Allender, Hirahara, and others — probabilistic Kolmogorov complexity and circuit lower bounds
+Representative programme on probabilistic time-bounded Kolmogorov complexity and uniform circuit lower bounds, 2023–2025.  
+Role: algorithmic tasks and characterizations yielding uniform lower bounds for stated circuit classes. Canonical entry point: https://eccc.weizmann.ac.il/report/2023/028/
+
+### `[P64]` Hirahara — meta-computational views of uniform lower bounds
+Representative work on meta-complexity, generation, compression, and uniform circuit lower bounds.  
+Role: emerging uniform algorithms-to-lower-bounds programme; exact consequences remain model-specific. https://eccc.weizmann.ac.il/
+
+### `[P65]` Gill — probabilistic computation classes
+John Gill, “Computational Complexity of Probabilistic Turing Machines,” *SICOMP* 6(4), 1977.  
+Role: foundational definitions and relations for probabilistic polynomial-time classes. https://doi.org/10.1137/0206049
+
+### `[P66]` Babai — Arthur–Merlin proof systems
+László Babai, “Trading Group Theory for Randomness,” *STOC*, 1985.  
+Role: Arthur–Merlin public-coin interactive proof classes and randomized-interactive consequence control. https://doi.org/10.1145/22145.22192
+
 ## Scope determination
 
-The literature supports no single universally best NP-complete testbed. CSP dichotomies classify fixed relation languages; Circuit-SAT is closest to arbitrary computation; proof complexity isolates no-instance certification; meta-complexity and magnification target indirect separations; and exact-incidence systems provide unusually clean positive testbeds.
+The literature supports no single universally best NP-complete testbed. CSP dichotomies classify fixed relation languages; Circuit-SAT is closest to arbitrary computation; proof complexity isolates no-instance certification; meta-complexity and magnification target indirect separations; exact-incidence systems provide unusually clean positive testbeds; bounded arithmetic studies formal provability rather than truth alone; interactive proofs provide a cross-cutting arithmetization bridge; and uniform lower-bound programmes must remain separate from nonuniform circuit claims.
 
-No source in this map resolves P versus NP or licenses promotion of a model-specific lower bound to an unrestricted class separation.
+No source in this map resolves P versus NP or licenses promotion of a model-specific, formal-theory, randomized, interactive, promise, or uniform lower bound to an unrestricted classical class separation.
