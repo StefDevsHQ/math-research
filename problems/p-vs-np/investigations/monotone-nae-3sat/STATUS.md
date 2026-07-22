@@ -1,13 +1,11 @@
 # Status — Monotone NAE-3SAT Investigation
 
-**Phase:** Vertical-slice execution prepared; executable laboratory not yet complete  
+**Phase:** `VS-01` complete; exact small-instance oracle ready to implement  
 **Updated:** 2026-07-22
 
 ## Current position
 
-The investigation is open. The object, encoding, primary sources, baseline theorems, mandatory controls, complete attack plan, and ordered vertical slices are prepared. No universal polynomial-time mechanism is claimed.
-
-The selected object is Monotone NAE-3SAT, equivalently 2-colourability of a 3-uniform hypergraph. It is the symmetry-first counterpart to Positive 1-in-3 SAT.
+The investigation is open. The mathematical object, encoding discipline, source map, baseline theorems, attack plan, vertical-slice order, and canonical executable instance layer are prepared. No universal polynomial-time mechanism is claimed.
 
 ## Accepted baseline
 
@@ -17,63 +15,43 @@ The selected object is Monotone NAE-3SAT, equivalently 2-colourability of a 3-un
 4. Exact extension equivalence has well-defined one-variable transitions — `PROVED / CHECKED`.
 5. Boundary width `w` gives a `2^{O(w)} poly(L)` exact algorithm — `PROVED / CHECKED`.
 
-These results establish the baseline, not a resolution.
-
 ## Vertical-slice progress
 
-The authoritative operational tracker is [VERTICAL-SLICES.md](VERTICAL-SLICES.md).
+The authoritative tracker is [VERTICAL-SLICES.md](VERTICAL-SLICES.md).
 
-Current state:
-
-- `VS-01` canonical instance model — `PARTIAL`: mathematical specification complete; executable parser, normalizer, serializer, and verifier remain.
+- `VS-01` canonical instance model — `COMPLETE`.
 - `VS-02` exact small-instance oracle — `READY`.
-- `VS-03` exact extension-profile engine — `READY`: semantics and transition theorem are proved; implementation remains.
-- `VS-04` through `VS-08` — `BLOCKED` on the oracle and profile engine.
-- `VS-09` restricted theorem — `PARTIAL`: the standard bounded-boundary theorem is complete, but no new invariant exists.
-- `VS-10` through `VS-12` — `BLOCKED` until an atomic invariant is extracted.
+- `VS-03` exact extension-profile engine — `READY`.
+- `VS-04` through `VS-08` — blocked on oracle/profile evidence.
+- `VS-09` — `PARTIAL` through the existing bounded-boundary theorem only.
+- `VS-10` through `VS-12` — blocked until an atomic invariant exists.
 
-No computational corpus, minimal-obstruction atlas, naive-summary collision, or semantic-growth dataset is yet recorded.
+`VS-01` evidence:
 
-## Known structural boundaries
+- [implementation specification](VS-01-IMPLEMENTATION.md);
+- [completion audit](VS-01-AUDIT.md);
+- executable package under `tools/monotone-nae-3sat/`.
 
-The programme must correctly separate:
+## Current obstruction
 
-- rank-two bipartiteness;
-- planar NAE-3SAT;
-- occurrence-at-most-three NAE;
-- bounded-width instances;
-- unrestricted NP-complete instances;
-- linear 4-regular NP-complete instances.
-
-## Current mathematical obstruction
-
-Each constraint forbids only two of eight local assignments. Local feasibility is abundant, while incompatibility can remain distributed across overlapping hyperedges.
-
-Ordinary dynamic programming stores boundary colourings and becomes exponential when all useful interfaces are large. Exact extension profiles define the correct semantic state, but the raw quotient may be large and deciding or manipulating a compact description may itself hide NP-hard work.
+Ordinary boundary-state dynamic programming becomes exponential when useful interfaces are large. Exact extension profiles define the correct semantic state, but the quotient may itself be large or expensive to represent and manipulate.
 
 ## Current open claim
 
-`NAE-006` asks whether exact completion behaviour has a universally polynomial symbolic representation with polynomial-time construction, transitions, equivalence, and acceptance.
-
-This is not yet a route-level conjecture because no representation language has been selected.
+`NAE-006` asks whether exact completion behaviour admits a universally polynomial symbolic representation with polynomial-time construction, transitions, equivalence, and acceptance. No representation language has yet been selected.
 
 ## Immediate next task
 
-Execute the first three vertical slices:
+Execute `VS-02`:
 
-1. finish the canonical executable instance model;
-2. build and validate the exhaustive small-instance oracle;
-3. build and cross-check the exact extension-profile engine.
+1. implement exhaustive binary-colouring search over the canonical model;
+2. use component and complement symmetry only with proved correctness;
+3. return and independently verify witnesses;
+4. generate the first explicitly declared labelled instance domain;
+5. record the exhaustiveness argument, commands, counts, environment, and limitations.
 
-Only then begin control calibration, obstruction enumeration, summary destruction, and invariant extraction.
+Only then use the oracle to calibrate controls and enumerate minimal obstructions.
 
 ## Stop conditions
 
-Reject a candidate mechanism if it:
-
-- is only bounded-width or local consistency without universal completeness;
-- has superpolynomial construction, operations, or total representation;
-- merges states with different completion sets;
-- succeeds only on a restricted subclass;
-- relies on randomness without the required deterministic consequence;
-- avoids canonical reduction-generated or linear 4-regular hard instances.
+Reject a proposed universal mechanism if it is only local or bounded-width, has superpolynomial construction or total state, merges unequal completion sets, succeeds only on a restricted subclass, relies on unsupported randomness, or avoids canonical hard families.

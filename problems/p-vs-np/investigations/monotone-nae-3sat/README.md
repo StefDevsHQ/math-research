@@ -1,65 +1,50 @@
 # Monotone NAE-3SAT Investigation
 
-Monotone NAE-3SAT is the symmetry-first Boolean CSP testbed in the P versus NP programme.
+Monotone NAE-3SAT asks whether a 3-uniform hypergraph can be coloured with two colours so that no hyperedge is monochromatic.
 
-An instance is a 3-uniform hypergraph. The question is whether its vertices can be coloured with two colours so that no hyperedge is monochromatic.
-
-The allowed relation is
+The relation is
 
 \[
 R_{\mathrm{NAE}}=\{0,1\}^{3}\setminus\{000,111\}.
 \]
 
-## Why this object
+It is the symmetry-first Boolean CSP testbed: one ternary relation, no negations, no constants, no weights, and global complement symmetry.
 
-Monotone NAE-3SAT has one Boolean domain, one ternary relation, no negations, no constants, no weights, and full complement symmetry. It removes exact-cardinality syntax while retaining NP-completeness.
+## Why this object
 
 It sits on the minimal non-monochromatic frontier:
 
-- graph bipartiteness: two colours and pairwise edges — polynomial time;
-- Monotone NAE-3SAT: two colours and triple edges — NP-complete;
-- graph 3-colouring: three colours and pairwise edges — NP-complete.
+- graph bipartiteness: two colours, pairwise edges — polynomial time;
+- Monotone NAE-3SAT: two colours, triple edges — NP-complete;
+- graph 3-colouring: three colours, pairwise edges — NP-complete.
 
-Positive 1-in-3 SAT remains the exactness-first sibling; Monotone NAE-3SAT is the symmetry-first testbed.
+A deterministic polynomial-time algorithm correct on every encoded Monotone NAE-3SAT instance would prove `P=NP`. A heuristic, restricted-class result, bounded-width algorithm, or compact syntax with expensive operations would not.
 
 ## Current phase
 
-Formalization is complete. No universal proof route is active.
+`VS-01`, the canonical executable instance layer, is complete. It supplies strict versioned parsing, canonical serialization, stable labelled identifiers, component and relabelling operations, witness verification, fixtures, tests, and a command-line validator.
 
-The investigation has established the exact semantic extension-profile object and the standard bounded-boundary dynamic programme. Execution is organized through the [vertical-slice progress tracker](VERTICAL-SLICES.md).
-
-The immediate work is implementation of the reviewed [VS-01 canonical instance specification](VS-01-IMPLEMENTATION.md), followed by the exact finite oracle and extension-profile engine. Control calibration and obstruction enumeration precede any new universal invariant.
-
-## Consequence theorem
-
-Because Monotone NAE-3SAT is NP-complete, a deterministic polynomial-time algorithm correct on every encoded instance would prove `P=NP`.
-
-A heuristic, restricted-subclass result, bounded-width algorithm, randomized algorithm without derandomization, or compact syntax with expensive operations does not meet this condition.
+The next task is `VS-02`: build the exact small-instance oracle and record the first exhaustively justified labelled domain. No universal proof route is active.
 
 ## Accepted baseline
 
 - NP-completeness — `ESTABLISHED / CHECKED`;
 - universal deterministic polynomial solution implies `P=NP` — `PROVED / CHECKED`;
-- unary/binary Boolean CSP arity-minimality lemma — `PROVED / CHECKED`;
-- exact quotient transition theorem — `PROVED / CHECKED`;
-- `2^{O(w)} poly(L)` bounded-boundary algorithm — `PROVED / CHECKED`.
+- Boolean unary/binary arity-minimality lemma — `PROVED / CHECKED`;
+- exact quotient-transition theorem — `PROVED / CHECKED`;
+- `2^{O(w)} poly(L)` bounded-boundary algorithm — `PROVED / CHECKED`;
+- canonical executable instance model — `COMPLETE` infrastructure slice.
 
 ## Mandatory controls
 
-- graph 2-colouring;
-- XOR-SAT;
-- acyclic and bounded-width CSPs;
-- planar and occurrence-at-most-three NAE instances;
-- Positive 1-in-3 SAT;
-- graph 3-colouring;
-- linear 4-regular Monotone NAE-3SAT;
-- canonical reduction-generated instances.
+Graph 2-colouring, XOR-SAT, acyclic and bounded-width CSPs, planar and occurrence-at-most-three NAE instances, Positive 1-in-3 SAT, graph 3-colouring, linear 4-regular Monotone NAE-3SAT, and verified reduction-generated instances.
 
 ## Navigation
 
 - [Current status](STATUS.md)
 - [Vertical slices and progress](VERTICAL-SLICES.md)
 - [VS-01 implementation specification](VS-01-IMPLEMENTATION.md)
+- [VS-01 completion audit](VS-01-AUDIT.md)
 - [Claim ledger](CLAIMS.md)
 - [Object specification and baseline proofs](OBJECT.md)
 - [Complete attack plan](PLAN.md)
@@ -69,6 +54,4 @@ A heuristic, restricted-subclass result, bounded-width algorithm, randomized alg
 - [Problem-testbed landscape](../../references/problem-testbed-landscape.md)
 - [Research standards](../../../../RESEARCH_STANDARDS.md)
 
-## Identifier policy
-
-Investigation-wide claims use `NAE-###`. Route-local claims must link to this ledger when they change accepted investigation state.
+Investigation-wide claims use `NAE-###`. Route-local claims must link to the claim ledger when they change accepted state.
