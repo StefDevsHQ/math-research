@@ -14,11 +14,19 @@ from collections.abc import Mapping
 from .calibration import FORMAT as CALIBRATION_FORMAT
 from .census import CORPUS_FORMAT, GENERATOR as CORPUS_GENERATOR
 from .obstruction_atlas import FORMAT as ATLAS_FORMAT
-from .profile_census import FORMAT as PROFILE_FORMAT, GENERATOR as PROFILE_GENERATOR
+from .profile_census import (
+    FORMAT as PROFILE_FORMAT,
+    GENERATOR as PROFILE_GENERATOR,
+)
+from .summary_atlas import FORMAT as SUMMARY_COLLISION_FORMAT
 
 
 def _compact_json(value: object) -> bytes:
-    return json.dumps(value, separators=(",", ":"), ensure_ascii=True).encode("utf-8")
+    return json.dumps(
+        value,
+        separators=(",", ":"),
+        ensure_ascii=True,
+    ).encode("utf-8")
 
 
 def _valid_digest(value: object) -> bool:
@@ -45,7 +53,11 @@ def _verify_envelope(
     digest = record.get("payload_sha256")
     if not _valid_digest(digest):
         return False
-    payload = {key: value for key, value in record.items() if key != "payload_sha256"}
+    payload = {
+        key: value
+        for key, value in record.items()
+        if key != "payload_sha256"
+    }
     return hashlib.sha256(_compact_json(payload)).hexdigest() == digest
 
 
@@ -132,6 +144,32 @@ def verify_obstruction_atlas_record(record: object) -> bool:
         ),
         format_name=ATLAS_FORMAT,
         fixed_fields={
-            "computation": "finite-exhaustive-census-plus-named-controls"
+            "computation": (
+                "finite-exhaustive-census-plus-named-controls"
+            )
+        },
+    )
+
+
+def verify_summary_collision_record(record: object) -> bool:
+    return _verify_envelope(
+        record,
+        keys=frozenset(
+            {
+                "format",
+                "computation",
+                "semantic_targets",
+                "collisions",
+                "bounded_radius_family",
+                "retained_control",
+                "limitations",
+                "payload_sha256",
+            }
+        ),
+        format_name=SUMMARY_COLLISION_FORMAT,
+        fixed_fields={
+            "computation": (
+                "explicit-counterexamples-plus-constructive-family"
+            )
         },
     )
