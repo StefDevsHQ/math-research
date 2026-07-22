@@ -28,7 +28,7 @@ Formalization is complete. No universal proof route is active.
 
 The investigation has established the exact semantic extension-profile object and the standard bounded-boundary dynamic programme. Execution is organized through the [vertical-slice progress tracker](VERTICAL-SLICES.md).
 
-The immediate work is to finish the canonical executable instance model, build the exact finite oracle and extension-profile engine, calibrate them on tractable controls, and construct the minimal obstruction atlas before proposing a stronger invariant.
+The immediate work is implementation of the reviewed [VS-01 canonical instance specification](VS-01-IMPLEMENTATION.md), followed by the exact finite oracle and extension-profile engine. Control calibration and obstruction enumeration precede any new universal invariant.
 
 ## Consequence theorem
 
@@ -59,6 +59,7 @@ A heuristic, restricted-subclass result, bounded-width algorithm, randomized alg
 
 - [Current status](STATUS.md)
 - [Vertical slices and progress](VERTICAL-SLICES.md)
+- [VS-01 implementation specification](VS-01-IMPLEMENTATION.md)
 - [Claim ledger](CLAIMS.md)
 - [Object specification and baseline proofs](OBJECT.md)
 - [Complete attack plan](PLAN.md)
