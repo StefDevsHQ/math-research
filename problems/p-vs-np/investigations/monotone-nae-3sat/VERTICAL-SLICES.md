@@ -16,95 +16,79 @@ Every slice is governed by the [building-block quality gate](BUILDING-BLOCK-GATE
 | `VS-05` | Minimal obstruction atlas | `COMPLETE / CHECKED` | `R4`, `R6` evidence | Preserve. |
 | `VS-06` | Destroy naive summaries | `COMPLETE / CHECKED` | `R4`, `R6` barriers | Preserve as falsification baseline. |
 | `VS-07` | Measure semantic merging | `COMPLETE / CHECKED` | `R1`, `R2`, `R6` evidence | Preserve. |
-| `VS-08` | Extract first atomic invariant | `COMPLETE / CHECKED` | `R1.1 PCRNF` | Retain `NAE-017`; keep `NAE-016` open. |
-| `VS-09` | Prove restricted theorem or strengthen quotient | `PARTIAL / READY` | `R1.1-B`, `R1.2`, `R2.3` | Select one atomic continuation. |
-| `VS-10` | Attack with hard families | `BLOCKED` | selected VS-09 subroute plus `R6` | Attack the precise candidate. |
-| `VS-11` | Global complexity audit | `BLOCKED` | selected constructive subroute | Count the complete computation graph. |
+| `VS-08` | Exact PCRNF construction | `COMPLETE / CHECKED` | `R1.1 PCRNF` | Retain `NAE-017`. |
+| `VS-09A` | Universal PCRNF state bound | `COMPLETE / CHECKED` | `R1.1`, `R6` | Close `NAE-016`; retain restricted PCRNF classes. |
+| `VS-09B` | Collective exact representation | `READY / REFORMULATE` | `R1.2`, `R1.4` | Select a representation sharing many distinct residual functions collectively. |
+| `VS-10` | Attack with hard families | `BLOCKED` | selected collective subroute plus `R6` | Attack the precise candidate. |
+| `VS-11` | Global complexity audit | `BLOCKED` | selected constructive subroute | Count the complete collective representation and all intermediate objects. |
 | `VS-12` | Route decision | `BLOCKED` | parent and child route records | Prove, disprove, defer, restrict or close precisely. |
 
 ## Trusted laboratory — VS-01 through VS-08
 
 **Status:** `COMPLETE / CHECKED`.
 
-The laboratory includes exact residual syntax and attack records in addition to canonical instances, exact profiles, controls, obstruction evidence, summary collisions and semantic-merging measurements. It exports no universal polynomial algorithm or general lower bound.
+The laboratory includes exact residual syntax and attack records in addition to canonical instances, exact profiles, controls, obstruction evidence, summary collisions and semantic-merging measurements.
 
-## VS-08 result — R1.1 PCRNF
+## VS-08 result — exact PCRNF
 
-### Exact retained mechanism
+`NAE-017 — PROVED / CHECKED` establishes exact oriented residualization and exact transitions.
 
-Direct substitution of processed colours yields unary, signed-binary and ternary residual constraints. Deterministic propagation closure preserves exact labelled completion semantics.
+`NAE-018 — DISPROVED / CHECKED` establishes that PCRNF byte equality is not complete semantic equality.
 
-Component complement requires an explicit orientation bit. With orientation recorded, restriction and re-closure give exact transitions. This is `NAE-017 — PROVED / CHECKED`.
+These results remain valid.
 
-### Semantic-completeness failure
+## VS-09A — all-ordering PCRNF attack
 
-The five-vertex instance with edges
+### Semantic projection
+
+`NAE-019` proves that distinct exact completion functions require distinct oriented PCRNF states.
+
+### Every-ordering hard family
+
+For a constant-degree expander graph `G`, form the central lift with hyperedges `{c,u,v}` for every graph edge `{u,v}`.
+
+For every ordering:
+
+1. cut after the first `floor(n/2)` graph vertices;
+2. expansion gives linearly many crossing edges;
+3. bounded degree gives a linear crossing induced matching;
+4. subsets of its processed endpoints define `2^{Omega(n)}` live prefixes;
+5. explicit suffix assignments distinguish every pair semantically.
+
+Therefore one level has `2^{Omega(n)}` exact completion classes and at least that many PCRNF states.
+
+### Result
 
 ```text
-012,013,023,034,123,124
+NAE-016 — DISPROVED / CHECKED
+NAE-019 — PROVED / CHECKED
+NAE-020 — PROVED / CHECKED
 ```
 
-under ordering `(0,4,1,2,3)` has prefixes `00` and `01` with equal exact completion mask `40` but different oriented PCRNFs.
+Proof: [NAE-016 expander disproof](routes/exact-state-representations/pcrnf/proofs/NAE-016-expander-disproof.md).
 
-Therefore PCRNF byte equality is not exact completion equivalence. This is `NAE-018 — DISPROVED / CHECKED`.
+## VS-09B — reformulated continuation
 
-### State-growth audit
+A stronger equality test cannot solve the expander family by merging states, because its residual functions are already pairwise distinct.
 
-PCRNF equality agrees with exact completion classes for every labelled instance and ordering through four vertices, but the five-vertex witness ends that pattern.
+The next representation must encode many distinct residual functions collectively, for example through:
 
-The fan family has peak PCRNF state count `2^(k+1)-1` under the bad ordering and at most five under the interleaved ordering. This yields neither a global polynomial bound nor an every-ordering lower bound.
+- deterministic decomposable circuits;
+- non-ordered decomposition structures;
+- algebraic family representations;
+- another explicitly defined global object.
 
-### NAE-016 status
+## Mandatory controls for the next candidate
 
-`NAE-016` remains `CONJECTURE / CHECKED`.
+- central lifts of constant-degree expanders;
+- four-vertex genuine semantic merge;
+- five-vertex PCRNF incompleteness witness;
+- both fan orderings;
+- Fano and `K_5^(3)`;
+- linear four-regular instances;
+- VS-06 collision pairs;
+- verified reduction-generated instances.
 
-VS-08 disproved byte equality as a complete semantic quotient, but did not disprove the existential polynomial-state claim.
+## Scope
 
-See [`R1.1 — PCRNF`](routes/exact-state-representations/pcrnf/README.md).
-
-## VS-09 — route branches
-
-### Track A — restricted PCRNF state theorem
-
-**Route ownership:** `R1.1-B` and `R2.3`.
-
-State and prove the largest class `C` for which an efficiently constructible ordering gives:
-
-- polynomially many reachable oriented PCRNF states;
-- polynomial maximum state size;
-- polynomial total encoded state;
-- polynomial transition and acceptance.
-
-Candidate parameters include boundary width, incidence treewidth, residual component size and residual interaction width.
-
-### Track B — stronger exact quotient over PCRNF
-
-**Route ownership:** [`R1.2`](routes/exact-state-representations/semantic-quotient/README.md).
-
-Define a merge relation or canonical semantic layer that is:
-
-- strictly stronger than PCRNF byte equality;
-- exact for labelled completion sets;
-- polynomial-time constructible and comparable;
-- transition-compatible;
-- accompanied by a complete global state bound.
-
-The five-vertex witness is the first mandatory positive merge test.
-
-Candidate child subroutes already registered under R1 are decision diagrams and decomposable circuits. They are not active until one exact model is selected.
-
-## VS-10 through VS-12
-
-- `VS-10`: attack the selected VS-09 theorem or quotient using Fano, linear four-regular, high-width and reduction-generated controls.
-- `VS-11`: audit input length, construction, equality, transitions, branching, complete state graph and total representation size.
-- `VS-12`: classify both the child mechanism and its parent route independently.
-
-## Immediate queue
-
-1. Preserve VS-01 through VS-08.
-2. Select VS-09 Track A or Track B and write one atomic theorem or conjecture in its route directory.
-3. Do not treat a failed child mechanism as closure of its parent route.
-4. Do not treat `NAE-018` as a disproof of `NAE-016`.
-5. Do not infer tractability from polynomial individual state size or hardness from one bad ordering.
-
-Computational results remain `COMPUTATIONAL` unless accompanied by a proof or complete exhaustiveness argument.
+The disproof is model-specific. It does not prove `P!=NP`, disprove `NAE-006`, or lower-bound arbitrary circuits or algorithms.
