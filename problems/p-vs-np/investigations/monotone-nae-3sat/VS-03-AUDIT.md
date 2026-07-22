@@ -135,10 +135,10 @@ For the single edge `((0,1,2),)` under ordering `(0,1,2)`, the distinct level-tw
 
 A profile record is canonical for a fixed labelled instance and ordering. Class masks are fixed-width hexadecimal strings whose width includes leading semantic zeros.
 
-The profile corpus digest is SHA-256 of compact canonical JSON with the digest field omitted. The strengthened committed corpus digest is:
+The profile corpus stores aggregate count rows separately from a top-level per-`n` sequence-digest map. Its payload digest is SHA-256 of compact canonical JSON with the digest field omitted. The strengthened committed corpus digest is:
 
 ```text
-a80ecbcab9ab0972c7c6f1695bee652cca72bfeba858f103edb3ce0009b07192
+8b52eec88a16d6650b081cb197c4e955c0172e9f9558a1043fcca6ff997040cf
 ```
 
 ## Complexity audit
@@ -176,6 +176,8 @@ The attack pass checked:
 - VS-02 acceptance agreement;
 - deterministic corpus reproduction;
 - cross-version execution.
+
+A CI failure during the strengthened review was traced to a schema collision in the tests: the independent aggregate row was compared with a production row after the latter gained a `profile_sequence_sha256` field. The digest and aggregate values agreed; the metadata was moved to a dedicated top-level map so the independent aggregate schema remains exact and the sequence gate remains separate.
 
 No unresolved substantive defect remains pending the final automated PR result.
 
