@@ -53,10 +53,11 @@ class ProfileInvariantTests(unittest.TestCase):
             ExactProfile(graph, profile.ordering, profile.levels[:-1] + (bad_final,))
 
         middle = profile.levels[1]
+        self.assertGreater(middle.processed_valid_boundary_states, 0)
         bad_middle = replace(
             middle,
             processed_valid_boundary_states=(
-                middle.processed_valid_boundary_states + 1
+                middle.processed_valid_boundary_states - 1
             ),
         )
         with self.assertRaises(ValidationError):
