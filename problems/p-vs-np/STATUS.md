@@ -1,6 +1,6 @@
 # Status — P versus NP
 
-**Phase:** Monotone NAE-3SAT VS-08 complete; `NAE-016` open; VS-09 route selection next  
+**Phase:** Monotone NAE-3SAT VS-08 complete; `NAE-016` open; VS-09 route selection organized  
 **Updated:** 2026-07-23
 
 ## Current position
@@ -10,6 +10,19 @@ The active Monotone NAE-3SAT investigation has completed `VS-01` through `VS-08`
 No proof route, universal polynomial-time mechanism or general representation lower bound has been accepted.
 
 The Subset Sum investigation remains closed after its universal structural-compression strategies failed within their stated models.
+
+## Route organization
+
+Monotone NAE-3SAT now has an explicit [top-level route registry](investigations/monotone-nae-3sat/routes/README.md) and [operational route dashboard](investigations/monotone-nae-3sat/routes/STATUS.md).
+
+Current active hierarchy:
+
+- `R1 — Exact-state representations` — active parent route;
+  - `R1.1 — PCRNF` — exact substrate retained, byte-equality mechanism closed, `NAE-016` open;
+  - `R1.2 — Exact semantic quotient over PCRNF` — recommended next subroute;
+  - decision-diagram and decomposable-circuit siblings — registered but not activated.
+
+Other route families—decomposition, algebraic encodings, obstruction/gluing, propagation/branching and model-specific barriers—remain separately registered.
 
 ## VS-08 determination
 
@@ -36,11 +49,9 @@ Claim status:
 - `NAE-017` — `PROVED / CHECKED`;
 - `NAE-018` — `DISPROVED / CHECKED`.
 
-The earlier `RETRACTED` classification of `NAE-016` was corrected. Failure of byte equality as a complete semantic quotient does not refute the existential claim that some efficiently constructible ordering has polynomial total PCRNF state.
+Failure of byte equality as a complete semantic quotient does not refute the existential claim that some efficiently constructible ordering has polynomial total PCRNF state.
 
 ## Current obstruction
-
-The central unresolved gap is:
 
 ```text
 polynomial explicit residual syntax
@@ -55,17 +66,21 @@ A continuation must either:
 
 ## Next vertical slice
 
-`VS-09` is `PARTIAL / READY` and has two possible tracks.
+`VS-09` is `PARTIAL / READY`.
 
 ### Track A — restricted PCRNF theorem
 
-Prove polynomial reachable-state and total-encoding bounds on the largest identifiable structural class, starting from the exact substrate supplied by `NAE-017`.
+Owned by `R1.1-B` and `R2.3`.
+
+Prove polynomial reachable-state and total-encoding bounds on the largest identifiable structural class, starting from `NAE-017`.
 
 ### Track B — stronger exact quotient
 
+Owned by `R1.2`.
+
 Define and attack a polynomial-time exact merge mechanism over PCRNF that passes the five-vertex witness and has a complete global state bound.
 
-`VS-10` through `VS-12` remain blocked only until one of these tracks yields a precise candidate.
+`VS-10` through `VS-12` remain blocked only until one track yields a precise candidate.
 
 ## Retained project results
 
@@ -79,4 +94,4 @@ No retained result proves `P=NP`, `P!=NP`, a general circuit lower bound or a lo
 
 ## Next decision
 
-Select VS-09 Track A or Track B. Do not close the Monotone NAE-3SAT programme and do not treat `NAE-018` as a disproof of `NAE-016`.
+Select VS-09 Track A or Track B within the new route hierarchy. Do not close the Monotone NAE-3SAT programme and do not treat `NAE-018` as a disproof of `NAE-016`.
