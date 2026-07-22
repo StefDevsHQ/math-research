@@ -1,0 +1,4 @@
+# One repository verification scope per line.
+# Remove a scope after its investigation or route is CLOSED or DEFERRED.
+# Restore it only through an explicit reopening change.
+monotone-nae-3sat

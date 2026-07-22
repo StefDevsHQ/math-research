@@ -5,6 +5,8 @@ ROOT=$(CDPATH= cd -- "$(dirname -- "$0")/.." && pwd)
 MODE=${1:-fast}
 PYTHON=${PYTHON:-python3}
 TOOL_DIR="$ROOT/tools/monotone-nae-3sat"
+ACTIVE_FILE="$ROOT/.verification/active-paths"
+SCOPE="monotone-nae-3sat"
 
 fail() {
   printf '%s\n' "error: $*" >&2
@@ -13,6 +15,11 @@ fail() {
 
 require_command() {
   command -v "$1" >/dev/null 2>&1 || fail "required command not found: $1"
+}
+
+scope_is_active() {
+  [ -f "$ACTIVE_FILE" ] || return 1
+  grep -Eq "^[[:space:]]*$SCOPE[[:space:]]*$" "$ACTIVE_FILE"
 }
 
 require_clean_tree() {
@@ -77,6 +84,10 @@ PY
 }
 
 check_fast() {
+  if ! scope_is_active; then
+    printf '%s\n' "$SCOPE verification is inactive; preserving evidence without rerunning the closed or deferred path"
+    return 0
+  fi
   require_command "$PYTHON"
   require_clean_tree
   cd "$TOOL_DIR"
@@ -96,6 +107,10 @@ check_fast() {
 }
 
 check_full() {
+  if ! scope_is_active; then
+    printf '%s\n' "$SCOPE verification is inactive; preserving evidence without rerunning the closed or deferred path"
+    return 0
+  fi
   require_command cmp
   check_fast
   cd "$TOOL_DIR"
