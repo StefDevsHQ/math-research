@@ -10,12 +10,12 @@ Every slice is governed by the mandatory [building-block quality gate](BUILDING-
 | Slice | Name | Status | Current result | Next action |
 |---:|---|---|---|---|
 | `VS-01` | Canonical instance model | `COMPLETE / CHECKED` | Canonical model, parser, serialization, components, relabelling, verifier, exhaustive tests, and cross-version automation are green. | Preserve the exported contract. |
-| `VS-02` | Exact small-instance oracle | `COMPLETE / CHECKED` | Exact decision, least witnesses, listing, counting, factorization, generator, Fano control, and deterministic 1045-instance census are checked. | Preserve as finite ground truth for VS-03. |
-| `VS-03` | Exact extension-profile engine | `READY` | Exact equivalence and transition theorem `NAE-004` are proved; trusted VS-02 ground truth now exists. | Implement and quality-gate exact profiles. |
-| `VS-04` | Control calibration | `BLOCKED` | Controls are identified. | Run after VS-03 is checked. |
-| `VS-05` | Minimal obstruction atlas | `BLOCKED` | VS-02 provides exact decision and Fano verification; profile evidence remains unavailable. | Build after VS-03. |
+| `VS-02` | Exact small-instance oracle | `COMPLETE / CHECKED` | Exact decision, least witnesses, listing, counting, factorization, generator, Fano control, and deterministic 1045-instance census are checked. | Preserve as finite ground truth. |
+| `VS-03` | Exact extension-profile engine | `COMPLETE / CHECKED` | Exact completion masks, quotient classes, transitions, boundary metrics, canonical records, and a 123280-profile exhaustive census are checked. | Preserve as the semantic reference layer. |
+| `VS-04` | Control calibration | `READY` | Trusted oracle and exact profiles now exist. | Explain known easy controls using the shared laboratory. |
+| `VS-05` | Minimal obstruction atlas | `READY` | VS-02 and VS-03 provide exact decision and semantic-state evidence. | Build and verify the first obstruction atlas. |
 | `VS-06` | Destroy naive summaries | `BLOCKED` | Candidate summaries are listed. | Search checked obstruction/profile data. |
-| `VS-07` | Measure semantic merging | `BLOCKED` | Exact equivalence is defined. | Measure after VS-03. |
+| `VS-07` | Measure semantic merging | `BLOCKED` | Exact equivalence is implemented and initial finite measurements exist. | Proceed after control and obstruction calibration. |
 | `VS-08` | Extract first atomic invariant | `BLOCKED` | No representation language is selected. | Use checked VS-06 and VS-07 evidence. |
 | `VS-09` | Prove restricted theorem | `PARTIAL` | `NAE-005` proves only the baseline bounded-boundary algorithm. | Prove a future invariant on an exact subclass. |
 | `VS-10` | Attack with hard families | `BLOCKED` | Hard controls are registered. | Attack a checked VS-08 invariant. |
@@ -32,15 +32,7 @@ Evidence: [specification](VS-01-IMPLEMENTATION.md), [audit](VS-01-AUDIT.md), exe
 
 **Exit gate:** satisfied.
 
-Exports:
-
-- exact satisfiability decision;
-- true lexicographically least witness;
-- complete satisfying-assignment listing;
-- exact direct and factorized counting;
-- edge-minimal-unsatisfiability testing;
-- canonical labelled generation;
-- deterministic finite census and CLI commands.
+Exports exact decision, true least witnesses, complete solution listing, exact direct and factorized counting, edge-minimal-unsatisfiability testing, canonical labelled generation, and deterministic finite census output.
 
 Checked results:
 
@@ -52,15 +44,34 @@ Checked results:
 
 Evidence: [specification](VS-02-IMPLEMENTATION.md), [audit](VS-02-AUDIT.md), committed corpus, exhaustive production/reference tests, CLI reproduction, and Python 3.11–3.13 automation.
 
-These are finite exact computations and proved oracle mechanisms, not a polynomial-time result.
-
 ## VS-03 — Exact extension-profile engine
 
-**Goal:** compute the exact semantic state against which every proposed compression is judged.
+**Exit gate:** satisfied after final PR automation.
 
-For ordering `pi=(v1,...,vn)`, compute each prefix assignment's exact set of satisfying completions, quotient only equal completion sets, and construct both next-colour transitions.
+Exports:
 
-**Exit gate:** every tested instance and ordering agrees with checked VS-02 final acceptance; transition well-definedness is verified; raw, boundary, quotient, and encoded-profile sizes are recorded; exhaustive and adversarial tests, complexity audit, cross-version automation, independent attack, and synchronized records are complete.
+- exact completion masks for every prefix;
+- deterministic exact quotient classes;
+- representative-independent zero/one transitions;
+- processed-boundary comparison counts;
+- canonical full profile records and summaries;
+- deterministic exhaustive profile-census output.
+
+Checked finite results:
+
+- `123280` instance-ordering profiles through five vertices;
+- `7753542` raw prefixes;
+- `2153049` exact classes;
+- `1818651` live classes;
+- `2865585` processed-valid boundary states;
+- maximum quotient size `8`;
+- `120` unsatisfiable-root profiles, corresponding to all orderings of the unique unsatisfiable five-vertex instance.
+
+The single-edge control under ordering `(0,1,2)` contains a genuine live merge: prefixes `01` and `10` have the same nonzero exact completion set.
+
+Evidence: [specification](VS-03-IMPLEMENTATION.md), [proof and completion audit](VS-03-AUDIT.md), committed profile corpus, exact/reference tests, and Python 3.11–3.13 automation.
+
+These are finite exact measurements and a proved exponential construction. They do not establish a polynomial quotient or construction bound.
 
 ## VS-04 — Control calibration
 
@@ -100,8 +111,8 @@ Record a surviving universal candidate, restricted theorem, complete disproof, r
 
 ## Immediate queue
 
-1. Implement and quality-gate VS-03 using checked VS-02 ground truth.
-2. Run VS-04 and VS-05 only after VS-03 promotion.
+1. Execute VS-04 control calibration.
+2. Build VS-05 minimal obstruction atlas.
 3. Use VS-06 and VS-07 evidence before proposing VS-08.
 
 Computational results remain `COMPUTATIONAL` unless accompanied by a proof or a complete exhaustiveness argument.
