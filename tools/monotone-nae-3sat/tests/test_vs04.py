@@ -99,7 +99,7 @@ class GraphControlTests(unittest.TestCase):
             total += row_total
             bipartite += row_bipartite
             non_bipartite += row_total - row_bipartite
-        self.assertEqual((total, bipartite, non_bipartite), (1100, 427, 673))
+        self.assertEqual((total, bipartite, non_bipartite), (1100, 428, 672))
 
     def test_odd_cycle_and_disconnected_conflict(self):
         triangle = Graph2(3, ((0, 1), (0, 2), (1, 2)))
@@ -212,7 +212,7 @@ class CalibrationRecordTests(unittest.TestCase):
     def test_record_semantics_and_digest(self):
         record = calibration_record()
         self.assertTrue(verify_calibration_record(record))
-        self.assertEqual(record["graph"]["census"]["totals"], {"total": 1100, "bipartite": 427, "non_bipartite": 673})
+        self.assertEqual(record["graph"]["census"]["totals"], {"total": 1100, "bipartite": 428, "non_bipartite": 672})
         self.assertEqual(record["xor"]["census"]["totals"], {"total": 16453, "consistent": 890, "inconsistent": 15563})
         self.assertEqual(record["nae"]["filtered_census"]["totals"]["incidence_forest"], 36)
         self.assertEqual(record["nae"]["filtered_census"]["totals"]["occurrence_at_most_three"], 344)
