@@ -1,37 +1,34 @@
 # Status — P versus NP
 
-**Phase:** Monotone NAE-3SAT trusted laboratory complete; naive-summary attack next  
+**Phase:** Monotone NAE-3SAT VS-06 complete; semantic-merging measurement next  
 **Updated:** 2026-07-22
 
 ## Current position
 
-The repository foundation and canonical landscapes are complete. The active Monotone NAE-3SAT investigation has completed its first five vertical slices as one `COMPLETE / CHECKED` laboratory phase. No proof route and no universal polynomial-time mechanism has been accepted.
+The repository foundation and canonical landscapes are complete. The active Monotone NAE-3SAT investigation has completed `VS-01` through `VS-06` as checked infrastructure and falsification work. No proof route and no universal polynomial-time mechanism has been accepted.
 
-The first concrete investigation, Subset Sum, closed two universal strategies:
-
-1. **Structural compression** did not produce a universal polynomial-time algorithm. Canonical no-carry SAT-to-Subset-Sum instances preserve assignment and clause compatibility under the proposed modular decomposition.
-2. **Exact-state compression barriers** produced correct model-specific lower bounds and representation boundaries, but no model simultaneously contained all retained structural mechanisms, excluded polynomial Boolean simulation, and admitted a superpolynomial hard-family lower bound.
+The Subset Sum investigation remains closed after two universal strategies failed within their stated models.
 
 ## Active investigation
 
-[Monotone NAE-3SAT](investigations/monotone-nae-3sat/README.md) is the symmetry-first testbed.
+[Monotone NAE-3SAT](investigations/monotone-nae-3sat/README.md) now provides:
 
-Phase I exports:
-
-- a canonical labelled 3-uniform-hypergraph model;
-- an exact exponential satisfiability oracle and exhaustive `n<=5` census;
+- canonical labelled instances;
+- an exact exponential oracle and exhaustive `n<=5` census;
 - exact successful-completion profiles for fixed orderings;
-- calibrated graph-parity, affine-XOR, incidence-forest, bounded-boundary, and component controls;
+- calibrated parity, affine, acyclic, bounded-boundary, and component controls;
 - exact `K_5^(3)` and Fano obstruction evidence;
-- a proved limitation: globally unsatisfiable instances collapse successful-completion semantics to one dead class at every level.
+- the dead-successful-completion theorem for globally unsatisfiable instances;
+- ten explicit same-summary/different-semantics collisions;
+- a proved family showing every fixed locality radius can miss conditioned residual satisfiability.
 
-No algorithmic mechanism has been accepted.
+These results eliminate only specified summaries. They do not lower-bound arbitrary representations.
 
 ## Current mathematical target
 
-Formalize and attack naive polynomial-time summaries for residual Monotone NAE-3SAT structure. For each summary, produce a complete same-summary/different-semantics collision or retain its exact unresolved scope.
+Execute `VS-07`: measure genuine live semantic merging separately from dead-state collapse, complement symmetry, boundary states, quotient size, representation bytes, and ordering effects.
 
-The semantic target must be richer than successful-completion sets on globally unsatisfiable instances. Every proposed mechanism must specify its representation, construction, transition, equivalence, acceptance, encoded size, total computation graph, adversarial family, and stop condition before it becomes a route conjecture.
+The objective is to isolate one exact mechanism worth turning into a falsifiable representation language. No route directory should be activated before construction, transition, equality, acceptance, encoded size, total generated-state bound, adversarial family, and stop condition are explicit.
 
 ## Mandatory controls
 
@@ -40,20 +37,20 @@ The semantic target must be richer than successful-completion sets on globally u
 - acyclic and bounded-width CSPs;
 - Positive 1-in-3 SAT;
 - canonical 3-SAT reductions;
-- robust restricted Monotone NAE-3SAT hard families;
-- dense `K_5^(3)` and sparse linear Fano obstructions.
+- linear 4-regular Monotone NAE-3SAT;
+- dense `K_5^(3)` and sparse linear Fano obstructions;
+- the VS-06 collision atlas.
 
 ## Retained Subset Sum results
 
 - the residue-completion lemma;
-- polynomial-time solvability on classes with an efficiently constructible exact decomposition whose complete computation graph and total encoded state are polynomially bounded in binary input length;
-- an exact assignment-target embedding of width-three CNF evaluation into fixed-item Subset Sum query families;
-- a `2^{Omega(L^{1/4})}` lower bound for square-grid assignment-target queries in the explicitly defined ordered Boolean query model;
-- exact item-block Minkowski composition identities;
-- model-boundary theorems separating small syntax, expensive normalization, and excessive Boolean expressiveness.
+- polynomial-time solvability under an efficiently constructible exact decomposition with polynomial total encoded state;
+- assignment-target embeddings and ordered-model lower bounds;
+- exact Minkowski composition identities;
+- representation-boundary theorems.
 
-These results do not prove `P=NP`, `P!=NP`, a fixed-target Subset Sum lower bound, a general Boolean circuit lower bound, or a lower bound for arbitrary Subset Sum algorithms.
+No retained result proves `P=NP`, `P!=NP`, a general circuit lower bound, or a lower bound for arbitrary Subset Sum or Monotone NAE-3SAT algorithms.
 
 ## Next decision
 
-Execute `VS-06` in formalization-and-attack mode. Do not activate a route directory until one atomic representation claim survives explicit collision tests and states a global polynomial bound.
+Complete `VS-07`. Continue to `VS-08` only if the measurements identify a precise invariant that survives the known controls and collision families.
