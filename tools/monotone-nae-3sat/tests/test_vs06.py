@@ -7,11 +7,14 @@ import unittest
 from pathlib import Path
 
 from nae3sat import (
+    anchored_inequality_instance,
     bounded_radius_collision,
     bounded_radius_summary,
     boundary_parity_summary,
     boundary_weight_summary,
+    characteristic_polynomial,
     complete_five_plus_isolate,
+    cycle_union,
     degree_collision_satisfiable,
     degree_collision_unsatisfiable,
     degree_sequence_summary,
@@ -40,12 +43,49 @@ ROOT = Path(__file__).parents[1]
 ATLAS = ROOT / "summary-collisions" / "vs06-summary-collisions.json"
 
 
+def _reference_solutions(instance):
+    return tuple(
+        assignment
+        for assignment in itertools.product((0, 1), repeat=instance.n)
+        if all(
+            not (assignment[left] == assignment[middle] == assignment[right])
+            for left, middle, right in instance.edges
+        )
+    )
+
+
+def _conditioned_anchor_satisfiable(graph) -> bool:
+    instance = anchored_inequality_instance(graph)
+    for tail in itertools.product((0, 1), repeat=graph[0]):
+        assignment = (0, 1, *tail)
+        if all(
+            not (assignment[left] == assignment[middle] == assignment[right])
+            for left, middle, right in instance.edges
+        ):
+            return True
+    return False
+
+
 class WholeInstanceCollisionTests(unittest.TestCase):
     def assert_satisfiability_collision(self, left, right, summary):
         self.assertEqual(summary(left), summary(right))
-        self.assertNotEqual(
-            solution_summary(left)["satisfiable"],
-            solution_summary(right)["satisfiable"],
+        left_reference = _reference_solutions(left)
+        right_reference = _reference_solutions(right)
+        self.assertNotEqual(bool(left_reference), bool(right_reference))
+
+        left_production = solution_summary(left)
+        right_production = solution_summary(right)
+        self.assertEqual(left_production["satisfiable"], bool(left_reference))
+        self.assertEqual(right_production["satisfiable"], bool(right_reference))
+        self.assertEqual(left_production["solution_count"], len(left_reference))
+        self.assertEqual(right_production["solution_count"], len(right_reference))
+        self.assertEqual(
+            left_production["least_witness"],
+            None if not left_reference else list(left_reference[0]),
+        )
+        self.assertEqual(
+            right_production["least_witness"],
+            None if not right_reference else list(right_reference[0]),
         )
 
     def test_degree_sequence_collision(self):
@@ -93,6 +133,20 @@ class WholeInstanceCollisionTests(unittest.TestCase):
                     maximum_size=fano.n - 1,
                 )
             )
+        )
+
+
+class AlgebraicSummaryTests(unittest.TestCase):
+    def test_characteristic_polynomial_known_matrices(self):
+        self.assertEqual(characteristic_polynomial(()), (1,))
+        self.assertEqual(characteristic_polynomial(((2,),)), (1, -2))
+        self.assertEqual(
+            characteristic_polynomial(((1, 0), (0, 1))),
+            (1, -2, 1),
+        )
+        self.assertEqual(
+            characteristic_polynomial(((0, 1), (1, 0))),
+            (1, 0, -1),
         )
 
 
@@ -174,6 +228,19 @@ class BoundedRadiusFamilyTests(unittest.TestCase):
             self.assertEqual(len(unsatisfiable[1]), 4 * radius + 6)
             self.assertEqual(len(satisfiable[1]), 4 * radius + 6)
 
+    def test_anchored_reduction_in_both_directions(self):
+        controls = (
+            cycle_union((3,)),
+            cycle_union((4,)),
+            *bounded_radius_collision(1),
+        )
+        for graph in controls:
+            with self.subTest(graph=graph):
+                self.assertEqual(
+                    _conditioned_anchor_satisfiable(graph),
+                    graph_is_bipartite(graph),
+                )
+
 
 class AtlasTests(unittest.TestCase):
     def test_record_and_committed_bytes(self):
@@ -184,6 +251,24 @@ class AtlasTests(unittest.TestCase):
             ATLAS.read_bytes(),
             summary_collision_bytes(),
         )
+
+    def test_committed_semantics_match_independent_enumeration(self):
+        record = json.loads(ATLAS.read_text(encoding="utf-8"))
+        for collision in record["collisions"]:
+            if "left" not in collision:
+                continue
+            for side in ("left", "right"):
+                item = collision[side]
+                from nae3sat import normalize_instance
+
+                instance = normalize_instance(item["n"], item["edges"])
+                reference = _reference_solutions(instance)
+                self.assertEqual(item["semantics"]["satisfiable"], bool(reference))
+                self.assertEqual(item["semantics"]["solution_count"], len(reference))
+                self.assertEqual(
+                    item["semantics"]["least_witness"],
+                    None if not reference else list(reference[0]),
+                )
 
     def test_record_round_trip(self):
         with tempfile.TemporaryDirectory() as directory:
