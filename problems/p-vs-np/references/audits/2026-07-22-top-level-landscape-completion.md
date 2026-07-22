@@ -31,9 +31,9 @@ Four underrepresented areas met the inclusion test:
 
 ### 1. Meta-mathematics and bounded arithmetic
 
-Added as `C10`. This programme studies formalization, witnessing, feasible provability, and independence relative to explicitly named weak arithmetic theories.
+Added as `C10`. This programme studies formalization, witnessing, feasible provability, unprovability, and independence relative to explicitly named weak arithmetic theories.
 
-Boundary: unprovability in one weak theory does not decide the truth of `P=NP` or `P!=NP` in standard mathematics.
+Boundary: unprovability in one weak theory does not establish falsity or independence from stronger standard foundations.
 
 ### 2. Interactive proofs and arithmetization
 
@@ -55,9 +55,9 @@ Boundary: bounded error, one-sided error, promises, interaction, totality, and d
 
 ## Source audit
 
-The completion introduced canonical source identifiers `P59`–`P66`:
+The completion introduced canonical source identifiers `P59`–`P67`:
 
-- Cook–Nguyen and Krajíček for bounded arithmetic and proof complexity;
+- Cook–Nguyen, Krajíček, and Jeřábek for bounded arithmetic, proof complexity, and current metamathematical orientation;
 - Lund–Fortnow–Karloff–Nisan and Shamir for arithmetized interactive proofs and `IP=PSPACE`;
 - Santhanam and Lu–Oliveira for uniform lower bounds and probabilistic Kolmogorov complexity;
 - Gill and Babai for probabilistic and Arthur–Merlin class foundations.
