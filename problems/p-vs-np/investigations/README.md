@@ -10,7 +10,7 @@ The canonical cross-investigation orientation is maintained separately in:
 
 ## Active
 
-No investigation currently has an active route.
+- [Monotone NAE-3SAT](monotone-nae-3sat/README.md) — active in object formalization and route selection; the symmetry-first NP-complete testbed is prepared, but no proof mechanism is active.
 
 ## Existing
 
@@ -18,10 +18,10 @@ No investigation currently has an active route.
 
 ## Prospective investigations
 
-The canonical landscapes identify two leading candidates. A directory should be created only after a concrete route mechanism is selected.
+The canonical landscapes retain two leading sibling tracks. A route should be activated only after a concrete mechanism and decisive first audit are stated.
 
 1. **Exact-incidence constraint systems**
-   - primary testbed: Positive 1-in-3 SAT;
+   - primary exactness-first testbed: Positive 1-in-3 SAT;
    - hard controls: X3C and 3-Dimensional Matching;
    - tractable controls: XOR-SAT, perfect matching, and bounded-width CSPs;
    - required opening artifact: an exact propagation, decomposition, width, or composition mechanism with a decisive first audit.
@@ -39,5 +39,7 @@ An investigation must maintain:
 - `STATUS.md` — current operational state;
 - `CLAIMS.md` — authoritative local claim ledger;
 - `routes/` — distinct approaches kept separate.
+
+An investigation may be opened in formalization mode before a route is selected, but no route is active until its mechanism, theorem target, controls, complete complexity accounting, and stop condition are recorded.
 
 An investigation is not itself a claim that resolving the chosen problem by a particular method is the only route to P versus NP.
