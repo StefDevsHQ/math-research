@@ -25,7 +25,11 @@ def _ordered_violation_masks(
     n: int,
     triples: tuple[tuple[int, int, int], ...],
     ordering: tuple[int, ...],
-) -> tuple[tuple[int, ...], tuple[tuple[int, ...], ...], tuple[tuple[tuple[int, ...], ...], ...]]:
+) -> tuple[
+    tuple[int, ...],
+    tuple[tuple[int, ...], ...],
+    tuple[tuple[tuple[int, ...], ...], ...],
+]:
     positions = {vertex: index for index, vertex in enumerate(ordering)}
     full_violations: list[int] = []
     for assignment in itertools.product((0, 1), repeat=n):
@@ -86,12 +90,12 @@ def _count_row(n: int) -> dict[str, object]:
     counters: Counter[str] = Counter()
     distributions = [Counter() for _ in range(n + 1)]
     max_classes = [0] * (n + 1)
+    profile_digest = hashlib.sha256()
 
     for ordering in orderings:
         full_violations, prefix_violations, prefix_assignments = (
             _ordered_violation_masks(n, triples, ordering)
         )
-        positions = {vertex: index for index, vertex in enumerate(ordering)}
 
         for graph_mask in range(1 << len(triples)):
             assignment_masks: list[tuple[int, ...]] = [()] * (n + 1)
@@ -108,11 +112,29 @@ def _count_row(n: int) -> dict[str, object]:
                     for prefix in range(1 << level)
                 )
 
+            level_ids: list[tuple[int, ...]] = []
+            level_classes: list[tuple[int, ...]] = []
+            for masks in assignment_masks:
+                seen: dict[int, int] = {}
+                ids: list[int] = []
+                classes: list[int] = []
+                for mask in masks:
+                    class_id = seen.get(mask)
+                    if class_id is None:
+                        class_id = len(classes)
+                        seen[mask] = class_id
+                        classes.append(mask)
+                    ids.append(class_id)
+                level_ids.append(tuple(ids))
+                level_classes.append(tuple(classes))
+
             counters["profiles"] += 1
             counters["satisfiable_profiles"] += assignment_masks[0][0] != 0
+            level_signatures: list[object] = []
 
             for level in range(n + 1):
-                classes = tuple(dict.fromkeys(assignment_masks[level]))
+                classes = level_classes[level]
+                class_ids = level_ids[level]
                 class_count = len(classes)
                 live_count = sum(mask != 0 for mask in classes)
                 raw_count = 1 << level
@@ -131,14 +153,26 @@ def _count_row(n: int) -> dict[str, object]:
                 distributions[level][class_count] += 1
                 max_classes[level] = max(max_classes[level], class_count)
 
+                transitions: tuple[tuple[int, int], ...] | None = None
                 if level < n:
-                    next_count = len(set(assignment_masks[level + 1]))
+                    child_width = 1 << (n - level - 1)
+                    lower_mask = (1 << child_width) - 1
+                    next_lookup = {
+                        mask: class_id
+                        for class_id, mask in enumerate(level_classes[level + 1])
+                    }
+                    transitions = tuple(
+                        (
+                            next_lookup[mask & lower_mask],
+                            next_lookup[mask >> child_width],
+                        )
+                        for mask in classes
+                    )
+                    next_count = len(level_classes[level + 1])
                     next_bits = (
                         0 if next_count <= 1 else (next_count - 1).bit_length()
                     )
-                    counters["transition_bits"] += (
-                        2 * class_count * next_bits
-                    )
+                    counters["transition_bits"] += 2 * class_count * next_bits
 
                 boundary_positions = _boundary_positions(
                     triples,
@@ -152,11 +186,35 @@ def _count_row(n: int) -> dict[str, object]:
                 ):
                     if prefix_violations[level][prefix_index] & graph_mask == 0:
                         boundary_states.add(
-                            tuple(assignment[position] for position in boundary_positions)
+                            tuple(
+                                assignment[position]
+                                for position in boundary_positions
+                            )
                         )
-                counters["processed_valid_boundary_states"] += len(
-                    boundary_states
+                boundary_count = len(boundary_states)
+                counters["processed_valid_boundary_states"] += boundary_count
+                level_signatures.append(
+                    [
+                        list(classes),
+                        list(class_ids),
+                        (
+                            None
+                            if transitions is None
+                            else [list(value) for value in transitions]
+                        ),
+                        boundary_count,
+                    ]
                 )
+
+            signature = [graph_mask, list(ordering), level_signatures]
+            profile_digest.update(
+                json.dumps(
+                    signature,
+                    separators=(",", ":"),
+                    ensure_ascii=True,
+                ).encode("utf-8")
+            )
+            profile_digest.update(b"\n")
 
     profiles = counters["profiles"]
     return {
@@ -182,6 +240,7 @@ def _count_row(n: int) -> dict[str, object]:
             {str(key): value for key, value in sorted(distribution.items())}
             for distribution in distributions
         ],
+        "profile_sequence_sha256": profile_digest.hexdigest(),
     }
 
 
@@ -238,7 +297,9 @@ def profile_corpus_bytes(max_vertices: int = 5) -> bytes:
 def verify_profile_corpus_record(record: object) -> bool:
     if type(record) is not dict or "payload_sha256" not in record:
         return False
-    payload = {key: value for key, value in record.items() if key != "payload_sha256"}
+    payload = {
+        key: value for key, value in record.items() if key != "payload_sha256"
+    }
     payload_bytes = json.dumps(
         payload,
         separators=(",", ":"),
