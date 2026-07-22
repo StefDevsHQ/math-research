@@ -4,17 +4,38 @@ import copy
 import hashlib
 import json
 import unittest
+from pathlib import Path
 
 from nae3sat import (
-    calibration_record,
-    corpus_record,
-    obstruction_atlas_record,
-    profile_corpus_record,
     verify_calibration_record,
     verify_corpus_record,
     verify_obstruction_atlas_record,
     verify_profile_corpus_record,
 )
+
+ROOT = Path(__file__).parents[1]
+
+
+def _load(relative: str) -> dict[str, object]:
+    value = json.loads((ROOT / relative).read_text(encoding="utf-8"))
+    if type(value) is not dict:
+        raise AssertionError("committed record must be a JSON object")
+    return value
+
+
+def _cases():
+    return (
+        (_load("corpus/all-labelled-n-le-5.json"), verify_corpus_record),
+        (
+            _load("profile-corpus/all-labelled-orderings-n-le-5.json"),
+            verify_profile_corpus_record,
+        ),
+        (_load("calibration/vs04-calibration.json"), verify_calibration_record),
+        (
+            _load("obstruction-atlas/vs05-obstruction-atlas.json"),
+            verify_obstruction_atlas_record,
+        ),
+    )
 
 
 def _redigest(record: dict[str, object]) -> None:
@@ -30,25 +51,13 @@ def _redigest(record: dict[str, object]) -> None:
 
 
 class StrictRecordVerifierTests(unittest.TestCase):
-    def test_generated_records_are_accepted(self):
-        cases = (
-            (corpus_record(), verify_corpus_record),
-            (profile_corpus_record(0), verify_profile_corpus_record),
-            (calibration_record(), verify_calibration_record),
-            (obstruction_atlas_record(), verify_obstruction_atlas_record),
-        )
-        for record, verify in cases:
+    def test_committed_records_are_accepted(self):
+        for record, verify in _cases():
             with self.subTest(format=record["format"]):
                 self.assertTrue(verify(record))
 
     def test_redigested_wrong_format_is_rejected(self):
-        cases = (
-            (corpus_record(), verify_corpus_record),
-            (profile_corpus_record(0), verify_profile_corpus_record),
-            (calibration_record(), verify_calibration_record),
-            (obstruction_atlas_record(), verify_obstruction_atlas_record),
-        )
-        for original, verify in cases:
+        for original, verify in _cases():
             record = copy.deepcopy(original)
             record["format"] = "wrong-format"
             _redigest(record)
@@ -56,13 +65,7 @@ class StrictRecordVerifierTests(unittest.TestCase):
                 self.assertFalse(verify(record))
 
     def test_redigested_unknown_field_is_rejected(self):
-        cases = (
-            (corpus_record(), verify_corpus_record),
-            (profile_corpus_record(0), verify_profile_corpus_record),
-            (calibration_record(), verify_calibration_record),
-            (obstruction_atlas_record(), verify_obstruction_atlas_record),
-        )
-        for original, verify in cases:
+        for original, verify in _cases():
             record = copy.deepcopy(original)
             record["unexpected"] = True
             _redigest(record)
@@ -70,14 +73,8 @@ class StrictRecordVerifierTests(unittest.TestCase):
                 self.assertFalse(verify(record))
 
     def test_malformed_digest_is_rejected(self):
-        cases = (
-            (corpus_record(), verify_corpus_record),
-            (profile_corpus_record(0), verify_profile_corpus_record),
-            (calibration_record(), verify_calibration_record),
-            (obstruction_atlas_record(), verify_obstruction_atlas_record),
-        )
         malformed = (None, 0, "", "0" * 63, "G" * 64, "A" * 64)
-        for original, verify in cases:
+        for original, verify in _cases():
             for digest in malformed:
                 record = copy.deepcopy(original)
                 record["payload_sha256"] = digest
