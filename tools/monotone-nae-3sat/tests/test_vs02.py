@@ -6,6 +6,7 @@ import subprocess
 import sys
 import tempfile
 import unittest
+from collections import Counter
 from pathlib import Path
 
 from nae3sat import (
@@ -15,6 +16,7 @@ from nae3sat import (
     corpus_record,
     count_satisfying_assignments,
     count_satisfying_assignments_factorized,
+    incidence_components,
     is_edge_minimal_unsatisfiable,
     labelled_instances,
     satisfying_assignments,
@@ -36,6 +38,67 @@ def reference_assignments(graph: Hypergraph3):
             for u, v, w in graph.edges
         )
     )
+
+
+def reference_edge_minimal(graph: Hypergraph3) -> bool:
+    if reference_assignments(graph):
+        return False
+    return all(
+        reference_assignments(
+            Hypergraph3(
+                graph.n,
+                graph.edges[:index] + graph.edges[index + 1 :],
+            )
+        )
+        for index in range(len(graph.edges))
+    )
+
+
+def reference_corpus_rows():
+    rows = []
+    totals = {
+        "instances": 0,
+        "satisfiable": 0,
+        "unsatisfiable": 0,
+        "connected": 0,
+        "edge_minimal_unsatisfiable": 0,
+        "reference_colourings": 0,
+    }
+    for n in range(6):
+        distribution = Counter()
+        row = {
+            "n": n,
+            "instances": 0,
+            "satisfiable": 0,
+            "unsatisfiable": 0,
+            "connected": 0,
+            "edge_minimal_unsatisfiable": 0,
+            "satisfying_count_distribution": {},
+        }
+        for graph in labelled_instances(n):
+            assignments = reference_assignments(graph)
+            row["instances"] += 1
+            totals["instances"] += 1
+            totals["reference_colourings"] += 1 << n
+            distribution[len(assignments)] += 1
+            if assignments:
+                row["satisfiable"] += 1
+                totals["satisfiable"] += 1
+            else:
+                row["unsatisfiable"] += 1
+                totals["unsatisfiable"] += 1
+                if reference_edge_minimal(graph):
+                    row["edge_minimal_unsatisfiable"] += 1
+                    totals["edge_minimal_unsatisfiable"] += 1
+            if n > 0 and len(incidence_components(graph)) == 1:
+                row["connected"] += 1
+                totals["connected"] += 1
+        row["satisfying_count_distribution"] = {
+            str(count): distribution[count]
+            for count in sorted(distribution)
+        }
+        rows.append(row)
+    return rows, totals
 
 
 class SolverTests(unittest.TestCase):
@@ -122,7 +185,7 @@ class SolverTests(unittest.TestCase):
                 checked += 1
         self.assertEqual(checked, 1045)
 
-    def test_fano_unsatisfiable_and_edge_minimal(self):
+    def test_fano_unsatisfiable_and_edge_minimal_independently(self):
         fano = Hypergraph3(
             7,
             (
@@ -135,21 +198,22 @@ class SolverTests(unittest.TestCase):
                 (2, 4, 5),
             ),
         )
-        self.assertFalse(solve_exact(fano).satisfiable)
+        self.assertEqual(reference_assignments(fano), ())
+        self.assertTrue(reference_edge_minimal(fano))
+        optimized = solve_exact(fano)
+        self.assertFalse(optimized.satisfiable)
+        self.assertEqual(optimized.assignments_tested, 64)
         self.assertEqual(count_satisfying_assignments(fano), 0)
         self.assertTrue(is_edge_minimal_unsatisfiable(fano))
-        for index in range(len(fano.edges)):
-            reduced = Hypergraph3(
-                7,
-                fano.edges[:index] + fano.edges[index + 1 :],
-            )
-            self.assertTrue(solve_exact(reduced).satisfiable)
 
 
 class CorpusAndCLITests(unittest.TestCase):
-    def test_committed_corpus_semantics(self):
+    def test_committed_corpus_matches_independent_aggregation(self):
         record = corpus_record()
         self.assertTrue(verify_corpus_record(record))
+        reference_rows, reference_totals = reference_corpus_rows()
+        self.assertEqual(record["counts"], reference_rows)
+        self.assertEqual(record["totals"], reference_totals)
         self.assertEqual(record["totals"]["instances"], 1045)
         self.assertEqual(record["totals"]["satisfiable"], 1044)
         self.assertEqual(record["totals"]["unsatisfiable"], 1)
