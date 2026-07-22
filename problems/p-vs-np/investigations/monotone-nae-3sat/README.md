@@ -1,8 +1,6 @@
 # Monotone NAE-3SAT Investigation
 
-Monotone NAE-3SAT asks whether a 3-uniform hypergraph can be coloured with two colours so that no hyperedge is monochromatic.
-
-The relation is
+Monotone NAE-3SAT asks whether a 3-uniform hypergraph can be coloured with two colours so that no hyperedge is monochromatic:
 
 \[
 R_{\mathrm{NAE}}=\{0,1\}^{3}\setminus\{000,111\}.
@@ -22,15 +20,16 @@ A deterministic polynomial-time algorithm correct on every encoded Monotone NAE-
 
 ## Current phase
 
-The first three building blocks are complete and checked:
+The first four building blocks are complete and checked:
 
 - `VS-01`: canonical executable instance model;
 - `VS-02`: exact finite satisfiability oracle;
-- `VS-03`: exact extension-profile engine.
+- `VS-03`: exact extension-profile engine;
+- `VS-04`: tractable-control calibration.
 
-The laboratory can now represent instances unambiguously, determine exact finite ground truth, and compute exact semantic future-equivalence for every prefix of a fixed ordering.
+The laboratory can represent instances unambiguously, determine exact finite ground truth, compute exact semantic future-equivalence, and distinguish the known mechanisms behind graph parity, affine XOR, incidence-forest elimination, bounded interfaces, and disconnected products.
 
-The next work is `VS-04` control calibration and `VS-05` minimal obstruction atlas construction. No universal polynomial-time mechanism is currently claimed.
+The next work is `VS-05`, the minimal obstruction atlas. No universal polynomial-time mechanism is currently claimed.
 
 ## Accepted baseline
 
@@ -40,7 +39,8 @@ The next work is `VS-04` control calibration and `VS-05` minimal obstruction atl
 - exact quotient-transition theorem — `PROVED / CHECKED`;
 - `2^{O(w)} poly(L)` bounded-boundary algorithm — `PROVED / CHECKED`;
 - exact bottom-up completion-mask construction — `PROVED / CHECKED`;
-- canonical instance, exact oracle, and exact profile layers — `COMPLETE / CHECKED`.
+- incidence-forest constructive colouring theorem — `PROVED / CHECKED`;
+- canonical instance, exact oracle, exact profile, and control-calibration layers — `COMPLETE / CHECKED`.
 
 ## Retained finite evidence
 
@@ -48,14 +48,19 @@ The next work is `VS-04` control calibration and `VS-05` minimal obstruction atl
 - exactly one is unsatisfiable, the complete 3-uniform hypergraph on five vertices;
 - the Fano plane is independently verified unsatisfiable and edge-minimal unsatisfiable;
 - all `123280` instance-ordering profiles through five vertices are measured exactly;
-- the finite profile census contains `2153049` exact classes from `7753542` raw prefixes;
-- the largest quotient observed in that domain has `8` classes.
+- the profile census contains `2153049` exact classes from `7753542` raw prefixes;
+- all `1100` labelled graphs through five vertices are calibrated exactly;
+- all `16453` canonical XOR systems through three variables are calibrated exactly;
+- all `36` incidence-forest NAE instances through five vertices are constructively colourable;
+- all `344` occurrence-at-most-three instances in that finite NAE domain are satisfiable.
 
-These are exhaustive finite results, not asymptotic polynomial bounds.
+These are exhaustive finite results on declared domains, not asymptotic polynomial bounds.
 
 ## Mandatory controls
 
 Graph 2-colouring, XOR-SAT, acyclic and bounded-width CSPs, planar and occurrence-at-most-three NAE instances, Positive 1-in-3 SAT, graph 3-colouring, linear 4-regular Monotone NAE-3SAT, and verified reduction-generated instances.
+
+VS-04 calibrates the first five tractable mechanisms. Planar and bounded-occurrence tractability remain imported primary-source results. Hard-corner and reduction-generated controls remain for later slices.
 
 ## Navigation
 
@@ -68,6 +73,8 @@ Graph 2-colouring, XOR-SAT, acyclic and bounded-width CSPs, planar and occurrenc
 - [VS-02 completion audit](VS-02-AUDIT.md)
 - [VS-03 implementation specification](VS-03-IMPLEMENTATION.md)
 - [VS-03 proof and completion audit](VS-03-AUDIT.md)
+- [VS-04 implementation specification](VS-04-IMPLEMENTATION.md)
+- [VS-04 proof and completion audit](VS-04-AUDIT.md)
 - [Claim ledger](CLAIMS.md)
 - [Object specification and baseline proofs](OBJECT.md)
 - [Complete attack plan](PLAN.md)
