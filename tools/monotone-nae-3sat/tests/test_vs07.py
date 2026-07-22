@@ -15,7 +15,7 @@ from nae3sat.semantic_merging import (
     measure_semantic_merging_level,
     measure_semantic_merging_profile,
 )
-from nae3sat.semantic_merging_atlas import (
+from nae3sat.semantic_merging_record import (
     semantic_merging_bytes,
     semantic_merging_record,
 )
@@ -151,7 +151,7 @@ class FanFamilyTests(unittest.TestCase):
                     max(level.boundary_width for level in profile.levels),
                     2,
                 )
-                self.assertLessEqual(profile.peak_live_semantic_classes, 5)
+                self.assertLessEqual(profile.peak_live_semantic_classes, 4)
 
 
 class RecordTests(unittest.TestCase):
