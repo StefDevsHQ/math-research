@@ -1,9 +1,9 @@
 # R1.1 — Propagation-Closed Signed Residual Normal Form
 
 **Subroute:** `R1.1`  
-**Status:** `RETAINED / OPEN CLAIM`  
-**Primary claim:** `NAE-016 — CONJECTURE / CHECKED`  
-**Completed slice:** `VS-08`
+**Status:** `CLOSED AS UNIVERSAL / RETAINED AS EXACT AND RESTRICTED`  
+**Primary claim:** `NAE-016 — DISPROVED / CHECKED`  
+**Completed slices:** `VS-08`, `VS-09A`
 
 ## Thesis
 
@@ -18,7 +18,7 @@ Process variables in an ordering and represent every residual instance by a prop
 
 Memoize identical residual states and attempt to bound the complete generated state graph polynomially.
 
-## What was proved
+## Retained theorem — NAE-017
 
 `NAE-017 — PROVED / CHECKED`:
 
@@ -27,44 +27,79 @@ Memoize identical residual states and attempt to bound the complete generated st
 - component complement is exact when orientation is recorded;
 - next-variable restriction and re-closure are exact transitions.
 
-## What was disproved
+PCRNF remains a valid exact residual substrate.
+
+## Earlier model boundary — NAE-018
 
 `NAE-018 — DISPROVED / CHECKED`:
 
 > Byte equality of oriented PCRNF is exact completion equivalence.
 
-The five-vertex witness has two different PCRNFs with the same exact completion mask.
+The five-vertex witness has two different PCRNFs with the same exact completion mask. Orientation-free normalization was also disproved independently on a single edge.
 
-Orientation-free normalization was also disproved independently on a single edge.
+## Universal lower bound — NAE-019 and NAE-020
 
-## What remains open
+`NAE-019 — PROVED / CHECKED` shows that PCRNF state count dominates exact residual-function count.
 
-`NAE-016` asks whether every instance has a polynomial-time constructible ordering whose complete reachable PCRNF state graph has polynomial state count and polynomial total encoded size.
+`NAE-020 — PROVED / CHECKED` constructs central lifts of constant-degree expanders for which every variable ordering has one level containing `2^{Omega(n)}` pairwise distinct live exact completion functions. Therefore every ordering has `2^{Omega(n)}` oriented PCRNF states.
 
-This was not disproved. The fan family gives exponential growth under a bad order but bounded growth under an interleaved order.
+This attacks the existential ordering quantifier directly and yields:
 
-## Current subroute split
+```text
+NAE-016 — DISPROVED / CHECKED.
+```
 
-### `R1.1-A` — Direct state-count theorem
+## Final determination
 
-Try to prove a polynomial global state bound despite incomplete semantic merging.
+The universal state-enumeration route is closed:
 
-### `R1.1-B` — Restricted PCRNF classes
+```text
+some efficient ordering gives polynomial total PCRNF state
+```
 
-Prove polynomial reachable-state bounds under explicit hypotheses such as bounded boundary width, bounded incidence treewidth, bounded residual component size, or another exact structural parameter.
+is false.
 
-### Handoff to `R1.2`
+The route retains:
 
-When stronger semantic merging is required, use PCRNF as the exact substrate and move to [semantic quotient over PCRNF](../semantic-quotient/README.md).
+1. exact oriented residualization and transitions;
+2. restricted PCRNF algorithms on explicitly bounded classes;
+3. the all-ordering expander lower bound;
+4. executable lower-bound certificate helpers;
+5. a transfer principle from exact residual functions to PCRNF states.
+
+## Remaining restricted track
+
+Polynomial PCRNF behaviour may still be proved under explicit hypotheses such as:
+
+- bounded boundary width;
+- bounded incidence treewidth;
+- bounded residual component size;
+- other exact structural parameters.
+
+Such results are restricted theorems and do not reopen `NAE-016`.
+
+## Handoff
+
+The all-ordering lower bound also blocks any ordered method that materializes one exact state per residual completion function. It does not rule out a collective representation sharing many residual functions inside one circuit or global object.
+
+Continue through:
+
+- [decomposable circuits](../decomposable-circuits/README.md);
+- non-ordered or collective exact representations;
+- algebraic or global methods;
+- restricted PCRNF classes.
+
+A simple semantic quotient that merely merges equal residual functions cannot defeat `NAE-020`, because the hard family already contains exponentially many semantically distinct functions.
 
 ## Evidence
 
+- [NAE-016 expander disproof](proofs/NAE-016-expander-disproof.md)
 - [VS-08 preparation](../../../VS-08-PREPARATION.md)
 - [VS-08 implementation](../../../VS-08-IMPLEMENTATION.md)
-- [VS-08 completion and status-correction audit](../../../VS-08-AUDIT.md)
-- executable modules under `tools/monotone-nae-3sat/nae3sat/pcrnf*.py`
-- deterministic record under `tools/monotone-nae-3sat/pcrnf/`
+- [VS-08 completion audit](../../../VS-08-AUDIT.md)
+- executable module `tools/monotone-nae-3sat/nae3sat/pcrnf_lower_bound.py`
+- tests `tools/monotone-nae-3sat/tests/test_nae016_lower_bound.py`
 
-## Reopening and continuation rule
+## Reopening rule
 
-Do not restate byte equality as a complete quotient. Continue only through a direct all-state theorem, a restricted theorem, or the stronger quotient subroute.
+Do not reopen universal ordered PCRNF enumeration. A reopening would require changing the computation model materially, such as representing many residual functions collectively rather than enumerating one state per function.

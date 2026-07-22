@@ -1,60 +1,61 @@
-# R1.2 — Exact Semantic Quotient over PCRNF
+# R1.2 — Collective Exact Representation over PCRNF
 
 **Subroute:** `R1.2`  
-**Status:** `READY — RECOMMENDED NEXT`  
-**Dependency:** `NAE-017 — PROVED / CHECKED`
+**Status:** `REFORMULATION REQUIRED`  
+**Dependencies:** `NAE-017`, `NAE-019`, `NAE-020`
 
-## Objective
+## Original objective
 
-Construct a polynomial-time exact equivalence or canonicalization over oriented PCRNF residuals that identifies at least some semantically equal but byte-distinct states.
+The original proposal was to construct a polynomial-time exact equivalence or canonicalization over oriented PCRNF residuals that identifies semantically equal but byte-distinct states.
 
-For residuals `R` and `S`, the target relation is
+That objective is no longer sufficient.
+
+`NAE-020` gives instances where every ordering has exponentially many pairwise semantically distinct live residual functions. No exact quotient that stores one state per semantic class can reduce this to polynomially many states.
+
+## Surviving objective
+
+Construct a polynomial-size collective object that represents or shares structure across many distinct exact residual functions without materializing each residual function as an individual traversal state.
+
+Possible mechanisms include:
+
+1. deterministic decomposable circuits;
+2. non-ordered decision structures with global sharing;
+3. algebraic objects representing families of residual functions;
+4. exact decomposition interfaces that combine many residual states symbolically;
+5. another explicitly defined collective representation.
+
+## Required distinction
+
+The route must distinguish:
 
 ```text
-R equivalent S
-iff
-R and S accept exactly the same assignments to the same remaining labelled vertices.
+number of distinct residual functions
 ```
 
-The relation must be computable without enumerating all completions or invoking a hidden satisfiability oracle.
+from
 
-## Why this is a distinct subroute
+```text
+size of one collective representation of all required residual behaviour.
+```
 
-PCRNF supplies exact residual syntax and exact transitions. It does not supply complete semantic equality.
-
-This subroute changes the merge mechanism while retaining PCRNF as the trusted transition language.
-
-## Candidate mechanisms
-
-Each candidate must receive its own child directory before activation.
-
-1. canonical decision diagrams;
-2. deterministic decomposable circuits;
-3. prime residual or minimal-forbidden-assignment closures;
-4. exact component-interface summaries;
-5. algebraic canonical forms with proved exactness.
-
-## First mandatory witness
-
-Any candidate must merge the two residuals from the five-vertex `NAE-018` counterexample while keeping residuals with different exact completion masks separate.
-
-Passing this witness is necessary, not sufficient.
+`NAE-020` proves the first quantity can be exponential under every ordering. It does not prove that every collective representation of those functions is exponentially large.
 
 ## Exact obligations
 
-A candidate must specify:
+A surviving candidate must specify:
 
 - represented semantics;
-- canonical equality or exact equivalence;
-- restriction and transition;
-- conjunction and decomposition;
+- how multiple distinct residual functions share one structure;
+- exact restriction, transition, or composition;
 - acceptance;
+- construction and equality costs;
 - complete binary encoding;
 - maximum and total representation size;
-- cost of all intermediate operations.
+- whether any step silently enumerates all residual functions.
 
 ## Hard controls
 
+- central lifts of constant-degree expanders from `NAE-020`;
 - VS-07 four-vertex genuine merge;
 - VS-08 five-vertex byte-equality failure;
 - both fan orderings;
@@ -67,12 +68,12 @@ A candidate must specify:
 
 Close a candidate when:
 
-1. equal canonical objects can have different completion sets;
-2. equality or minimization requires an NP-hard semantic primitive;
-3. intermediate or final representation size is superpolynomial on an explicit family;
-4. the complete generated state graph remains unbounded by any proved polynomial;
+1. it enumerates one object per exact residual function;
+2. its collective representation is superpolynomial on the `NAE-020` family;
+3. equality or minimization requires an NP-hard hidden primitive;
+4. transition or composition expands to superpolynomial total size;
 5. it reduces only to an already known restricted-width method.
 
-## Success condition
+## Promotion condition
 
-Promote only after proving both exactness and a polynomial complete-state bound. Finite merging evidence alone is insufficient.
+Promote only after proving exactness and a polynomial bound on the complete collective representation and all generated intermediate objects. Finite compression evidence alone is insufficient.

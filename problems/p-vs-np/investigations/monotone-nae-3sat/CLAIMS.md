@@ -21,17 +21,19 @@ This is the authoritative investigation-level ledger for Monotone NAE-3SAT claim
 | `NAE-013` | The explicit degree, intersection, pair-codegree, parity, second-moment, incidence-Gram-spectrum, root-GAC, proper-induced-satisfiability, boundary-weight, and boundary-parity summaries in VS-06 each admit a checked same-summary/different-semantics collision. | `COMPUTATIONAL` | `CHECKED` | [VS-06 collision atlas](VS-06-AUDIT.md#explicit-collision-audit) | 2026-07-22 |
 | `NAE-014` | For the fan hypergraph `F_k` with edges `{c,a_i,b_i}`, the ordering `c,a_1,...,a_k,b_1,...,b_k` has `2^(k+1)-1` live exact completion classes at level `k+1`, while the interleaved ordering `c,a_1,b_1,...,a_k,b_k` has processed boundary width at most two and therefore at most four live exact classes at every level. | `PROVED` | `CHECKED` | [VS-07 fan ordering-separation theorem](VS-07-AUDIT.md#claim-nae-014--fan-ordering-separation-theorem) | 2026-07-22 |
 | `NAE-015` | In the exhaustive domain of all labelled instances and all orderings through four vertices, genuine all-live exact merging beyond component-complement prefix orbits occurs; the first recorded witness is the two-edge four-vertex instance at ordering `(0,2,3,1)` and level three. | `COMPUTATIONAL` | `CHECKED` | [VS-07 finite genuine-merging evidence](VS-07-AUDIT.md#claim-nae-015--finite-genuine-merging-evidence) | 2026-07-22 |
-| `NAE-016` | Every encoded Monotone NAE-3SAT instance has a polynomial-time constructible ordering for which memoized traversal by propagation-closed signed residual normal forms has polynomially many distinct states of polynomial maximum and total encoded size, with polynomial-time exact transition, equality, and acceptance. | `CONJECTURE` | `CHECKED` | [VS-08 status correction](VS-08-AUDIT.md#status-correction-for-nae-016) | 2026-07-23 |
+| `NAE-016` | Every encoded Monotone NAE-3SAT instance has a polynomial-time constructible ordering for which memoized traversal by propagation-closed signed residual normal forms has polynomially many distinct states of polynomial maximum and total encoded size, with polynomial-time exact transition, equality, and acceptance. | `DISPROVED` | `CHECKED` | [`NAE-020` all-ordering expander lower bound](routes/exact-state-representations/pcrnf/proofs/NAE-016-expander-disproof.md) | 2026-07-23 |
 | `NAE-017` | Direct substitution, deterministic propagation closure, and component-complement canonicalization with an explicit orientation bit per residual component preserve the exact labelled completion set and give exact next-variable transitions. | `PROVED` | `CHECKED` | [VS-08 exactness audit](VS-08-AUDIT.md#nae-017--exact-oriented-residualization) | 2026-07-23 |
 | `NAE-018` | Byte equality of oriented PCRNF coincides with exact completion equivalence for every instance, ordering, level, and prefix. | `DISPROVED` | `CHECKED` | [VS-08 five-vertex counterexample](VS-08-AUDIT.md#nae-018--pcrnf-equality-is-not-semantic-equality) | 2026-07-23 |
+| `NAE-019` | At every level of every fixed ordering, the number of oriented PCRNF states is at least the number of distinct exact labelled completion functions induced by prefixes at that level. | `PROVED` | `CHECKED` | [Semantic projection lemma](routes/exact-state-representations/pcrnf/proofs/NAE-016-expander-disproof.md#4-semantic-projection-lemma--nae-019) | 2026-07-23 |
+| `NAE-020` | There is an infinite family of central lifts of constant-degree expanders such that every variable ordering has a level with `2^{Omega(n)}` pairwise distinct live exact completion functions, and hence `2^{Omega(n)}` distinct oriented PCRNF states. | `PROVED` | `CHECKED` | [Expander central-lift theorem](routes/exact-state-representations/pcrnf/proofs/NAE-016-expander-disproof.md#10-conclusion--nae-020) | 2026-07-23 |
 
 ## Current accepted state
 
-VS-08 retains an exact oriented residual representation and exact transitions. Orientation-free normalization is unsound, while orientation-preserving byte equality is sound but strictly finer than exact completion equivalence.
+PCRNF remains an exact oriented residual representation with exact transitions (`NAE-017`). Byte equality is not complete semantic equality (`NAE-018`). More decisively, central lifts of constant-degree expanders force exponentially many semantically distinct live residual functions under every ordering (`NAE-020`). By `NAE-019`, they force exponentially many PCRNF states under every ordering.
 
-`NAE-016` remains an open checked conjecture. VS-08 disproved one proposed completeness mechanism and failed to prove the global polynomial state bound; it did not produce a counterexample to the existential-ordering claim. Operationally, the byte-equality proof attempt is closed and further work is deferred to a stronger exact merge rule or a direct all-state bound.
+Therefore `NAE-016` is `DISPROVED / CHECKED`. This closes universal ordered PCRNF state enumeration, not PCRNF exactness or restricted PCRNF algorithms.
 
-`NAE-006` also remains unresolved. Failure of PCRNF byte equality to capture every semantic merge does not lower-bound richer exact representations or arbitrary algorithms.
+`NAE-006` remains unresolved. The all-ordering lower bound applies to representations that enumerate one exact state per ordered residual function; it does not rule out collective circuit representations, non-ordered decompositions, algebraic global methods, or arbitrary algorithms.
 
 ## Claim boundaries
 
@@ -41,9 +43,9 @@ VS-08 retains an exact oriented residual representation and exact transitions. O
 - A compact syntax is insufficient unless construction, transition, equality, acceptance, and total generated representation are polynomially bounded.
 - A lower bound for one representation model is model-specific unless a polynomial-overhead subsumption theorem is proved.
 - Finite exact measurements do not imply universal asymptotic bounds.
-- A large quotient under one ordering does not imply every ordering has a large quotient.
-- Exact quotient count does not lower-bound an unspecified symbolic representation.
-- `NAE-018` disproves semantic completeness of PCRNF byte equality, not soundness of oriented PCRNF and not `NAE-016`.
+- A large quotient under one ordering does not imply every ordering has a large quotient; `NAE-020` supplies the required every-ordering family.
+- Exact quotient count does not lower-bound an unspecified collective symbolic representation.
+- `NAE-020` does not prove `P!=NP` and does not disprove `NAE-006`.
 
 ## Identifier policy
 

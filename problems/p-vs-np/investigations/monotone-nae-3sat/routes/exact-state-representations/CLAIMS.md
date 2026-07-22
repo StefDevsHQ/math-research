@@ -6,37 +6,34 @@ This ledger maps investigation claims to the route and its subroutes. Investigat
 |---|---|---|---|
 | `NAE-004` | Route foundation | `PROVED / CHECKED` | Exact extension equivalence admits exact one-variable transitions. |
 | `NAE-006` | `R1` universal target | `CONJECTURE / DRAFT` | A universal polynomial exact-completion representation exists. |
-| `NAE-016` | `R1.1` / continuation | `CONJECTURE / CHECKED` | Some efficiently constructible ordering yields polynomial total PCRNF state. |
+| `NAE-016` | `R1.1` | `DISPROVED / CHECKED` | No ordering yields polynomial total PCRNF state on every instance. |
 | `NAE-017` | `R1.1` | `PROVED / CHECKED` | Oriented PCRNF residualization and transitions are exact. |
 | `NAE-018` | `R1.1` | `DISPROVED / CHECKED` | PCRNF byte equality is not complete semantic equality. |
+| `NAE-019` | `R1.1`, `R6` | `PROVED / CHECKED` | PCRNF state count is at least exact residual-function count. |
+| `NAE-020` | `R1.1`, `R6` | `PROVED / CHECKED` | Central lifts of constant-degree expanders force exponentially many exact residual functions under every ordering. |
 
-## Open obligations
+## Final status of R1.1
 
-### For `NAE-016`
+The universal ordered PCRNF route is closed. The disproof is not based on missed syntactic merging: the hard family already has exponentially many pairwise semantically distinct live residual functions at one level for every ordering.
 
-Prove all of:
+## Consequence for R1.2
 
-1. a polynomial-time ordering algorithm;
-2. polynomial maximum PCRNF or quotient-state size;
-3. polynomial reachable-state count;
-4. polynomial total encoded state;
-5. polynomial transition, equality, memoization, and acceptance.
+A state-per-semantic-class quotient cannot defeat `NAE-020`. `R1.2` survives only if it is reformulated as a collective representation that shares structure across many distinct residual functions without materializing each function as one state.
 
-A complete disproof requires an every-ordering superpolynomial family or another contradiction to the full quantified claim.
+## Open obligations for surviving R1 candidates
 
-### For a stronger semantic quotient
+A new candidate must specify:
 
-State a new claim identifier only after fixing:
-
-- the representation language;
+- the collective representation language;
 - exact semantics;
-- equality or canonicalization;
-- transition and merge;
-- total-state conjecture;
-- hard controls and stop condition.
+- construction and canonicalization;
+- transition or composition operations;
+- maximum and total representation size;
+- whether it enumerates residual functions individually;
+- hard controls and stop conditions.
 
 ## Status discipline
 
-- Failure of a subroute does not refute `NAE-006` or `R1`.
-- Failure of byte equality does not refute `NAE-016`.
-- A model-specific exponential lower bound does not lower-bound arbitrary exact representations.
+- `NAE-020` does not refute `NAE-006`.
+- Failure of ordered PCRNF does not refute collective circuits, non-ordered decompositions, algebraic global methods, or arbitrary algorithms.
+- The lower bound transfers only through an explicit subsumption theorem.

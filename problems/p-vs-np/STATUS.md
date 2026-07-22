@@ -1,86 +1,58 @@
 # Status — P versus NP
 
-**Phase:** Monotone NAE-3SAT VS-08 complete; `NAE-016` open; VS-09 route selection organized  
+**Phase:** Monotone NAE-3SAT `NAE-016` disproved; collective exact representations under review  
 **Updated:** 2026-07-23
 
 ## Current position
 
-The active Monotone NAE-3SAT investigation has completed `VS-01` through `VS-08` as checked infrastructure, falsification, semantic measurement and one fully implemented representation attack.
+The active Monotone NAE-3SAT investigation has completed its first universal ordered-state lower-bound attack.
 
-No proof route, universal polynomial-time mechanism or general representation lower bound has been accepted.
+Central lifts of constant-degree expanders force exponentially many pairwise distinct live exact completion functions under every variable ordering. This disproves the universal polynomial-state PCRNF conjecture `NAE-016`.
+
+No universal polynomial-time algorithm or general representation lower bound is claimed.
 
 The Subset Sum investigation remains closed after its universal structural-compression strategies failed within their stated models.
 
 ## Route organization
 
-Monotone NAE-3SAT now has an explicit [top-level route registry](investigations/monotone-nae-3sat/routes/README.md) and [operational route dashboard](investigations/monotone-nae-3sat/routes/STATUS.md).
+Monotone NAE-3SAT has an explicit [route registry](investigations/monotone-nae-3sat/routes/README.md) and [route dashboard](investigations/monotone-nae-3sat/routes/STATUS.md).
 
-Current active hierarchy:
+Current hierarchy:
 
-- `R1 — Exact-state representations` — active parent route;
-  - `R1.1 — PCRNF` — exact substrate retained, byte-equality mechanism closed, `NAE-016` open;
-  - `R1.2 — Exact semantic quotient over PCRNF` — recommended next subroute;
-  - decision-diagram and decomposable-circuit siblings — registered but not activated.
+- `R1 — Exact-state representations` remains open but narrowed;
+  - `R1.1 — PCRNF` is closed as a universal ordered state-enumeration route;
+  - exact PCRNF residualization and restricted-class analysis are retained;
+  - `R1.2` must be reformulated as a collective representation route;
+  - reduced ordered decision diagrams inherit the same residual-subfunction obstruction;
+  - decomposable circuits and other collective structures remain candidate routes.
+- `R2` retains bounded-width and incidence-forest theorems.
+- `R6` now includes an explicit all-ordering barrier for state-per-residual-function models.
 
-Other route families—decomposition, algebraic encodings, obstruction/gluing, propagation/branching and model-specific barriers—remain separately registered.
+## Accepted determination
 
-## VS-08 determination
+- `NAE-016 — DISPROVED / CHECKED`.
+- `NAE-017 — PROVED / CHECKED`.
+- `NAE-018 — DISPROVED / CHECKED`.
+- `NAE-019 — PROVED / CHECKED`.
+- `NAE-020 — PROVED / CHECKED`.
+- `NAE-006 — CONJECTURE / DRAFT` remains unresolved.
 
-Propagation-closed signed residual normal form was implemented in full.
+## Mathematical content
 
-Retained:
+For the central lift of a bounded-degree expander, every ordering admits a balanced prefix cut with a linear crossing induced matching. Subsets of the processed matching endpoints produce `2^{Omega(n)}` live prefixes with pairwise different exact suffix-completion functions.
 
-- exact direct residualization into unary, signed-binary and ternary constraints;
-- deterministic propagation closure;
-- exact next-variable transitions;
-- canonical component normalization with explicit orientation bits;
-- complete encoded-size and reachable-state measurements.
+Exact PCRNF states cannot merge different completion functions, so every ordering has exponentially many PCRNF states at one level.
 
-Negative results:
+## Scope boundary
 
-- dropping component orientation is unsound even on one NAE edge;
-- oriented PCRNF byte equality is not exact semantic equivalence;
-- the first strict incompleteness witness occurs on five vertices;
-- no polynomial bound on the complete reachable PCRNF state graph was proved.
+The result applies to ordered computations that materialize one exact state per residual completion function. It does not lower-bound:
 
-Claim status:
+- collective circuit representations;
+- non-ordered decompositions;
+- algebraic global methods;
+- arbitrary polynomial-time algorithms.
 
-- `NAE-016` — `CONJECTURE / CHECKED`;
-- `NAE-017` — `PROVED / CHECKED`;
-- `NAE-018` — `DISPROVED / CHECKED`.
-
-Failure of byte equality as a complete semantic quotient does not refute the existential claim that some efficiently constructible ordering has polynomial total PCRNF state.
-
-## Current obstruction
-
-```text
-polynomial explicit residual syntax
-is not the same as
-polynomially constructible exact semantic equivalence
-```
-
-A continuation must either:
-
-1. prove a polynomial bound on the complete PCRNF state graph despite incomplete semantic merging; or
-2. identify semantically equal residuals beyond byte equality without hiding NP-hard reasoning inside equality or normalization.
-
-## Next vertical slice
-
-`VS-09` is `PARTIAL / READY`.
-
-### Track A — restricted PCRNF theorem
-
-Owned by `R1.1-B` and `R2.3`.
-
-Prove polynomial reachable-state and total-encoding bounds on the largest identifiable structural class, starting from `NAE-017`.
-
-### Track B — stronger exact quotient
-
-Owned by `R1.2`.
-
-Define and attack a polynomial-time exact merge mechanism over PCRNF that passes the five-vertex witness and has a complete global state bound.
-
-`VS-10` through `VS-12` remain blocked only until one track yields a precise candidate.
+It therefore proves neither `P=NP` nor `P!=NP`.
 
 ## Retained project results
 
@@ -88,10 +60,11 @@ Define and attack a polynomial-time exact merge mechanism over PCRNF that passes
 - Monotone NAE-3SAT exact quotient and bounded-boundary theorems;
 - incidence-forest constructive colouring;
 - obstruction, locality-failure, summary-collision and semantic-merging evidence;
-- exact oriented PCRNF residualization and its explicit byte-equality boundary.
-
-No retained result proves `P=NP`, `P!=NP`, a general circuit lower bound or a lower bound for arbitrary algorithms.
+- exact oriented PCRNF residualization;
+- all-ordering expander lower bound for PCRNF and ordered residual-state enumeration.
 
 ## Next decision
 
-Select VS-09 Track A or Track B within the new route hierarchy. Do not close the Monotone NAE-3SAT programme and do not treat `NAE-018` as a disproof of `NAE-016`.
+Select one collective exact-representation route, with deterministic decomposable circuits as the clearest current candidate, or pursue the parallel restricted PCRNF classification programme.
+
+Proof record: [NAE-016 expander disproof](investigations/monotone-nae-3sat/routes/exact-state-representations/pcrnf/proofs/NAE-016-expander-disproof.md).
