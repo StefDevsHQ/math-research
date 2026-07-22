@@ -56,9 +56,7 @@ def _boundary_count(
     states: set[tuple[int, ...]] = set()
     for assignment in assignments:
         if all(
-            not (
-                assignment[u] == assignment[v] == assignment[w]
-            )
+            not (assignment[u] == assignment[v] == assignment[w])
             for u, v, w in completed
         ):
             states.add(
@@ -141,14 +139,6 @@ def _reference_sequence_digest(n: int) -> str:
                     next_ids = level_class_ids[level + 1]
                     transition_rows: list[list[int]] = []
                     for class_id in range(len(classes)):
-                        member_transitions = {
-                            [
-                                next_ids[2 * prefix],
-                                next_ids[2 * prefix + 1],
-                            ][0]
-                            for prefix, value in enumerate(class_ids)
-                            if value == class_id
-                        }
                         pair_set = {
                             (
                                 next_ids[2 * prefix],
