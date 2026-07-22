@@ -3,81 +3,91 @@
 **Slice:** `VS-01`  
 **Status:** `COMPLETE`  
 **Classification:** Implementation and verification audit  
+**Review maturity:** `CHECKED`  
 **Updated:** 2026-07-22
 
 ## Scope
 
-This audit closes only the canonical executable instance-model slice. It does not decide Monotone NAE-3SAT, create an exhaustive instance corpus, compute extension profiles, or establish any new complexity-class result.
+This audit closes only the canonical executable instance-model slice. It does not decide Monotone NAE-3SAT, establish Fano-plane unsatisfiability, create an exhaustive instance corpus, compute extension profiles, or establish a new complexity-class result.
 
 ## Implemented artifacts
 
 Under `tools/monotone-nae-3sat/`:
 
-- immutable canonical `Hypergraph3` and relabelled derived-object types;
-- strict construction invariants;
+- immutable canonical `Hypergraph3` and `RelabeledHypergraph3` values;
+- strict public-constructor invariants;
 - normalization of labelled simple 3-uniform hypergraphs;
 - strict versioned JSON parsing;
 - deterministic canonical serialization and SHA-256 identifiers;
 - explicit encoded-byte measurement;
 - incidence-component decomposition including isolated vertices;
 - induced-subinstance and active-core relabelling maps;
-- exact validation of proposed binary colourings;
+- strict total binary-colouring validation;
 - deterministic first-violated-edge reporting;
-- command-line validation and summary output;
-- fixed valid and malformed fixtures;
-- standard-library unit and integration tests.
+- a validation-only command-line interface;
+- valid and malformed fixtures;
+- standard-library unit, integration, and deterministic reference-cross-check tests.
 
 ## Correctness obligations checked
 
 ### Canonical construction
 
-Direct construction rejects noncanonical edges, duplicate edges, invalid labels, Boolean labels, floating-point labels, repeated edge vertices, and invalid vertex counts. `normalize_instance` accepts arbitrary edge order, sorts edge vertices, removes duplicate edges, and returns the unique canonical internal value for the fixed labelling.
+Direct construction rejects noncanonical edge order, duplicate edges, invalid labels, Boolean and floating-point labels, repeated edge vertices, and invalid vertex counts. `normalize_instance` accepts arbitrary edge order, sorts each edge, removes duplicate edges, and returns the unique canonical value for the fixed labelling.
 
 ### Serialization
 
-The accepted format is `nae3-v1`. Parsing rejects unknown or missing keys, duplicate JSON object keys, unsupported versions, noncontiguous vertex sets, nonstandard numeric constants, invalid UTF-8, malformed edge shapes, and noninteger labels. Canonical output is compact, deterministic UTF-8 JSON.
+The accepted format is `nae3-v1`. Parsing rejects unknown or missing fields, duplicate JSON keys, unsupported versions, invalid vertex sets, nonstandard numeric constants, invalid UTF-8, malformed edges, and noninteger labels.
 
-The identifier is:
+The stable labelled identifier is:
 
 ```text
 nae3-v1-sha256-<SHA-256 of canonical bytes>
 ```
 
-It is canonical for a fixed vertex labelling, not up to hypergraph isomorphism.
+It is not canonical up to hypergraph isomorphism.
 
 ### Components and relabelling
 
-Component decomposition includes isolated singleton vertices and emits components in increasing least-vertex order. Induced subinstances and active cores relabel vertices increasingly and preserve an explicit new-to-old map.
+Component decomposition includes isolated singleton vertices and emits components in increasing least-vertex order. Induced subinstances and active cores relabel vertices increasingly and return an explicit new-to-old map.
+
+The retained edge subsequence remains canonical under an increasing relabelling. The implementation therefore constructs it directly without a second normalization or sorting pass.
 
 ### Witness verification
 
-A colouring is accepted as input only when it is a total sequence of strict integer bits. Verification checks every edge for non-monochromaticity. The empty instance accepts the empty colouring; a single edge has exactly six satisfying colourings; complement symmetry is preserved; and the first violated edge is deterministic.
+A colouring is accepted only when it is a non-string finite `Sequence` of exactly `n` strict integer bits. Sets, mappings, generators, strings, byte strings, Booleans, floating-point values, nonbinary integers, and wrong-length sequences are rejected.
 
-## Test evidence
+Verification checks every edge for non-monochromaticity. The empty instance accepts the empty colouring; one edge has exactly six satisfying colourings; global complementation preserves satisfaction; and the first violated edge is deterministic.
 
-The standard command is:
+## Reproducible test evidence
+
+From the tool directory:
 
 ```bash
 cd tools/monotone-nae-3sat
 python3 -m unittest discover -s tests -v
+python3 -m nae3sat.cli validate tests/fixtures/fano-plane.json
 ```
 
-The implementation was additionally attacked with an independent reference checker over 1,350 seeded random labelled instances with `0 <= n <= 8`. For every tested instance:
+The committed suite contains 25 test methods. One method performs a deterministic independent reference cross-check over exactly 1,350 generated labelled instances:
 
-- canonical serialization round-tripped exactly;
-- component decomposition agreed with an independent implementation;
-- every binary colouring agreed with an independent NAE verifier;
-- active-core relabelling agreed with the set of vertices appearing in edges.
+- seed: `20260722`;
+- vertex counts: `0 <= n <= 8`;
+- 150 generated instances for each `n`;
+- independent component computation;
+- independent NAE witness evaluation;
+- canonical round-trip checks;
+- active-core map and edge checks;
+- every binary colouring checked for every generated instance.
 
-Seed: `20260722`.
+This is finite computational verification of the implementation, not evidence for a universal satisfiability claim.
 
-The command-line Fano fixture produced:
+The Fano fixture summary is:
 
 ```json
 {"format":"nae3-v1-summary","id":"nae3-v1-sha256-3b78789e10d0828f0051c7a0cea558bf988e067433a230a5c62af86db9d45de8","n":7,"m":7,"components_total":1,"components_nontrivial":1,"encoded_bytes":113}
 ```
 
-The command intentionally does not decide whether the fixture is satisfiable.
+The command intentionally does not decide satisfiability.
 
 ## Pinned fixture identifiers
 
@@ -94,25 +104,32 @@ The command intentionally does not decide whether the fixture is satisfiable.
 
 Let `n` be the explicitly listed vertex count, `m` the supplied edge count, and `L` the canonical byte length.
 
-- normalization uses a set of constant-arity edge tuples followed by sorting: expected `O(m)` insertion plus `O(m log m)` tuple comparisons;
-- canonical validation is `O(n + m)` relative to the already canonical tuple representation;
-- serialization, hashing, and encoded-size calculation are `O(L)`;
-- colouring validation and edge verification are `O(n + m)`;
-- component construction and traversal are `O(n + m)`;
-- induced-subinstance and active-core construction use dictionaries and sets and are expected `O(n + m)`, followed by ordinary normalization of retained edges;
-- retained graph and traversal memory are `O(n + m)`.
+- normalization: expected `O(m)` hash insertion plus `O(m log m)` constant-arity tuple comparisons;
+- direct canonical validation: `O(m)` after the immutable tuple exists;
+- parser schema and vertex-set validation: `O(L)` using a byte membership array rather than sorting;
+- serialization, hashing, and byte measurement: `O(L)`;
+- colouring validation and witness verification: `O(n + m)`;
+- component decomposition: `O(n + m)`;
+- selected-vertex validation and canonical ordering: `O(n + k)` for `k` supplied vertices;
+- induced subinstance and active core: `O(n + m)` after the source instance is canonical;
+- retained graph and traversal memory: `O(n + m)`.
 
-Vertex labels occupy `O(log n)` bits. Because vertices are explicitly enumerated, all operations remain polynomial in the encoded input length. No pseudo-polynomial parameter is used.
+Vertex labels use `O(log n)` bits. Because every vertex is explicitly serialized, all operations are polynomial in encoded input length. No pseudo-polynomial parameter is used.
 
-## Independent break findings
+## Full-review findings fixed
 
-Two defects were found during the break pass and corrected before closure:
+The final PR-wide review found and corrected:
 
-1. a final component sort was unnecessary and conflicted with the claimed linear component bound; component identifiers are now assigned in increasing start-vertex order, making the output canonical without sorting;
-2. the documented Fano canonical byte count was corrected to `113`.
+1. unordered sets and mappings could be accepted as colourings despite the sequence contract;
+2. selected-vertex and active-core paths sorted and re-normalized, exceeding the claimed linear bound;
+3. parser vertex validation sorted the vertex list despite claiming linear schema validation;
+4. serialization functions lacked explicit wrong-instance rejection;
+5. the 1,350-instance break pass was described but not reproducible from committed code;
+6. the vertical-slice ledger had been over-compressed and lost exact downstream exit gates;
+7. the implementation specification still described a partial, differently laid-out package.
+
+Earlier break-pass fixes retained here were removal of an unnecessary component sort and correction of the Fano canonical byte count to `113`.
 
 ## Final determination
 
-`VS-01` is complete. The executable laboratory now has a trustworthy canonical input layer and witness verifier.
-
-The next slice is `VS-02`: implement an exact exhaustive satisfiability oracle and record the first exhaustively justified labelled instance domain.
+`VS-01` is `COMPLETE / CHECKED` as an infrastructure slice. The next slice is `VS-02`: implement an exact exhaustive satisfiability oracle and record the first exhaustively justified labelled instance domain.
