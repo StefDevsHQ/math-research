@@ -246,7 +246,19 @@ def _count_row(n: int) -> dict[str, object]:
 
 def profile_corpus_payload(max_vertices: int = 5) -> dict[str, object]:
     max_vertices = _validate_bound(max_vertices)
-    counts = [_count_row(n) for n in range(max_vertices + 1)]
+    rows_with_digests = [_count_row(n) for n in range(max_vertices + 1)]
+    sequence_digests = {
+        str(row["n"]): row["profile_sequence_sha256"]
+        for row in rows_with_digests
+    }
+    counts = [
+        {
+            key: value
+            for key, value in row.items()
+            if key != "profile_sequence_sha256"
+        }
+        for row in rows_with_digests
+    ]
     total_keys = (
         "profiles",
         "satisfiable_profiles",
@@ -268,6 +280,7 @@ def profile_corpus_payload(max_vertices: int = 5) -> dict[str, object]:
         "domain": f"all-labelled-instance-ordering-pairs-n-le-{max_vertices}",
         "generator": GENERATOR,
         "computation": "finite-exhaustive",
+        "profile_sequence_sha256_by_n": sequence_digests,
         "counts": counts,
         "totals": totals,
     }
