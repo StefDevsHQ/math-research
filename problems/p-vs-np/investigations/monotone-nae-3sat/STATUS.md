@@ -1,13 +1,13 @@
 # Status — Monotone NAE-3SAT Investigation
 
-**Phase:** `VS-06` complete; `VS-07` ready  
+**Phase:** `VS-07` complete; `VS-08` ready  
 **Updated:** 2026-07-22
 
 ## Current position
 
-The investigation remains open. `VS-01` through `VS-06` are `COMPLETE / CHECKED`. No universal polynomial-time mechanism is claimed.
+The investigation remains open. `VS-01` through `VS-07` are `COMPLETE / CHECKED`. No universal polynomial-time mechanism or general representation lower bound is claimed.
 
-The trusted laboratory provides canonical instances, exact finite semantics, exact fixed-order completion profiles, calibrated tractable controls, a minimal-obstruction atlas, and a checked atlas of failures for explicitly defined naive summaries.
+The trusted laboratory now provides canonical instances, exact finite semantics, exact fixed-order completion profiles, tractable controls, obstruction and collision atlases, and a deterministic live semantic-merging census separated from dead collapse and complement symmetry.
 
 ## Accepted baseline
 
@@ -20,6 +20,8 @@ The trusted laboratory provides canonical instances, exact finite semantics, exa
 7. Every globally unsatisfiable instance collapses successful-completion semantics to one dead class at every level — `PROVED / CHECKED`.
 8. For every fixed radius, equal rooted-radius neighbourhood multisets can coexist with opposite conditioned residual satisfiability — `PROVED / CHECKED`.
 9. Ten explicit naive summaries have checked same-summary/different-semantics collisions — `COMPUTATIONAL / CHECKED`.
+10. The fan family has exponential live exact-state growth under one order and constant-width behaviour under an interleaved order — `PROVED / CHECKED`.
+11. Genuine all-live exact merging beyond component-complement prefix orbits occurs in the complete labelled domain through four vertices — `COMPUTATIONAL / CHECKED`.
 
 ## Vertical-slice progress
 
@@ -29,45 +31,45 @@ The trusted laboratory provides canonical instances, exact finite semantics, exa
 - `VS-04` control calibration — `COMPLETE / CHECKED`.
 - `VS-05` minimal obstruction atlas — `COMPLETE / CHECKED`.
 - `VS-06` naive-summary destruction — `COMPLETE / CHECKED`.
-- `VS-07` semantic-merging measurement — `READY`.
-- `VS-08` — blocked until VS-07 isolates a candidate invariant.
+- `VS-07` semantic-merging measurement — `COMPLETE / CHECKED`.
+- `VS-08` atomic invariant extraction — `READY`.
 - `VS-09` — `PARTIAL` through bounded-boundary and incidence-forest theorems.
-- `VS-10` through `VS-12` — blocked until an atomic invariant exists.
+- `VS-10` through `VS-12` — blocked until a VS-08 representation survives attack.
 
-## VS-06 retained results
+## VS-07 retained results
 
-The committed collision atlas separates whole-instance satisfiability from prefix completion semantics.
+The measurement framework separately records:
 
-Disproved summaries:
+- raw, live, and dead prefixes;
+- exact live and dead semantic classes;
+- component-complement prefix and semantic orbits;
+- genuine exact merging across prefix-orbit boundaries;
+- processed-valid and live boundary states;
+- dense-mask, assignment-map, boundary, and profile byte sizes;
+- ordering dependence.
 
-- degree sequence;
-- edge-intersection multiset;
-- pair-codegree multiset;
-- parity data;
-- second moments;
-- incidence-Gram spectrum;
-- root generalized arc consistency;
-- satisfiability of all proper induced subinstances;
-- boundary Hamming weight;
-- boundary Hamming parity.
+The first all-live genuine merge occurs on the four-vertex instance with edges `{012,013}`, ordering `(0,2,3,1)`, and level three.
 
-The exact boundary assignment remains a complete control but can expose `2^w` states. The fixed-radius family rules out every constant locality radius, not radii growing with input size.
+For the fan family `F_k`:
+
+- the bad order has `2^(k+1)-1` live exact classes at level `k+1`;
+- the reduction from raw prefixes is essentially only global complement symmetry;
+- an interleaved order has boundary width at most two and at most four live exact classes.
+
+Thus large fixed-order exact quotients are real, but one bad ordering is not an intrinsic obstruction.
 
 ## Current obstruction
 
-Easy global statistics, fixed local views, weak local consistency, and coarse boundary aggregates can preserve unresolved logical compatibility. Their failure does not lower-bound richer representations.
+`NAE-006` remains open because no concrete symbolic language has yet supplied all of:
 
-`NAE-006` remains open because no concrete symbolic language with polynomial construction, transition, equivalence, acceptance, and total generated size has yet been selected and survived attack.
+- exact semantics;
+- polynomial-time construction and canonical equality;
+- exact restriction, transition, and merge;
+- polynomial-time acceptance;
+- a polynomial global bound on all generated representations.
+
+VS-07 shows both sides of the problem: exact semantics can merge boundary assignments nontrivially, yet exact live quotients can also grow exponentially. Neither fact determines whether a richer symbolic representation remains polynomial.
 
 ## Immediate next task
 
-Run `VS-07` to measure genuine live semantic merging separately from:
-
-- dead-state collapse;
-- componentwise complement symmetry;
-- exact boundary-state count;
-- quotient-state count;
-- representation byte size;
-- ordering effects.
-
-The slice must end with reproducible first merges, first substantial growth families, and an exact distinction between semantic compression and compact symbolic representation.
+Execute `VS-08` by defining one atomic representation language for the genuine merging observed in VS-07. The first candidate should normalize residual constraints under component complement and specify exact construction, transition, equality, acceptance, encoded size, hard controls, and a stop condition before implementation begins.
