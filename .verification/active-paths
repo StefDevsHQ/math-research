@@ -1,4 +1,5 @@
 # One repository verification scope per line.
 # Remove a scope after its investigation or route is CLOSED or DEFERRED.
 # Restore it only through an explicit reopening change.
+# Phase I (VS-01 through VS-05) closed COMPLETE / CHECKED; investigation remains active for VS-06.
 monotone-nae-3sat
