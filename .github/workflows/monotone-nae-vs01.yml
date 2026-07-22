@@ -6,7 +6,6 @@ on:
       - main
     paths:
       - "tools/monotone-nae-3sat/**"
-      - "problems/p-vs-np/investigations/monotone-nae-3sat/**"
       - "scripts/**"
       - ".githooks/**"
       - ".github/workflows/monotone-nae-vs01.yml"
