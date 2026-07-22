@@ -8,6 +8,7 @@ on:
       - "tools/monotone-nae-3sat/**"
       - "scripts/**"
       - ".githooks/**"
+      - ".verification/**"
       - ".github/workflows/monotone-nae-vs01.yml"
   workflow_dispatch:
 
@@ -31,16 +32,16 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: ${{ matrix.python-version }}
-      - name: Fast repository gate
+      - name: Fast active-scope gate
         run: sh scripts/check.sh fast
 
   full:
-    name: Full research gate (3.13)
+    name: Full active-scope gate (3.13)
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
           python-version: "3.13"
-      - name: Full repository gate
+      - name: Full active-scope gate
         run: sh scripts/check.sh full
