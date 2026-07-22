@@ -1,13 +1,15 @@
 # Status — Monotone NAE-3SAT Investigation
 
-**Phase:** `VS-08` complete; PCRNF route closed  
+**Phase:** `VS-08` complete; `NAE-016` open; select VS-09 continuation  
 **Updated:** 2026-07-23
 
 ## Current position
 
 `VS-01` through `VS-08` are `COMPLETE / CHECKED`.
 
-VS-08 implemented propagation-closed signed residual normal forms, repaired an orientation defect, proved exact oriented residualization, found the first strict semantic-incompleteness witness, and closed the universal PCRNF compression conjecture.
+VS-08 implemented propagation-closed signed residual normal forms, repaired an orientation defect, proved exact oriented residualization, and found the first strict semantic-incompleteness witness for byte equality.
+
+The Monotone NAE-3SAT programme remains open. The specific byte-equality merge strategy is closed; the existential polynomial-state conjecture `NAE-016` is not disproved and remains open.
 
 No universal polynomial-time mechanism or general representation lower bound is claimed.
 
@@ -22,12 +24,21 @@ No universal polynomial-time mechanism or general representation lower bound is 
 
 ## Claim status
 
-- `NAE-016` — `RETRACTED / CHECKED`.
+- `NAE-016` — `CONJECTURE / CHECKED`.
 - `NAE-017` — `PROVED / CHECKED`.
 - `NAE-018` — `DISPROVED / CHECKED`.
 - `NAE-006` remains `CONJECTURE / DRAFT` and unresolved.
 
-`NAE-016` is retracted rather than disproved because the five-vertex witness refutes semantic completeness of byte equality, not the existence of some polynomial-state ordering for every instance.
+The former `RETRACTED` classification of `NAE-016` was too strong. VS-08 refuted semantic completeness of byte equality and failed to prove a global polynomial bound; it did not refute the existence of a polynomial-state ordering for every instance.
+
+Operationally:
+
+```text
+mathematical conjecture NAE-016       OPEN
+exact oriented PCRNF substrate        RETAINED
+byte equality as complete quotient    CLOSED
+next proof mechanism                  NOT YET SELECTED
+```
 
 ## Retained implementation
 
@@ -46,8 +57,8 @@ The tool now provides:
 ## Vertical-slice progress
 
 - `VS-01` through `VS-08` — `COMPLETE / CHECKED`.
-- `VS-09` remains `PARTIAL` only through the previously proved bounded-boundary and incidence-forest results.
-- `VS-10` through `VS-12` remain blocked pending a materially new exact representation mechanism.
+- `VS-09` — `PARTIAL / READY`: use `NAE-017` either to prove a restricted polynomial-state theorem or to define a stronger exact merge layer over PCRNF.
+- `VS-10` through `VS-12` remain blocked until VS-09 produces a precise surviving candidate.
 
 ## Current obstruction
 
@@ -57,15 +68,17 @@ PCRNF exposes the core difficulty clearly:
 exact residual syntax != exact semantic equivalence
 ```
 
-A stronger merge rule must identify semantically equal but syntactically different residuals without invoking satisfiability, exact completion enumeration, or another intractable semantic oracle. It must also bound the complete generated state graph, not only each individual state.
+A stronger merge rule must identify semantically equal but syntactically different residuals without invoking satisfiability, exact completion enumeration, or another intractable semantic oracle. Alternatively, a direct theorem may bound the number of reachable PCRNFs despite incomplete merging.
 
-## Reopening condition
+Either route must bound the complete generated state graph, not only each individual state.
 
-Do not reopen PCRNF as a universal route without:
+## Continuation conditions
 
-1. a new polynomial-time exact merge criterion strictly stronger than byte equality;
-2. proof that the criterion preserves labelled completion semantics;
-3. a globally polynomial bound on reachable state count and total encoded state;
-4. successful tests on the five-vertex incompleteness witness, fan family, Fano, linear four-regular instances, and canonical reduction outputs.
+Continue from `NAE-017` through one of two precise routes:
 
-Evidence: [VS-08 completion audit](VS-08-AUDIT.md) and the deterministic PCRNF attack record.
+1. prove polynomial reachable-state and total-encoding bounds on the largest identifiable structural class, then test whether the proof extends;
+2. define a polynomial-time exact merge criterion strictly stronger than byte equality and attack it on the five-vertex witness, fan family, Fano, linear four-regular instances, and canonical reduction outputs.
+
+A disproof of `NAE-016` requires an every-ordering superpolynomial family or another complete contradiction to its quantified statement.
+
+Evidence: [VS-08 completion and status-correction audit](VS-08-AUDIT.md) and the deterministic PCRNF attack record.
