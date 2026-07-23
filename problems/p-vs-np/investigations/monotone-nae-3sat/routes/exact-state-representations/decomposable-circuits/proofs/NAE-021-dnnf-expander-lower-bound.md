@@ -129,13 +129,23 @@ A graph of treewidth `k` has a vertex separator `S` with
 
 such that every connected component of `G_n-S` has at most `n/2` vertices. For completeness, this follows directly from the tree decomposition: assign every graph vertex to one bag containing it, choose a weighted centroid bag of the decomposition tree, and remove the vertices of that bag. Each remaining graph component is contained in one component of the decomposition tree after deleting the centroid bag, hence has at most half of the assigned weight.
 
-Choose a union `U` of connected components of `G_n-S` with
+Because `G_n` is `d`-regular, `|delta(U)| <= d|U|` for every `U`, so the expansion constant satisfies `h <= d`.
+
+If `|S| >= n/4`, then
+
+```text
+|S| >= n/4 >= h n/(4d),
+```
+
+and the desired conclusion follows immediately from `|S| <= k+1`.
+
+Assume therefore that `|S| < n/4`. More than `3n/4` vertices remain in the components of `G_n-S`. Choose a union `U` of these components with
 
 ```text
 n/4 <= |U| <= n/2.
 ```
 
-Such a union exists. If some component has size between `n/4` and `n/2`, use it. Otherwise every component has size below `n/4`, and greedily add components until the union first reaches `n/4`; the result remains below `n/2`.
+Such a union now exists. If some component has size between `n/4` and `n/2`, use it. Otherwise every component has size below `n/4`; greedily add components until the union first reaches `n/4`. The previous partial union had size below `n/4`, and the last added component also has size below `n/4`, so the resulting union has size below `n/2`.
 
 There are no edges from `U` to `V_n \ (U union S)`. Thus every edge of `delta(U)` has an endpoint in `S`. Since the maximum degree is `d`,
 
