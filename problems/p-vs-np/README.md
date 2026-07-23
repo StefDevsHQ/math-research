@@ -6,45 +6,49 @@ The repository does not claim a resolution. It preserves exact statements, estab
 
 ## Current phase
 
-The project has opened a **Monotone NAE-3SAT investigation in formalization and route-selection mode**. No proof route is active.
+The project is in **top-level route selection** after completing the universal exact-representation closeout for the Monotone NAE-3SAT investigation.
 
-The first concrete investigation, Subset Sum, completed and closed two universal routes:
+Two concrete investigations have now produced retained results and justified route closures:
 
-1. **Structural compression** — closed as a universal polynomial-time strategy; the residue-completion lemma and a restricted polynomially bounded decomposition theorem remain valid.
-2. **Exact-state compression barriers** — closed as a broad model-barrier strategy; ordered Boolean lower bounds and arithmetic representation-boundary theorems remain valid only in their recorded models.
+1. **Subset Sum**
+   - structural compression closed universally;
+   - broad exact-state compression barriers closed within their stated models;
+   - residue-completion and restricted exact-decomposition results retained.
+2. **Monotone NAE-3SAT**
+   - exact PCRNF residualization retained;
+   - universal ordered PCRNF state enumeration disproved;
+   - reduced ordered decision diagrams inherit the residual-function obstruction;
+   - universal DNNF exact representation disproved on central-lift expanders;
+   - restricted decomposition and compilation results retained.
 
-The programme maintains three canonical orientation artifacts:
+No proof route is currently active.
 
-- [Research-programme landscape](references/research-programme-landscape.md) — major positive, structural, circuit, proof, meta-complexity, conditional, and barrier programmes, with the exact class consequence of each target.
-- [Problem-testbed landscape](references/problem-testbed-landscape.md) — candidate testbeds and controls organized by native obstruction and research objective.
-- [Canonical source map](references/top-level-landscape-sources.md) — the authoritative bibliography supporting both landscapes.
+## Canonical orientation artifacts
 
-The detailed [Subset Sum algorithmic landscape](investigations/subset-sum/references/algorithmic-landscape.md) remains investigation-specific rather than the top-level project map.
+- [Research-programme landscape](references/research-programme-landscape.md)
+- [Problem-testbed landscape](references/problem-testbed-landscape.md)
+- [Canonical source map](references/top-level-landscape-sources.md)
 
 ## Current candidate tracks
 
-### Symmetry-first positive investigation
+### New positive investigation
 
-The active investigation is [Monotone NAE-3SAT](investigations/monotone-nae-3sat/README.md), equivalently 2-colourability of a 3-uniform hypergraph. It uses one self-dual ternary relation, no negations, no constants, and no weights.
+Select a testbed and one atomic polynomial-time mechanism with a falsifiable promotion gate. Positive 1-in-3 SAT, X3C, and 3-Dimensional Matching remain available exactness-first candidates, but none is active.
 
-A deterministic polynomial-time algorithm correct on every Monotone NAE-3SAT instance would prove `P=NP`. The current phase prepares the object, controls, claim ledger, and proof obligations; it does not assert such an algorithm.
+### Lower-bound sibling
 
-### Exactness-first sibling
+Circuit-SAT and restricted-circuit satisfiability remain the strongest sibling candidate only after fixing the exact circuit model and the theorem that would transfer an algorithmic improvement into a lower bound.
 
-Positive 1-in-3 SAT remains the strongest exactness-first candidate, with X3C and 3-Dimensional Matching as paired hard controls. It is not currently an active investigation.
+### Restricted theorem programme
 
-### Lower-bound sibling track
-
-The strongest current sibling candidate is **Circuit-SAT and restricted-circuit satisfiability**, because nontrivial algorithms for sufficiently expressive restricted circuit classes can sometimes be converted into circuit lower bounds.
-
-A lower-bound route must state the exact computation or proof model and the class separation implied by the desired theorem. Failure of one model is not evidence for `P!=NP`.
+Monotone NAE-3SAT restricted PCRNF and decomposition classification may continue as a secondary programme. Success there does not establish a universal algorithm.
 
 ## Structure
 
-- [Foundations](foundations/README.md) — shared definitions, models, and established results
-- [References and landscapes](references/README.md) — canonical cross-investigation programme, testbed, and source maps
-- [Reductions](reductions/README.md) — reusable reduction infrastructure
-- [Investigations](investigations/README.md) — concrete research environments
+- [Foundations](foundations/README.md)
+- [References and landscapes](references/README.md)
+- [Reductions](reductions/README.md)
+- [Investigations](investigations/README.md)
   - [Monotone NAE-3SAT](investigations/monotone-nae-3sat/README.md)
   - [Subset Sum](investigations/subset-sum/README.md)
 
@@ -59,7 +63,7 @@ A lower-bound route must state the exact computation or proof model and the clas
 
 ## Scope restraint
 
-No retained result proves `P=NP`, `P!=NP`, a general Boolean circuit lower bound, or a lower bound for arbitrary Subset Sum algorithms.
+No retained result proves `P=NP`, `P!=NP`, a general Boolean circuit lower bound, or a lower bound for arbitrary algorithms.
 
 Landscape rankings and investigation choices are project strategy decisions, not mathematical claims that one problem is intrinsically easier or that one programme is exhaustive.
 
