@@ -8,31 +8,31 @@ A **top-level route** is a materially distinct mathematical strategy. A **subrou
 
 ```text
 routes/
-├── R1 exact-state-representations/          ACTIVE / NARROWED
+├── R1 exact-state-representations/          CLOSED UNIVERSAL / DORMANT
 │   ├── R1.1 pcrnf/                          CLOSED UNIVERSAL / RETAINED
-│   ├── R1.2 collective-representation/      REFORMULATION REQUIRED
+│   ├── R1.2 collective-representation/      DORMANT / UNSPECIFIED
 │   ├── R1.3 decision-diagrams/              ORDERED VARIANT BLOCKED
-│   └── R1.4 decomposable-circuits/           CANDIDATE — NEXT
-├── R2 decomposition-and-ordering/           PARTIAL
+│   └── R1.4 decomposable-circuits/           CLOSED UNIVERSAL / RETAINED RESTRICTED
+├── R2 decomposition-and-ordering/           RESTRICTED RESULTS / OPEN SECONDARY
 │   ├── R2.1 boundary-width/                  PROVED / RESTRICTED
 │   ├── R2.2 incidence-forest/                PROVED / RESTRICTED
-│   └── R2.3 beyond-width/                    OPEN
-├── R3 algebraic-encodings/                  PROPOSED
-├── R4 obstruction-and-gluing/               PROPOSED
-├── R5 propagation-and-branching/            PROPOSED / PARTIAL
-└── R6 representation-barriers/              ACTIVE SUPPORT
+│   └── R2.3 beyond-width/                    OPEN SECONDARY
+├── R3 algebraic-encodings/                  PROPOSED / INACTIVE
+├── R4 obstruction-and-gluing/               PROPOSED / INACTIVE
+├── R5 propagation-and-branching/            PROPOSED / PARTIAL / INACTIVE
+└── R6 representation-barriers/              RETAINED SUPPORT
 ```
 
 ## Top-level route registry
 
-| ID | Route | Operational status | Mathematical objective | Immediate gate |
+| ID | Route | Operational status | Retained result | Reopening gate |
 |---|---|---|---|---|
-| `R1` | [Exact-state representations](exact-state-representations/README.md) | `ACTIVE / NARROWED` | Represent exact future completion behaviour without enumerating one state per residual function. | Select a collective representation, preferably `R1.4`, and attack it on `NAE-020`. |
-| `R2` | [Decomposition and ordering](decomposition-and-ordering/README.md) | `PARTIAL` | Find efficiently constructible decompositions with polynomial complete collective state. | Extend beyond known bounded-width and incidence-forest classes. |
-| `R3` | [Algebraic encodings](algebraic-encodings/README.md) | `PROPOSED` | Replace explicit logical compatibility by an exact polynomial algebraic object. | Select one exact field, ideal, cut, or inequality mechanism. |
-| `R4` | [Obstruction and gluing](obstruction-and-gluing/README.md) | `PROPOSED` | Characterize global compatibility or unsatisfiability through exact gluing data or polynomial certificates. | State one complete obstruction or gluing theorem. |
-| `R5` | [Propagation and branching](propagation-and-branching/README.md) | `PROPOSED / PARTIAL` | Turn forced implications and controlled branching into a globally polynomial computation. | Use a computation model not defeated by ordered residual-function growth. |
-| `R6` | [Representation barriers](representation-barriers/README.md) | `ACTIVE SUPPORT` | Prove model-specific state or size lower bounds without overstating them as general lower bounds. | Determine exactly which ordered models are subsumed by `NAE-020`. |
+| `R1` | [Exact-state representations](exact-state-representations/README.md) | `CLOSED UNIVERSAL / DORMANT` | Exact PCRNF; ordered residual-function and DNNF lower bounds. | Fix a materially new representation language not subsumed by `NAE-020` or `NAE-021`. |
+| `R2` | [Decomposition and ordering](decomposition-and-ordering/README.md) | `RESTRICTED RESULTS / OPEN SECONDARY` | Bounded-boundary dynamic programming and incidence-forest colouring. | State a structural class and prove a complete polynomial total-state bound. |
+| `R3` | [Algebraic encodings](algebraic-encodings/README.md) | `PROPOSED / INACTIVE` | None universal. | Select one exact algebraic language and a falsifiable construction claim. |
+| `R4` | [Obstruction and gluing](obstruction-and-gluing/README.md) | `PROPOSED / INACTIVE` | Locality and collision barriers retained. | State one complete obstruction or gluing theorem. |
+| `R5` | [Propagation and branching](propagation-and-branching/README.md) | `PROPOSED / PARTIAL / INACTIVE` | Exact PCRNF propagation retained. | Supply a globally polynomial computation model not covered by current barriers. |
+| `R6` | [Representation barriers](representation-barriers/README.md) | `RETAINED SUPPORT` | `NAE-020` and `NAE-021`. | Extend only through an explicit model-subsump­tion theorem. |
 
 ## Current determination
 
@@ -40,29 +40,27 @@ routes/
 - `NAE-017 — PROVED / CHECKED`;
 - `NAE-018 — DISPROVED / CHECKED`;
 - `NAE-019 — PROVED / CHECKED`;
-- `NAE-020 — PROVED / CHECKED`.
+- `NAE-020 — PROVED / CHECKED`;
+- `NAE-021 — PROVED / CHECKED`.
 
-The expander central-lift family forces exponentially many pairwise distinct exact residual functions under every variable ordering. Therefore:
+The central-lift expander family now yields two distinct barriers:
 
-- universal ordered PCRNF state enumeration is closed;
-- a semantic quotient with one state per residual function is also blocked;
-- reduced ordered decision diagrams inherit the same obstruction;
-- collective circuit or non-ordered representations remain open.
+1. every variable ordering has exponentially many exact residual completion functions;
+2. every DNNF for the exact satisfying-assignment function has exponential size.
+
+Consequently, universal ordered PCRNF enumeration, one-state-per-residual-function quotients, reduced ordered decision diagrams, and DNNF are closed as polynomial exact-representation routes. This does not lower-bound unrestricted Boolean circuits, algebraic global methods, arbitrary data structures, or arbitrary algorithms.
 
 ## Status discipline
 
-Mathematical status and route status are separate.
+Mathematical status and route status are separate. A closed mechanism does not imply `P!=NP`, and a restricted theorem does not imply `P=NP`.
 
-- `PROVED`, `DISPROVED`, `CONJECTURE`, and `OPEN` describe claims.
-- `ACTIVE`, `READY`, `PARTIAL`, `PROPOSED`, `DEFERRED`, and `CLOSED` describe work programmes.
-
-A failed subroute does not close its parent route unless every child mechanism is covered by a valid subsumption theorem.
+`NAE-006` remains a conjecture, but the generic route is dormant because no fixed surviving representation language is presently specified.
 
 ## Cross-cutting controls
 
-Every universal candidate must face:
+Any reopened universal route must face:
 
-- central lifts of constant-degree expanders from `NAE-020`;
+- central-lift expanders from `NAE-020` and `NAE-021`;
 - the four-vertex genuine semantic-merge witness;
 - the five-vertex PCRNF incompleteness witness;
 - both fan orderings;
@@ -79,5 +77,4 @@ Every universal candidate must face:
 - [Investigation claim ledger](../CLAIMS.md)
 - [Route dashboard](STATUS.md)
 - [NAE-016 expander disproof](exact-state-representations/pcrnf/proofs/NAE-016-expander-disproof.md)
-
-Failure of one route or subroute does not imply `P!=NP`, and success on one restricted class does not imply `P=NP`.
+- [NAE-021 DNNF lower bound](exact-state-representations/decomposable-circuits/proofs/NAE-021-dnnf-expander-lower-bound.md)

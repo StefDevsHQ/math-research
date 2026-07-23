@@ -1,53 +1,59 @@
 # Status — Monotone NAE-3SAT Investigation
 
-**Phase:** `NAE-016` disproved; ordered state-enumeration route closed; collective representations next  
+**Phase:** exact-representation barrier package complete; universal route selection closed  
 **Updated:** 2026-07-23
 
 ## Current position
 
-`VS-01` through `VS-08` remain `COMPLETE / CHECKED`.
+`VS-01` through `VS-09A` remain `COMPLETE / CHECKED`. The DNNF barrier continuation is also complete.
 
-The subsequent direct attack on `NAE-016` is also complete. Central lifts of constant-degree expanders force exponentially many pairwise distinct live exact completion functions under every variable ordering. Since exact PCRNF states cannot identify distinct completion functions, every ordering has exponentially many PCRNF states.
+The central-lift expander family now supplies two complementary lower bounds:
 
-The Monotone NAE-3SAT programme remains open. The universal ordered PCRNF route is closed.
+- `NAE-020`: every variable ordering exposes `2^{Omega(n)}` distinct live residual completion functions;
+- `NAE-021`: every DNNF for the exact satisfying-assignment function has size `2^{Omega(n)}`.
+
+The universal ordered PCRNF and decomposable-circuit routes are closed. The broader Monotone NAE-3SAT problem remains open.
 
 ## Accepted results
 
-- `NAE-016 — DISPROVED / CHECKED`: no polynomial-state PCRNF ordering exists universally.
-- `NAE-017 — PROVED / CHECKED`: oriented PCRNF residualization and transitions are exact.
-- `NAE-018 — DISPROVED / CHECKED`: PCRNF byte equality is not complete semantic equality.
-- `NAE-019 — PROVED / CHECKED`: PCRNF state count dominates exact residual-function count.
-- `NAE-020 — PROVED / CHECKED`: central lifts of constant-degree expanders yield `2^{Omega(n)}` exact residual functions under every ordering.
-- `NAE-006 — CONJECTURE / DRAFT`: a broader polynomial collective exact representation remains unresolved.
+- `NAE-016 — DISPROVED / CHECKED`.
+- `NAE-017 — PROVED / CHECKED`.
+- `NAE-018 — DISPROVED / CHECKED`.
+- `NAE-019 — PROVED / CHECKED`.
+- `NAE-020 — PROVED / CHECKED`.
+- `NAE-021 — PROVED / CHECKED`.
+- `NAE-006 — CONJECTURE / DRAFT` remains unresolved and dormant.
 
 ## Route position
 
-- [`R1.1 — PCRNF`](routes/exact-state-representations/pcrnf/README.md): closed as a universal ordered state-enumeration route; exact and restricted results retained.
-- [`R1.2 — Collective exact representation`](routes/exact-state-representations/semantic-quotient/README.md): reformulation required; state-per-semantic-class quotients are blocked by `NAE-020`.
-- [`R1.3 — Decision diagrams`](routes/exact-state-representations/decision-diagrams/README.md): reduced ordered variants blocked; broader models unassessed.
-- `R1.4 — Decomposable circuits`: remains a candidate collective representation route.
-- `R2`: restricted decomposition and ordering results remain valid.
-- `R6`: now contains an explicit all-ordering model-specific barrier.
+- `R1.1 — PCRNF`: closed universally; exact and restricted results retained.
+- `R1.2 — Collective representation`: dormant; no fixed surviving model.
+- `R1.3 — Decision diagrams`: reduced ordered variants blocked.
+- `R1.4 — Decomposable circuits`: closed universally by `NAE-021`; restricted bounded-width compilation retained.
+- `R2`: restricted decomposition and ordering results remain valid as a secondary theorem programme.
+- `R6`: retains the ordered-state and DNNF model-specific barriers.
 
 ## Exact determination
 
 ```text
-PCRNF exactness                              RETAINED
-PCRNF byte equality as semantic equality     DISPROVED
-polynomial PCRNF state under some ordering    DISPROVED
-ordered state per residual function           BLOCKED
-collective exact representations              OPEN
-restricted PCRNF classes                      OPEN
+PCRNF exactness                                  RETAINED
+PCRNF byte equality as semantic equality         DISPROVED
+polynomial PCRNF state under some ordering        DISPROVED
+ordered state per residual function               BLOCKED
+polynomial DNNF exact representation              DISPROVED
+unrestricted exact symbolic representation        OPEN / DORMANT
+restricted PCRNF and decomposition classes        OPEN
 ```
 
 ## Scope boundary
 
-The lower bound does not prove `P!=NP`, does not disprove `NAE-006`, and does not lower-bound arbitrary circuits or algorithms. It applies to ordered computations that materialize one exact state for each residual completion function.
+The lower bounds do not prove `P!=NP`, do not disprove `NAE-006`, and do not lower-bound unrestricted Boolean circuits, algebraic methods, arbitrary non-DNNF structures, or arbitrary algorithms.
 
 ## Next decision
 
-The strongest next constructive option is a collective representation route, most plausibly deterministic decomposable circuits or another non-ordered structure that can share information across exponentially many distinct residual functions.
+Close the universal exact-representation programme at this point. Preserve restricted-class work separately. Reopen only for a precisely defined representation model with an explicit reason it escapes both `NAE-020` and `NAE-021`.
 
-The parallel small-win track is to classify the largest restricted graph or hypergraph classes on which PCRNF state remains polynomial.
+Evidence:
 
-Evidence: [NAE-016 expander disproof](routes/exact-state-representations/pcrnf/proofs/NAE-016-expander-disproof.md).
+- [NAE-016 expander disproof](routes/exact-state-representations/pcrnf/proofs/NAE-016-expander-disproof.md)
+- [NAE-021 DNNF lower bound](routes/exact-state-representations/decomposable-circuits/proofs/NAE-021-dnnf-expander-lower-bound.md)

@@ -7,7 +7,7 @@ Every slice is governed by the [building-block quality gate](BUILDING-BLOCK-GATE
 
 ## Progress summary
 
-| Slice | Name | Status | Route ownership | Next action |
+| Slice | Name | Status | Route ownership | Determination |
 |---:|---|---|---|---|
 | `VS-01` | Canonical instance model | `COMPLETE / CHECKED` | Shared laboratory | Preserve. |
 | `VS-02` | Exact small-instance oracle | `COMPLETE / CHECKED` | Shared laboratory | Preserve as ground truth. |
@@ -16,48 +16,24 @@ Every slice is governed by the [building-block quality gate](BUILDING-BLOCK-GATE
 | `VS-05` | Minimal obstruction atlas | `COMPLETE / CHECKED` | `R4`, `R6` evidence | Preserve. |
 | `VS-06` | Destroy naive summaries | `COMPLETE / CHECKED` | `R4`, `R6` barriers | Preserve as falsification baseline. |
 | `VS-07` | Measure semantic merging | `COMPLETE / CHECKED` | `R1`, `R2`, `R6` evidence | Preserve. |
-| `VS-08` | Exact PCRNF construction | `COMPLETE / CHECKED` | `R1.1 PCRNF` | Retain `NAE-017`. |
-| `VS-09A` | Universal PCRNF state bound | `COMPLETE / CHECKED` | `R1.1`, `R6` | Close `NAE-016`; retain restricted PCRNF classes. |
-| `VS-09B` | Collective exact representation | `READY / REFORMULATE` | `R1.2`, `R1.4` | Select a representation sharing many distinct residual functions collectively. |
-| `VS-10` | Attack with hard families | `BLOCKED` | selected collective subroute plus `R6` | Attack the precise candidate. |
-| `VS-11` | Global complexity audit | `BLOCKED` | selected constructive subroute | Count the complete collective representation and all intermediate objects. |
-| `VS-12` | Route decision | `BLOCKED` | parent and child route records | Prove, disprove, defer, restrict or close precisely. |
+| `VS-08` | Exact PCRNF construction | `COMPLETE / CHECKED` | `R1.1` | Retain `NAE-017`. |
+| `VS-09A` | Universal PCRNF state bound | `COMPLETE / CHECKED` | `R1.1`, `R6` | `NAE-016` disproved by `NAE-020`. |
+| `VS-09B` | Collective exact representation selection | `COMPLETE / CHECKED` | `R1.2`, `R1.4` | DNNF selected as the precise collective candidate. |
+| `VS-10` | Attack selected representation | `COMPLETE / CHECKED` | `R1.4`, `R6` | `NAE-021` proves exponential DNNF size. |
+| `VS-11` | Global complexity audit | `COMPLETE / CHECKED` | `R1.4`, `R6` | Arity, degree, treewidth, conditioning, circuit size, and binary encoding audited. |
+| `VS-12` | Route decision | `COMPLETE / CHECKED` | `R1` | Universal exact-representation programme closed; restricted results retained. |
 
 ## Trusted laboratory — VS-01 through VS-08
 
 **Status:** `COMPLETE / CHECKED`.
 
-The laboratory includes exact residual syntax and attack records in addition to canonical instances, exact profiles, controls, obstruction evidence, summary collisions and semantic-merging measurements.
-
-## VS-08 result — exact PCRNF
-
-`NAE-017 — PROVED / CHECKED` establishes exact oriented residualization and exact transitions.
-
-`NAE-018 — DISPROVED / CHECKED` establishes that PCRNF byte equality is not complete semantic equality.
-
-These results remain valid.
+The laboratory includes canonical instances, exact profiles, controls, obstruction evidence, summary collisions, semantic-merging measurements, and exact residual syntax.
 
 ## VS-09A — all-ordering PCRNF attack
 
-### Semantic projection
-
-`NAE-019` proves that distinct exact completion functions require distinct oriented PCRNF states.
-
-### Every-ordering hard family
-
 For a constant-degree expander graph `G`, form the central lift with hyperedges `{c,u,v}` for every graph edge `{u,v}`.
 
-For every ordering:
-
-1. cut after the first `floor(n/2)` graph vertices;
-2. expansion gives linearly many crossing edges;
-3. bounded degree gives a linear crossing induced matching;
-4. subsets of its processed endpoints define `2^{Omega(n)}` live prefixes;
-5. explicit suffix assignments distinguish every pair semantically.
-
-Therefore one level has `2^{Omega(n)}` exact completion classes and at least that many PCRNF states.
-
-### Result
+For every ordering, a balanced prefix cut and a linear crossing induced matching produce `2^{Omega(n)}` live prefixes with pairwise distinct exact completion functions. By `NAE-019`, the PCRNF state count is at least this large.
 
 ```text
 NAE-016 — DISPROVED / CHECKED
@@ -67,28 +43,57 @@ NAE-020 — PROVED / CHECKED
 
 Proof: [NAE-016 expander disproof](routes/exact-state-representations/pcrnf/proofs/NAE-016-expander-disproof.md).
 
-## VS-09B — reformulated continuation
+## VS-09B through VS-11 — DNNF selection and attack
 
-A stronger equality test cannot solve the expander family by merging states, because its residual functions are already pairwise distinct.
+DNNF was selected as the precise collective representation candidate because decomposability can share subcircuits across many distinct residual functions.
 
-The next representation must encode many distinct residual functions collectively, for example through:
+The same central-lift family defeats the candidate:
 
-- deterministic decomposable circuits;
-- non-ordered decomposition structures;
-- algebraic family representations;
-- another explicitly defined global object.
+1. conditioning the centre to zero produces the monotone two-CNF `and_{{u,v} in E(G)} (u or v)`;
+2. conditioning preserves DNNF and does not increase size;
+3. constant-degree edge expanders have linear treewidth;
+4. the established monotone-CNF compilation theorem gives DNNF size exponential in treewidth;
+5. the lifted input has binary encoding length `L=O(n log n)`.
 
-## Mandatory controls for the next candidate
+Therefore every DNNF for the central lift has size
 
-- central lifts of constant-degree expanders;
-- four-vertex genuine semantic merge;
-- five-vertex PCRNF incompleteness witness;
-- both fan orderings;
-- Fano and `K_5^(3)`;
-- linear four-regular instances;
-- VS-06 collision pairs;
-- verified reduction-generated instances.
+```text
+2^{Omega(n)} = 2^{Omega(L/log L)}.
+```
+
+```text
+NAE-021 — PROVED / CHECKED
+```
+
+Proof: [NAE-021 DNNF lower bound](routes/exact-state-representations/decomposable-circuits/proofs/NAE-021-dnnf-expander-lower-bound.md).
+
+## VS-12 — final route decision
+
+The following universal mechanisms are closed:
+
+- ordered PCRNF state enumeration;
+- one-state-per-residual-function semantic quotients;
+- reduced ordered decision diagrams;
+- DNNF and all DNNF subclasses.
+
+The following remain outside the proved barriers:
+
+- unrestricted Boolean circuits;
+- arbitrary non-DNNF collective structures;
+- algebraic global methods;
+- arbitrary algorithms.
+
+`NAE-006` remains a conjecture but is dormant pending a materially new fixed representation language. Restricted PCRNF, bounded-width compilation, incidence-forest colouring, and decomposition classification remain retained secondary programmes.
+
+## Reopening controls
+
+Any reopened universal candidate must:
+
+- specify exact syntax, semantics, operations, and total size;
+- explain why `NAE-020` and `NAE-021` do not apply;
+- face the semantic-merge and PCRNF witnesses;
+- face both fan orderings, Fano, `K_5^(3)`, linear four-regular instances, collision pairs, and reduction-generated controls.
 
 ## Scope
 
-The disproof is model-specific. It does not prove `P!=NP`, disprove `NAE-006`, or lower-bound arbitrary circuits or algorithms.
+The closeout is model-specific. It proves neither `P=NP` nor `P!=NP` and does not lower-bound arbitrary circuits or algorithms.

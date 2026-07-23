@@ -1,47 +1,38 @@
 # R1.4 — Decomposable Circuit Representations
 
 **Subroute:** `R1.4`  
-**Status:** `CANDIDATE / NOT ACTIVATED`
+**Status:** `CLOSED UNIVERSAL / RETAINED RESTRICTED`
 
-## Thesis
+## Original thesis
 
-Represent residual completion functions by structured deterministic decomposable circuits so that independent residual components can be composed while repeated semantic subproblems are shared.
+Represent exact completion behaviour by deterministic or structured decomposable circuits so that repeated semantic subproblems can be shared without enumerating one state per residual function.
 
-Candidate languages include explicitly selected forms of deterministic decomposable negation normal form or structured decomposable circuits.
+## Determination
 
-## Required properties
+`NAE-021 — PROVED / CHECKED` closes DNNF as a universal polynomial exact-representation route.
 
-A selected model must provide:
+For the central lifts of constant-degree expanders used in `NAE-020`, conditioning the centre to zero yields bounded-degree monotone two-CNFs whose clause graphs have linear treewidth. The established lower bound of Amarilli, Capelli, Monet, and Senellart then forces DNNF size `2^{Omega(n)}`. Conditioning cannot increase DNNF size, so the unconditioned central lifts also require exponential DNNF size.
 
-- exact represented semantics;
-- polynomial-time restriction;
-- exact conjunction over compatible components;
-- deterministic or canonical equality adequate for memoization;
-- polynomial-time acceptance;
-- complete node and edge encoding;
-- a bound on all generated circuits, not only one residual.
+Because the theorem applies to unrestricted DNNF, it also applies to every subclass, including:
 
-## Main opportunities
+- deterministic DNNF;
+- structured DNNF;
+- deterministic structured DNNF;
+- decision DNNF.
 
-- decomposability may exploit disconnected or weakly coupled residual components;
-- shared subcircuits may capture semantic merges missed by PCRNF syntax;
-- a fixed structural decomposition may make transition costs explicit.
+## Retained scope
 
-## Main risks
+Decomposable compilation remains useful on explicitly restricted classes, including bounded-treewidth inputs and any class for which a separate polynomial-size compilation theorem is proved.
 
-- noncanonical circuits do not give cheap exact equality;
-- minimization or equivalence may hide hard semantic work;
-- determinism and decomposability can cause exponential blow-up;
-- small individual circuits do not imply a polynomial total computation graph.
+## Closed obligations
 
-## First attacks
+The route no longer needs attacks based only on canonicity, equality, or transition cost: representation size itself is already exponential on the hard family.
 
-- VS-08 five-vertex equal-semantics/different-PCRNF pair;
-- fan bad and good orderings;
-- disconnected products;
-- high-width satisfiable controls;
-- reduction-generated instances.
+## Reopening rule
 
-## Activation gate
+Do not reopen `R1.4` as a universal route unless the proposed language is not a DNNF subclass and no polynomial-overhead translation to DNNF is assumed. Any reopening must fix exact syntax, semantics, operations, size measure, and a survival argument against `NAE-021`.
 
-Choose one circuit language and one structural discipline. Do not activate a generic “knowledge compilation” route without fixed syntax, operations, size measure, and stop conditions.
+## Evidence
+
+- [NAE-021 DNNF lower bound](proofs/NAE-021-dnnf-expander-lower-bound.md)
+- [NAE-020 ordered-state lower bound](../pcrnf/proofs/NAE-016-expander-disproof.md)

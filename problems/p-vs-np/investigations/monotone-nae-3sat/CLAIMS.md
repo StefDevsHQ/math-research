@@ -26,14 +26,15 @@ This is the authoritative investigation-level ledger for Monotone NAE-3SAT claim
 | `NAE-018` | Byte equality of oriented PCRNF coincides with exact completion equivalence for every instance, ordering, level, and prefix. | `DISPROVED` | `CHECKED` | [VS-08 five-vertex counterexample](VS-08-AUDIT.md#nae-018--pcrnf-equality-is-not-semantic-equality) | 2026-07-23 |
 | `NAE-019` | At every level of every fixed ordering, the number of oriented PCRNF states is at least the number of distinct exact labelled completion functions induced by prefixes at that level. | `PROVED` | `CHECKED` | [Semantic projection lemma](routes/exact-state-representations/pcrnf/proofs/NAE-016-expander-disproof.md#4-semantic-projection-lemma--nae-019) | 2026-07-23 |
 | `NAE-020` | There is an infinite family of central lifts of constant-degree expanders such that every variable ordering has a level with `2^{Omega(n)}` pairwise distinct live exact completion functions, and hence `2^{Omega(n)}` distinct oriented PCRNF states. | `PROVED` | `CHECKED` | [Expander central-lift theorem](routes/exact-state-representations/pcrnf/proofs/NAE-016-expander-disproof.md#10-conclusion--nae-020) | 2026-07-23 |
+| `NAE-021` | There is an infinite family of central lifts of constant-degree expanders whose exact satisfying-assignment functions require DNNF size `2^{Omega(n)}=2^{Omega(L/log L)}`. | `PROVED` | `CHECKED` | [DNNF expander lower bound](routes/exact-state-representations/decomposable-circuits/proofs/NAE-021-dnnf-expander-lower-bound.md) | 2026-07-23 |
 
 ## Current accepted state
 
-PCRNF remains an exact oriented residual representation with exact transitions (`NAE-017`). Byte equality is not complete semantic equality (`NAE-018`). More decisively, central lifts of constant-degree expanders force exponentially many semantically distinct live residual functions under every ordering (`NAE-020`). By `NAE-019`, they force exponentially many PCRNF states under every ordering.
+PCRNF remains exact with exact transitions (`NAE-017`), but byte equality is not complete semantic equality (`NAE-018`) and every ordering has exponentially many exact residual functions on the central-lift expander family (`NAE-020`). By `NAE-019`, this forces exponentially many PCRNF states.
 
-Therefore `NAE-016` is `DISPROVED / CHECKED`. This closes universal ordered PCRNF state enumeration, not PCRNF exactness or restricted PCRNF algorithms.
+Conditioning the same family at its centre yields bounded-degree monotone two-CNFs of linear treewidth. The established DNNF lower bound for constant-arity, constant-degree monotone CNFs then gives `NAE-021`: exponential DNNF size for the unconditioned central lifts as well.
 
-`NAE-006` remains unresolved. The all-ordering lower bound applies to representations that enumerate one exact state per ordered residual function; it does not rule out collective circuit representations, non-ordered decompositions, algebraic global methods, or arbitrary algorithms.
+Thus universal ordered PCRNF, one-state-per-residual semantic quotients, reduced ordered decision diagrams, and DNNF representations are closed on this family. `NAE-006` remains unresolved because these are model-specific lower bounds; operationally it is dormant pending a materially new representation model.
 
 ## Claim boundaries
 
@@ -43,9 +44,8 @@ Therefore `NAE-016` is `DISPROVED / CHECKED`. This closes universal ordered PCRN
 - A compact syntax is insufficient unless construction, transition, equality, acceptance, and total generated representation are polynomially bounded.
 - A lower bound for one representation model is model-specific unless a polynomial-overhead subsumption theorem is proved.
 - Finite exact measurements do not imply universal asymptotic bounds.
-- A large quotient under one ordering does not imply every ordering has a large quotient; `NAE-020` supplies the required every-ordering family.
-- Exact quotient count does not lower-bound an unspecified collective symbolic representation.
 - `NAE-020` does not prove `P!=NP` and does not disprove `NAE-006`.
+- `NAE-021` lower-bounds DNNF and its subclasses, not unrestricted Boolean circuits or arbitrary algorithms.
 
 ## Identifier policy
 

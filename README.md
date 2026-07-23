@@ -46,25 +46,22 @@ CITATION.cff              Repository citation metadata
 
 ### P versus NP
 
-The [P-versus-NP programme](problems/p-vs-np/README.md) is in **top-level route selection**. No investigation or route is currently active.
+The [P-versus-NP programme](problems/p-vs-np/README.md) is in **top-level route selection** after completing the universal exact-representation closeout for Monotone NAE-3SAT.
 
-The programme maintains two canonical cross-investigation orientation artifacts:
+The Monotone NAE-3SAT investigation retains:
 
-- [Research-programme landscape](problems/p-vs-np/references/research-programme-landscape.md) — direct algorithms, structural classifications, circuit and proof lower bounds, algorithms-to-lower-bounds, meta-complexity, derandomization, conditional programmes, and proof barriers, with explicit consequence mapping.
-- [Problem-testbed landscape](problems/p-vs-np/references/problem-testbed-landscape.md) — NP-complete testbeds, tractable controls, promise problems, total-search classes, and strategic non-NP-complete objects organized by the obstruction they expose.
+- exact PCRNF residualization and restricted decomposition theorems;
+- an all-ordering exponential residual-function lower bound for central-lift expanders;
+- an exponential DNNF lower bound for the same family.
 
-The current strategic candidates are:
-
-1. **Positive investigation:** exact-incidence constraint systems centred on Positive 1-in-3 SAT, with X3C and 3-Dimensional Matching as paired hard controls.
-2. **Lower-bound sibling:** Circuit-SAT and restricted-circuit satisfiability, with the exact circuit model and transfer theorem stated before activation.
-3. **Alternative route:** another programme or testbed from the canonical landscapes, selected with an explicit mathematical advantage and stop condition.
+These results close ordered PCRNF, one-state-per-residual-function quotients, reduced ordered decision diagrams, and DNNF as universal polynomial exact-representation routes. They do not lower-bound unrestricted Boolean circuits or arbitrary algorithms.
 
 The completed [Subset Sum investigation](problems/p-vs-np/investigations/subset-sum/README.md) remains an arithmetic benchmark and adversarial reduction target:
 
-- [Structural compression](problems/p-vs-np/investigations/subset-sum/routes/structural-compression/README.md) — closed as a universal algorithmic route; restricted results retained.
-- [Exact-state compression barriers](problems/p-vs-np/investigations/subset-sum/routes/exact-state-compression-barriers/README.md) — closed as a broad model-barrier route; model-specific results retained.
+- [Structural compression](problems/p-vs-np/investigations/subset-sum/routes/structural-compression/README.md) — closed universally; restricted results retained.
+- [Exact-state compression barriers](problems/p-vs-np/investigations/subset-sum/routes/exact-state-compression-barriers/README.md) — closed broadly; model-specific results retained.
 
-No repository result currently resolves `P=NP`, `P!=NP`, proves a general Boolean circuit lower bound, or gives a lower bound for arbitrary Subset Sum algorithms.
+No repository result currently resolves `P=NP`, `P!=NP`, proves a general Boolean circuit lower bound, or gives a lower bound for arbitrary algorithms.
 
 ## Working principles
 
