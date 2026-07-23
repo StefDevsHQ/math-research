@@ -1,32 +1,18 @@
 # Status — P versus NP
 
-**Phase:** Monotone NAE-3SAT `NAE-016` disproved; collective exact representations under review  
+**Phase:** Monotone NAE-3SAT exact-representation closeout complete; top-level route selection  
 **Updated:** 2026-07-23
 
 ## Current position
 
-The active Monotone NAE-3SAT investigation has completed its first universal ordered-state lower-bound attack.
+The Monotone NAE-3SAT investigation has completed two universal exact-representation barriers on one central-lift expander family.
 
-Central lifts of constant-degree expanders force exponentially many pairwise distinct live exact completion functions under every variable ordering. This disproves the universal polynomial-state PCRNF conjecture `NAE-016`.
+- `NAE-020` forces exponentially many distinct live residual completion functions under every variable ordering.
+- `NAE-021` proves exponential size for every DNNF representing the exact satisfying-assignment function.
 
-No universal polynomial-time algorithm or general representation lower bound is claimed.
+No universal polynomial-time algorithm or general circuit lower bound is claimed.
 
-The Subset Sum investigation remains closed after its universal structural-compression strategies failed within their stated models.
-
-## Route organization
-
-Monotone NAE-3SAT has an explicit [route registry](investigations/monotone-nae-3sat/routes/README.md) and [route dashboard](investigations/monotone-nae-3sat/routes/STATUS.md).
-
-Current hierarchy:
-
-- `R1 — Exact-state representations` remains open but narrowed;
-  - `R1.1 — PCRNF` is closed as a universal ordered state-enumeration route;
-  - exact PCRNF residualization and restricted-class analysis are retained;
-  - `R1.2` must be reformulated as a collective representation route;
-  - reduced ordered decision diagrams inherit the same residual-subfunction obstruction;
-  - decomposable circuits and other collective structures remain candidate routes.
-- `R2` retains bounded-width and incidence-forest theorems.
-- `R6` now includes an explicit all-ordering barrier for state-per-residual-function models.
+The Subset Sum investigation remains closed after its universal structural-compression and broad exact-state-barrier strategies failed within their stated models.
 
 ## Accepted determination
 
@@ -35,24 +21,31 @@ Current hierarchy:
 - `NAE-018 — DISPROVED / CHECKED`.
 - `NAE-019 — PROVED / CHECKED`.
 - `NAE-020 — PROVED / CHECKED`.
-- `NAE-006 — CONJECTURE / DRAFT` remains unresolved.
+- `NAE-021 — PROVED / CHECKED`.
+- `NAE-006 — CONJECTURE / DRAFT` remains unresolved but dormant pending a materially new exact representation model.
 
-## Mathematical content
+## Route determination
 
-For the central lift of a bounded-degree expander, every ordering admits a balanced prefix cut with a linear crossing induced matching. Subsets of the processed matching endpoints produce `2^{Omega(n)}` live prefixes with pairwise different exact suffix-completion functions.
+Within `R1 — Exact-state representations`:
 
-Exact PCRNF states cannot merge different completion functions, so every ordering has exponentially many PCRNF states at one level.
+- ordered PCRNF state enumeration is closed universally;
+- one-state-per-residual-function semantic quotients are blocked;
+- reduced ordered decision diagrams inherit the residual-function obstruction;
+- DNNF and all of its subclasses are exponentially large on the central-lift expander family;
+- restricted PCRNF and bounded-width compilation results remain valid.
+
+Generic collective representation is not an active route. It may be reopened only with a fixed representation language, exact operations, polynomial total-size target, and a mechanism not subsumed by the current lower bounds.
 
 ## Scope boundary
 
-The result applies to ordered computations that materialize one exact state per residual completion function. It does not lower-bound:
+The retained barriers do not lower-bound:
 
-- collective circuit representations;
-- non-ordered decompositions;
+- unrestricted Boolean circuits;
+- arbitrary non-DNNF data structures;
 - algebraic global methods;
 - arbitrary polynomial-time algorithms.
 
-It therefore proves neither `P=NP` nor `P!=NP`.
+They therefore prove neither `P=NP` nor `P!=NP`.
 
 ## Retained project results
 
@@ -61,10 +54,14 @@ It therefore proves neither `P=NP` nor `P!=NP`.
 - incidence-forest constructive colouring;
 - obstruction, locality-failure, summary-collision and semantic-merging evidence;
 - exact oriented PCRNF residualization;
-- all-ordering expander lower bound for PCRNF and ordered residual-state enumeration.
+- all-ordering expander lower bound for ordered residual-state enumeration;
+- exponential DNNF lower bound for central-lift expanders.
 
 ## Next decision
 
-Select one collective exact-representation route, with deterministic decomposable circuits as the clearest current candidate, or pursue the parallel restricted PCRNF classification programme.
+Return to top-level route selection. Keep restricted PCRNF and decomposition classification as a secondary theorem programme, but do not activate another universal exact-representation subroute without a materially new model and a precise survival argument.
 
-Proof record: [NAE-016 expander disproof](investigations/monotone-nae-3sat/routes/exact-state-representations/pcrnf/proofs/NAE-016-expander-disproof.md).
+Evidence:
+
+- [NAE-016 expander disproof](investigations/monotone-nae-3sat/routes/exact-state-representations/pcrnf/proofs/NAE-016-expander-disproof.md)
+- [NAE-021 DNNF lower bound](investigations/monotone-nae-3sat/routes/exact-state-representations/decomposable-circuits/proofs/NAE-021-dnnf-expander-lower-bound.md)
